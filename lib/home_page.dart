@@ -106,14 +106,14 @@ class home_page extends StatelessWidget {
                                 shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(30.0))),
                             RaisedButton(
-                                child: Text("RENT"),
+                                child: Text("SELL"),
                                 color: Colors.pinkAccent,
                                 textColor: Colors.white,
                                 onPressed: () {},
                                 shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(30.0))),
                             RaisedButton(
-                                child: Text("CO-HOUSING"),
+                                child: Text("RENT"),
                                 color: Colors.pinkAccent,
                                 textColor: Colors.white,
                                 onPressed: () {},
