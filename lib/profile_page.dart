@@ -9,7 +9,7 @@ class profile_page extends StatelessWidget {
         title: Text('Profile'),
         backgroundColor: Colors.amber,
       ),
-      bottomSheet: bottom_bar(2),
+      bottomNavigationBar: bottom_bar(2),
     );
   }
 }

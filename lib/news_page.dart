@@ -9,7 +9,7 @@ class news_page extends StatelessWidget {
         title: Text('News'),
         backgroundColor: Colors.amber,
       ),
-      bottomSheet: bottom_bar(1),
+      bottomNavigationBar: bottom_bar(1),
     );
   }
 }

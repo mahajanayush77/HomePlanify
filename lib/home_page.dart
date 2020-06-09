@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:housing/Project_card.dart';
 import 'package:housing/bottom_bar.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:housing/hot_deal_card.dart';
 
 class home_page extends StatelessWidget {
   @override
@@ -10,6 +11,7 @@ class home_page extends StatelessWidget {
       body: SingleChildScrollView(
         child: SafeArea(
           child: Container(
+            padding: EdgeInsets.only(bottom: 90.0),
             child: Column(
               children: <Widget>[
                 Container(
@@ -134,6 +136,34 @@ class home_page extends StatelessWidget {
                   alignment: Alignment.centerLeft,
                   padding: EdgeInsets.only(top: 10.0, left: 10.0),
                   child: Text(
+                    'Hot Deals 🔥',
+                    style: GoogleFonts.sourceSansPro(
+                      fontSize: 20.0,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ),
+                Container(
+                  margin: EdgeInsets.symmetric(vertical: 20.0),
+                  height: 250.0,
+                  child: ListView(
+                    scrollDirection: Axis.horizontal,
+                    children: <Widget>[
+                      deal_card(),
+                      deal_card(),
+                      deal_card(),
+                    ],
+                  ),
+                ),
+                Divider(
+                  height: 5.0,
+                  color: Colors.grey[200],
+                  thickness: 3.0,
+                ),
+                Container(
+                  alignment: Alignment.centerLeft,
+                  padding: EdgeInsets.only(top: 10.0, left: 10.0),
+                  child: Text(
                     'Trending Projects',
                     style: GoogleFonts.sourceSansPro(
                       fontSize: 20.0,
@@ -163,7 +193,7 @@ class home_page extends StatelessWidget {
           ),
         ),
       ),
-      bottomSheet: bottom_bar(0),
+      bottomNavigationBar: bottom_bar(0),
     );
   }
 }
