@@ -6,7 +6,7 @@ class deal_card extends StatelessWidget {
     return Container(
       width: MediaQuery.of(context).size.width * 0.8,
       child: Card(
-        color: Colors.blue,
+        color: Colors.blueGrey,
         child: Container(
           child: Center(
               child: Text(

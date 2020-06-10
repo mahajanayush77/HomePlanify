@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:housing/detail_page.dart';
 
 class TrendingProjectsCard extends StatelessWidget {
   @override
@@ -7,6 +8,8 @@ class TrendingProjectsCard extends StatelessWidget {
     return GestureDetector(
       onTap: () {
         //navigate to project description
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => DetailScreen()));
       },
       child: Container(
         margin: EdgeInsets.symmetric(horizontal: 10.0),
