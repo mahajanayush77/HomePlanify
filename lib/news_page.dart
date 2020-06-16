@@ -50,7 +50,7 @@ class news_page extends StatelessWidget {
           MaterialButton(
             elevation: 0,
             textColor: Colors.white,
-            color: Colors.teal.shade300,
+            color: Colors.amber.shade300,
             height: 0,
             child: Icon(Icons.keyboard_arrow_right),
             minWidth: 0,
@@ -69,7 +69,7 @@ class news_page extends StatelessWidget {
     return RoundedContainer(
       height: 270,
       borderRadius: BorderRadius.circular(0),
-      color: Colors.blue,
+      color: Colors.amber[200],
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
@@ -98,7 +98,7 @@ class news_page extends StatelessWidget {
                           flex: 3,
                           child: Text(
                             "A complete set of design elements, and their intitutive design.",
-                            style: Theme.of(context).textTheme.title,
+                            style: Theme.of(context).textTheme.headline6,
                           ),
                         ),
                         const SizedBox(width: 10.0),

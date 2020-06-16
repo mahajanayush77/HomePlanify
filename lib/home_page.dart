@@ -135,17 +135,33 @@ class home_page extends StatelessWidget {
                 Container(
                   alignment: Alignment.centerLeft,
                   padding: EdgeInsets.only(top: 10.0, left: 10.0),
-                  child: Text(
-                    'Hot Deals 🔥',
-                    style: GoogleFonts.sourceSansPro(
-                      fontSize: 20.0,
-                      fontWeight: FontWeight.w600,
-                    ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Text(
+                        'Featured Deals',
+                        style: GoogleFonts.sourceSansPro(
+                          fontSize: 25.0,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                      FlatButton(
+                        onPressed: () {},
+                        child: Text(
+                          'View All',
+                          style: GoogleFonts.aBeeZee(
+                            color: Colors.deepPurple,
+                            fontWeight: FontWeight.w700,
+                            fontSize: 15.0,
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
                 Container(
                   margin: EdgeInsets.symmetric(vertical: 20.0),
-                  height: 250.0,
+                  height: 300.0,
                   child: ListView(
                     scrollDirection: Axis.horizontal,
                     children: <Widget>[
@@ -163,12 +179,28 @@ class home_page extends StatelessWidget {
                 Container(
                   alignment: Alignment.centerLeft,
                   padding: EdgeInsets.only(top: 10.0, left: 10.0),
-                  child: Text(
-                    'Trending Projects',
-                    style: GoogleFonts.sourceSansPro(
-                      fontSize: 20.0,
-                      fontWeight: FontWeight.w600,
-                    ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Text(
+                        'Trending Projects',
+                        style: GoogleFonts.sourceSansPro(
+                          fontSize: 25.0,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                      FlatButton(
+                        onPressed: () {},
+                        child: Text(
+                          'View All',
+                          style: GoogleFonts.aBeeZee(
+                            color: Colors.deepPurple,
+                            fontWeight: FontWeight.w700,
+                            fontSize: 15.0,
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
                 Container(

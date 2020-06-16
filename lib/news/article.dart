@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'network_image.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 const List<String> images = [
   'https://firebasestorage.googleapis.com/v0/b/dl-flutter-ui-challenges.appspot.com/o/img%2F1.jpg?alt=media',
@@ -18,7 +19,7 @@ class ArticleOnePage extends StatelessWidget {
     String image = images[1];
     return Scaffold(
       appBar: AppBar(
-        title: Text('Article One'),
+        title: Text('Lorem Ipsum'),
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -44,7 +45,7 @@ class ArticleOnePage extends StatelessWidget {
                       ),
                       SizedBox(width: 10.0),
                       Text(
-                        "Technology",
+                        "Home Decor",
                         style: TextStyle(color: Colors.white),
                       )
                     ],
@@ -61,7 +62,7 @@ class ArticleOnePage extends StatelessWidget {
                   Row(
                     children: <Widget>[
                       Expanded(
-                        child: Text("Oct 21, 2017"),
+                        child: Text("May 21, 2020"),
                       ),
                       IconButton(
                         icon: Icon(Icons.share),
@@ -71,7 +72,7 @@ class ArticleOnePage extends StatelessWidget {
                   ),
                   Text(
                     "Lorem ipsum dolor sit amet",
-                    style: Theme.of(context).textTheme.title,
+                    style: Theme.of(context).textTheme.headline6,
                   ),
                   Divider(),
                   SizedBox(
@@ -100,6 +101,11 @@ class ArticleOnePage extends StatelessWidget {
                   Text(
                     "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Aperiam, ullam? Fuga doloremque repellendus aut sequi officiis dignissimos, enim assumenda tenetur reprehenderit quam error, accusamus ipsa? Officiis voluptatum sequi voluptas omnis. Lorem ipsum dolor, sit amet consectetur adipisicing elit. Aperiam, ullam? Fuga doloremque repellendus aut sequi officiis dignissimos, enim assumenda tenetur reprehenderit quam error, accusamus ipsa? Officiis voluptatum sequi voluptas omnis.",
                     textAlign: TextAlign.justify,
+                    style: GoogleFonts.sourceSansPro(
+                      fontSize: 18.0,
+                      fontWeight: FontWeight.w400,
+                      wordSpacing: 1,
+                    ),
                   )
                 ],
               ),
