@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:housing/bottom_bar.dart';
+import 'package:housing/widgets/bottom_bar.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
-import 'package:housing/news/article.dart';
-import 'news/text_styles.dart';
-import 'news/rounded_container.dart';
+import 'package:housing/screens/news/article.dart';
+import '../constant.dart';
+import '../widgets/rounded_container.dart';
 import 'news/network_image.dart';
 
 const List<String> images = [
@@ -44,7 +44,7 @@ class news_page extends StatelessWidget {
           Expanded(
             child: Text(
               title,
-              style: shadedTitle,
+              style: kShadedTitle,
             ),
           ),
           MaterialButton(

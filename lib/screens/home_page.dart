@@ -1,17 +1,22 @@
 import 'package:flutter/material.dart';
-import 'package:housing/Project_card.dart';
-import 'package:housing/bottom_bar.dart';
+import 'package:housing/constant.dart';
+import 'package:housing/widgets/Project_card.dart';
+import 'package:housing/widgets/bottom_bar.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:housing/hot_deal_card.dart';
+import 'package:housing/widgets/hot_deal_card.dart';
+import '../provider/featuredDeals.dart';
 
-class home_page extends StatelessWidget {
+class HomePage extends StatelessWidget {
+  static FeaturedDeals featuredDeals = FeaturedDeals();
+  var list = featuredDeals.list;
   @override
   Widget build(BuildContext context) {
+    final size = DeviceSize(context: context);
     return Scaffold(
       body: SingleChildScrollView(
         child: SafeArea(
           child: Container(
-            padding: EdgeInsets.only(bottom: 90.0),
+            padding: EdgeInsets.only(bottom: size.height * 0.05),
             child: Column(
               children: <Widget>[
                 Container(
@@ -102,21 +107,21 @@ class home_page extends StatelessWidget {
                           children: <Widget>[
                             RaisedButton(
                                 child: Text("BUY"),
-                                color: Colors.amberAccent,
+                                color: kPrimaryBackgroundColor,
                                 textColor: Colors.white,
                                 onPressed: () {},
                                 shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(30.0))),
                             RaisedButton(
                                 child: Text("SELL"),
-                                color: Colors.amberAccent,
+                                color: kPrimaryBackgroundColor,
                                 textColor: Colors.white,
                                 onPressed: () {},
                                 shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(30.0))),
                             RaisedButton(
                                 child: Text("RENT"),
-                                color: Colors.amberAccent,
+                                color: kPrimaryBackgroundColor,
                                 textColor: Colors.white,
                                 onPressed: () {},
                                 shape: RoundedRectangleBorder(
@@ -161,14 +166,20 @@ class home_page extends StatelessWidget {
                 ),
                 Container(
                   margin: EdgeInsets.symmetric(vertical: 20.0),
-                  height: 300.0,
-                  child: ListView(
+                  height: size.height * 0.35,
+                  child: ListView.builder(
                     scrollDirection: Axis.horizontal,
-                    children: <Widget>[
-                      deal_card(),
-                      deal_card(),
-                      deal_card(),
-                    ],
+                    itemCount: list.length,
+                    itemBuilder: (context, index) {
+                      final item = list[index];
+                      return deal_card(
+                        propertyTitle: item.propertyTitle,
+                        price: item.price,
+                        expiry: item.expiry,
+                        company: item.company,
+                        location: item.location,
+                      );
+                    },
                   ),
                 ),
                 Divider(

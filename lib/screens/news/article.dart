@@ -72,6 +72,7 @@ class ArticleOnePage extends StatelessWidget {
                   ),
                   Text(
                     "Lorem ipsum dolor sit amet",
+                    softWrap: true,
                     style: Theme.of(context).textTheme.headline6,
                   ),
                   Divider(),
@@ -101,6 +102,7 @@ class ArticleOnePage extends StatelessWidget {
                   Text(
                     "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Aperiam, ullam? Fuga doloremque repellendus aut sequi officiis dignissimos, enim assumenda tenetur reprehenderit quam error, accusamus ipsa? Officiis voluptatum sequi voluptas omnis. Lorem ipsum dolor, sit amet consectetur adipisicing elit. Aperiam, ullam? Fuga doloremque repellendus aut sequi officiis dignissimos, enim assumenda tenetur reprehenderit quam error, accusamus ipsa? Officiis voluptatum sequi voluptas omnis.",
                     textAlign: TextAlign.justify,
+                    softWrap: true,
                     style: GoogleFonts.sourceSansPro(
                       fontSize: 18.0,
                       fontWeight: FontWeight.w400,

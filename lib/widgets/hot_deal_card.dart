@@ -1,7 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:housing/constant.dart';
 
 class deal_card extends StatelessWidget {
+  final String price;
+  final String propertyTitle;
+  final String company;
+  final String location;
+  final Image image;
+  final int expiry;
+  deal_card(
+      {this.company,
+      this.location,
+      this.price,
+      this.propertyTitle,
+      this.expiry,
+      this.image = null});
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -28,14 +42,14 @@ class deal_card extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
                   Text(
-                    'Rs. 50 - 80 L',
+                    'Rs. ' + price,
                     style: GoogleFonts.sourceSansPro(
                       fontWeight: FontWeight.w900,
                       fontSize: 25.0,
                     ),
                   ),
                   Text(
-                    'Expires in 2 days',
+                    'Expires in ' + '$expiry' + ' days',
                     style: GoogleFonts.voltaire(
                       fontWeight: FontWeight.w600,
                       fontSize: 16.0,
@@ -53,7 +67,7 @@ class deal_card extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
                   Text(
-                    'DLF FarmGreens',
+                    '$propertyTitle',
                     textAlign: TextAlign.start,
                     style: GoogleFonts.sourceSansPro(
                       fontWeight: FontWeight.w600,
@@ -63,7 +77,7 @@ class deal_card extends StatelessWidget {
                   MaterialButton(
                     elevation: 0,
                     textColor: Colors.white,
-                    color: Colors.amber.shade300,
+                    color: kPrimaryBackgroundColor,
                     height: 0,
                     child: Row(
                       children: <Widget>[
@@ -90,16 +104,25 @@ class deal_card extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
-                  Text(
-                    'DLF Communities',
-                    textAlign: TextAlign.start,
-                    style: GoogleFonts.sourceSansPro(
-                      fontWeight: FontWeight.w400,
-                      fontSize: 16.0,
+                  Expanded(
+                    child: Text(
+                      '$company',
+                      softWrap: true,
+                      overflow: TextOverflow.fade,
+                      textAlign: TextAlign.start,
+                      style: GoogleFonts.sourceSansPro(
+                        fontWeight: FontWeight.w400,
+                        fontSize: 16.0,
+                      ),
                     ),
                   ),
+                  SizedBox(
+                    width: 10.0,
+                  ),
                   Text(
-                    'Sector 10, Gurgaon, Haryana',
+                    '$location',
+                    softWrap: true,
+                    overflow: TextOverflow.fade,
                     textAlign: TextAlign.start,
                     style: GoogleFonts.sourceSansPro(
                       fontWeight: FontWeight.w400,

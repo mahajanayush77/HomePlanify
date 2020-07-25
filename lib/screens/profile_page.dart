@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:housing/bottom_bar.dart';
+import 'package:housing/widgets/bottom_bar.dart';
 
 class profile_page extends StatelessWidget {
   @override
