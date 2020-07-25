@@ -1,10 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:housing/screens/detail_page.dart';
+import '../constant.dart';
 
 class TrendingProjectsCard extends StatelessWidget {
+  final String price;
+  final String propertyTitle;
+  final String company;
+  final String location;
+  final Image image;
+  TrendingProjectsCard({
+    this.location,
+    this.company,
+    this.price,
+    this.propertyTitle,
+    this.image = null,
+  });
   @override
   Widget build(BuildContext context) {
+    final size = DeviceSize(context: context);
     return GestureDetector(
       onTap: () {
         //navigate to project description
@@ -13,7 +27,7 @@ class TrendingProjectsCard extends StatelessWidget {
       },
       child: Container(
         margin: EdgeInsets.symmetric(horizontal: 10.0),
-        width: 250.0,
+        width: size.width * 0.63,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(20.0),
           color: Colors.grey[200],
@@ -34,7 +48,7 @@ class TrendingProjectsCard extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.only(left: 16.0, bottom: 5.0),
                 child: Text(
-                  'Rs. 10 - 12 Cr.',
+                  'Rs. ' + price,
                   textAlign: TextAlign.start,
                   style: GoogleFonts.sourceSansPro(
                     fontWeight: FontWeight.w800,
@@ -48,7 +62,7 @@ class TrendingProjectsCard extends StatelessWidget {
                   bottom: 2.5,
                 ),
                 child: Text(
-                  'DLF FarmGreens',
+                  '$propertyTitle',
                   textAlign: TextAlign.start,
                   style: GoogleFonts.sourceSansPro(
                     fontWeight: FontWeight.w600,
@@ -62,7 +76,9 @@ class TrendingProjectsCard extends StatelessWidget {
                   bottom: 2.5,
                 ),
                 child: Text(
-                  'DLF Communities',
+                  '$company',
+                  softWrap: true,
+                  overflow: TextOverflow.fade,
                   textAlign: TextAlign.start,
                   style: GoogleFonts.sourceSansPro(
                     fontWeight: FontWeight.w400,
@@ -76,7 +92,9 @@ class TrendingProjectsCard extends StatelessWidget {
                   bottom: 2.5,
                 ),
                 child: Text(
-                  'Gurgaon,Haryana',
+                  '$location',
+                  softWrap: true,
+                  overflow: TextOverflow.fade,
                   textAlign: TextAlign.start,
                   style: GoogleFonts.sourceSansPro(
                     fontWeight: FontWeight.w300,

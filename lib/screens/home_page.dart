@@ -6,9 +6,24 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:housing/widgets/hot_deal_card.dart';
 import '../provider/featuredDeals.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   static FeaturedDeals featuredDeals = FeaturedDeals();
-  var list = featuredDeals.list;
+
+  @override
+  _HomePageState createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  var _featuredList;
+  var _trendingList;
+  @override
+  void initState() {
+    var list = HomePage.featuredDeals.list;
+    _trendingList = list.where((element) => element.expiry == null).toList();
+    _featuredList = list.where((element) => element.expiry != null).toList();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     final size = DeviceSize(context: context);
@@ -169,9 +184,9 @@ class HomePage extends StatelessWidget {
                   height: size.height * 0.35,
                   child: ListView.builder(
                     scrollDirection: Axis.horizontal,
-                    itemCount: list.length,
+                    itemCount: _featuredList.length,
                     itemBuilder: (context, index) {
-                      final item = list[index];
+                      final item = _featuredList[index];
                       return deal_card(
                         propertyTitle: item.propertyTitle,
                         price: item.price,
@@ -217,13 +232,18 @@ class HomePage extends StatelessWidget {
                 Container(
                   margin: EdgeInsets.symmetric(vertical: 20.0),
                   height: 250.0,
-                  child: ListView(
+                  child: ListView.builder(
                     scrollDirection: Axis.horizontal,
-                    children: <Widget>[
-                      TrendingProjectsCard(),
-                      TrendingProjectsCard(),
-                      TrendingProjectsCard(),
-                    ],
+                    itemCount: _trendingList.length,
+                    itemBuilder: (context, index) {
+                      final item = _trendingList[index];
+                      return TrendingProjectsCard(
+                        propertyTitle: item.propertyTitle,
+                        price: item.price,
+                        company: item.company,
+                        location: item.location,
+                      );
+                    },
                   ),
                 ),
                 Divider(
