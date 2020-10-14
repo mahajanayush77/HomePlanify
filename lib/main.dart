@@ -13,6 +13,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       theme: ThemeData.light().copyWith(
         primaryColor: kPrimaryBackgroundColor,
         accentColor: kAccentBackgroundColor,
@@ -21,6 +22,7 @@ class MyApp extends StatelessWidget {
       routes: {
         '/': (context) => HomePage(),
         '/news': (context) => news_page(),
+        '/add_property': (context) => news_page(),
         '/profile': (context) => profile_page(),
       },
     );
