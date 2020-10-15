@@ -23,7 +23,7 @@ class TrendingProjectsCard extends StatelessWidget {
       onTap: () {
         //navigate to project description
         Navigator.push(
-            context, MaterialPageRoute(builder: (context) => DetailScreen()));
+            context, MaterialPageRoute(builder: (context) => Detail()));
       },
       child: Container(
         margin: EdgeInsets.symmetric(horizontal: 10.0),

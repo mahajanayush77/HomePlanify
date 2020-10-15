@@ -73,7 +73,7 @@ class _HomePageState extends State<HomePage> {
                       Container(
                         padding: EdgeInsets.symmetric(vertical: 20.0),
                         child: Text(
-                          'Housing App',
+                          'HomePlanify',
                           style: TextStyle(
                             fontSize: 30.0,
                           ),
