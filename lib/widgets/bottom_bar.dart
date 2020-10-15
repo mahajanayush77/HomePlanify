@@ -39,14 +39,14 @@ class _bottom_barState extends State<bottom_bar> {
         shape: BoxShape.rectangle,
         color: Colors.grey[100],
       ),
-      height: 70.0,
+      height: 90.0,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         mainAxisSize: MainAxisSize.max,
         children: <Widget>[
           FlatButton(
-            padding: EdgeInsets.symmetric(vertical: 10.0),
+            padding: EdgeInsets.symmetric(vertical: 20.0),
             onPressed: () {
               updateUI(0);
               Navigator.pushReplacementNamed(context, '/');
@@ -63,24 +63,7 @@ class _bottom_barState extends State<bottom_bar> {
             ),
           ),
           FlatButton(
-            padding: EdgeInsets.symmetric(vertical: 10.0),
-            onPressed: () {
-              updateUI(1);
-              Navigator.pushReplacementNamed(context, '/add_property');
-            },
-            child: Column(
-              children: <Widget>[
-                Icon(
-                  Icons.add_circle_outline,
-                  size: 30.0,
-                  color: selected[1] ? Colors.amber : null,
-                ),
-                Text('Add'),
-              ],
-            ),
-          ),
-          FlatButton(
-            padding: EdgeInsets.symmetric(vertical: 10.0),
+            padding: EdgeInsets.symmetric(vertical: 20.0),
             onPressed: () {
               updateUI(1);
               Navigator.pushReplacementNamed(context, '/news');
@@ -97,7 +80,7 @@ class _bottom_barState extends State<bottom_bar> {
             ),
           ),
           FlatButton(
-            padding: EdgeInsets.symmetric(vertical: 10.0),
+            padding: EdgeInsets.symmetric(vertical: 20.0),
             onPressed: () {
               updateUI(2);
               Navigator.pushReplacementNamed(context, '/profile');
