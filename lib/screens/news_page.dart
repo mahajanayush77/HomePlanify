@@ -32,7 +32,7 @@ class news_page extends StatelessWidget {
           _buildItem(color: Colors.red.shade200),
         ],
       ),
-      bottomNavigationBar: bottom_bar(1),
+      bottomNavigationBar: bottom_bar(2),
     );
   }
 
@@ -50,7 +50,7 @@ class news_page extends StatelessWidget {
           MaterialButton(
             elevation: 0,
             textColor: Colors.white,
-            color: Colors.amber.shade300,
+            color: kPrimaryBackgroundColor,
             height: 0,
             child: Icon(Icons.keyboard_arrow_right),
             minWidth: 0,

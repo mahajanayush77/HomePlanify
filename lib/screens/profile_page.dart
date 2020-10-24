@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:housing/constant.dart';
 import 'package:housing/widgets/bottom_bar.dart';
 
 class profile_page extends StatelessWidget {
@@ -7,9 +8,9 @@ class profile_page extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text('Profile'),
-        backgroundColor: Colors.amber,
+        backgroundColor: kPrimaryBackgroundColor,
       ),
-      bottomNavigationBar: bottom_bar(2),
+      bottomNavigationBar: bottom_bar(3),
     );
   }
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:housing/constant.dart';
 
 class bottom_bar extends StatefulWidget {
   final current_index;
@@ -8,25 +9,31 @@ class bottom_bar extends StatefulWidget {
 }
 
 class _bottom_barState extends State<bottom_bar> {
-  List<bool> selected = [false, false, false];
+  List<bool> selected = [false, false, false, false];
 
   void updateUI(index) {
     if (index == 0) {
       setState(() {
-        selected[1] = selected[2] = false;
+        selected[1] = selected[2] = selected[3] = false;
         selected[0] = true;
       });
     }
     if (index == 1) {
       setState(() {
-        selected[0] = selected[2] = false;
+        selected[0] = selected[2] = selected[3] = false;
         selected[1] = true;
       });
     }
     if (index == 2) {
       setState(() {
-        selected[1] = selected[0] = false;
+        selected[1] = selected[0] = selected[3] = false;
         selected[2] = true;
+      });
+    }
+    if (index == 3) {
+      setState(() {
+        selected[2] = selected[1] = selected[0] = false;
+        selected[3] = true;
       });
     }
   }
@@ -56,7 +63,7 @@ class _bottom_barState extends State<bottom_bar> {
                 Icon(
                   Icons.search,
                   size: 30.0,
-                  color: selected[0] ? Colors.amber : null,
+                  color: selected[0] ? kPrimaryBackgroundColor : null,
                 ),
                 Text('Search'),
               ],
@@ -73,7 +80,7 @@ class _bottom_barState extends State<bottom_bar> {
                 Icon(
                   Icons.add_circle_outline,
                   size: 30.0,
-                  color: selected[1] ? Colors.amber : null,
+                  color: selected[1] ? kPrimaryBackgroundColor : null,
                 ),
                 Text('Add'),
               ],
@@ -82,7 +89,7 @@ class _bottom_barState extends State<bottom_bar> {
           FlatButton(
             padding: EdgeInsets.symmetric(vertical: 10.0),
             onPressed: () {
-              updateUI(1);
+              updateUI(2);
               Navigator.pushReplacementNamed(context, '/news');
             },
             child: Column(
@@ -90,7 +97,7 @@ class _bottom_barState extends State<bottom_bar> {
                 Icon(
                   Icons.message,
                   size: 30.0,
-                  color: selected[1] ? Colors.amber : null,
+                  color: selected[2] ? kPrimaryBackgroundColor : null,
                 ),
                 Text('News'),
               ],
@@ -99,7 +106,7 @@ class _bottom_barState extends State<bottom_bar> {
           FlatButton(
             padding: EdgeInsets.symmetric(vertical: 10.0),
             onPressed: () {
-              updateUI(2);
+              updateUI(3);
               Navigator.pushReplacementNamed(context, '/profile');
             },
             child: Column(
@@ -107,7 +114,7 @@ class _bottom_barState extends State<bottom_bar> {
                 Icon(
                   Icons.supervised_user_circle,
                   size: 30.0,
-                  color: selected[2] ? Colors.amber : null,
+                  color: selected[3] ? kPrimaryBackgroundColor : null,
                 ),
                 Text('Profile'),
               ],
