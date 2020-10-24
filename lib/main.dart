@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:housing/constant.dart';
+import 'package:housing/screens/add_property.dart';
 import 'package:housing/screens/home_page.dart';
 import 'package:housing/screens/news_page.dart';
 import 'package:housing/screens/onboarding/Login/login_screen.dart';
@@ -33,7 +34,7 @@ class MyApp extends StatelessWidget {
         '/signup': (context) => SignUpScreen(),
         '/properties': (context) => Search(),
         '/news': (context) => news_page(),
-        '/add_property': (context) => news_page(),
+        '/add_property': (context) => AddProperty(),
         '/profile': (context) => profile_page(),
       },
     );
