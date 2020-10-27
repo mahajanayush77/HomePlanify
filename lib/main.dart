@@ -7,6 +7,7 @@ import 'package:housing/screens/news_page.dart';
 import 'package:housing/screens/onboarding/Login/login_screen.dart';
 import 'package:housing/screens/onboarding/Signup/signup_screen.dart';
 import 'package:housing/screens/onboarding/Welcome/welcome_screen.dart';
+import 'package:housing/screens/profile/menu_options_screen.dart';
 import 'package:housing/screens/profile_page.dart';
 
 // import 'screens/projects/home_page.dart';
@@ -35,7 +36,7 @@ class MyApp extends StatelessWidget {
         '/properties': (context) => Search(),
         '/news': (context) => news_page(),
         '/add_property': (context) => AddProperty(),
-        '/profile': (context) => profile_page(),
+        '/profile': (context) => MenuOptionsScreen(),
       },
     );
   }
