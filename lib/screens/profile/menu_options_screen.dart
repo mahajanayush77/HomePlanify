@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import './option_model.dart';
 import '../../constant.dart';
+import 'package:housing/widgets/bottom_bar.dart';
 
 class MenuOptionsScreen extends StatefulWidget {
   @override
@@ -16,7 +17,7 @@ class _MenuOptionsScreenState extends State<MenuOptionsScreen> {
       backgroundColor: Color(0xFFFAFAFA),
       appBar: AppBar(
         backgroundColor: kPrimaryBackgroundColor,
-        title: Text('Menu Options'),
+        title: Text('Profile'),
         leading: FlatButton(
           textColor: Colors.white,
           child: Icon(
@@ -85,33 +86,7 @@ class _MenuOptionsScreenState extends State<MenuOptionsScreen> {
           );
         },
       ),
-      bottomSheet: Container(
-        width: double.infinity,
-        height: 80.0,
-        color: Color(0xFFF3F3F3),
-        child: Padding(
-          padding: EdgeInsets.only(right: 20.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              Text(
-                'SAVE & CONTINUE',
-                style: TextStyle(
-                  color: Colors.black,
-                  fontSize: 18.0,
-                ),
-              ),
-              SizedBox(width: 8.0),
-              Icon(
-                Icons.arrow_forward_ios,
-                color: Colors.black,
-                size: 18.0,
-              ),
-            ],
-          ),
-        ),
-      ),
+      bottomNavigationBar: bottom_bar(3),
     );
   }
 }

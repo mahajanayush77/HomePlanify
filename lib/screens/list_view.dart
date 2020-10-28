@@ -9,7 +9,6 @@ class Search extends StatefulWidget {
 }
 
 class _SearchState extends State<Search> {
-
   List<Property> properties = getPropertyList();
 
   @override
@@ -19,7 +18,6 @@ class _SearchState extends State<Search> {
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-
           Padding(
             padding: EdgeInsets.only(top: 48, left: 24, right: 24, bottom: 16),
             child: TextField(
@@ -55,24 +53,20 @@ class _SearchState extends State<Search> {
               ),
             ),
           ),
-
           Padding(
             padding: EdgeInsets.only(top: 16),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-
                 Expanded(
                   child: Container(
                     height: 32,
                     child: Stack(
                       children: [
-
                         ListView(
                           physics: BouncingScrollPhysics(),
                           scrollDirection: Axis.horizontal,
                           children: [
-
                             SizedBox(
                               width: 24,
                             ),
@@ -85,10 +79,8 @@ class _SearchState extends State<Search> {
                             SizedBox(
                               width: 8,
                             ),
-
                           ],
                         ),
-
                         Align(
                           alignment: Alignment.centerRight,
                           child: Container(
@@ -100,20 +92,20 @@ class _SearchState extends State<Search> {
                                 stops: [0.0, 1.0],
                                 colors: [
                                   Theme.of(context).scaffoldBackgroundColor,
-                                  Theme.of(context).scaffoldBackgroundColor.withOpacity(0.0),
+                                  Theme.of(context)
+                                      .scaffoldBackgroundColor
+                                      .withOpacity(0.0),
                                 ],
                               ),
                             ),
                           ),
                         ),
-
                       ],
                     ),
                   ),
                 ),
-
                 GestureDetector(
-                  onTap: (){
+                  onTap: () {
                     _showBottomSheet();
                   },
                   child: Padding(
@@ -127,16 +119,13 @@ class _SearchState extends State<Search> {
                     ),
                   ),
                 ),
-
               ],
             ),
           ),
-
           Padding(
             padding: EdgeInsets.only(right: 24, left: 24, top: 24, bottom: 12),
             child: Row(
               children: [
-
                 Text(
                   "53",
                   style: TextStyle(
@@ -144,22 +133,18 @@ class _SearchState extends State<Search> {
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-
                 SizedBox(
                   width: 8,
                 ),
-
                 Text(
                   "Results found",
                   style: TextStyle(
                     fontSize: 24,
                   ),
                 ),
-
               ],
             ),
           ),
-
           Expanded(
             child: Container(
               padding: EdgeInsets.symmetric(horizontal: 24),
@@ -170,13 +155,12 @@ class _SearchState extends State<Search> {
               ),
             ),
           ),
-
         ],
       ),
     );
   }
 
-  Widget buildFilter(String filterName){
+  Widget buildFilter(String filterName) {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 12),
       margin: EdgeInsets.only(right: 12),
@@ -187,8 +171,7 @@ class _SearchState extends State<Search> {
           border: Border.all(
             color: Colors.grey[300],
             width: 1,
-          )
-      ),
+          )),
       child: Center(
         child: Text(
           filterName,
@@ -201,20 +184,17 @@ class _SearchState extends State<Search> {
     );
   }
 
-  List<Widget> buildProperties(){
+  List<Widget> buildProperties() {
     List<Widget> list = [];
     for (var i = 0; i < properties.length; i++) {
-      list.add(
-          Hero(
-              tag: properties[i].frontImage,
-              child: buildProperty(properties[i], i)
-          )
-      );
+      list.add(Hero(
+          tag: properties[i].frontImage,
+          child: buildProperty(properties[i], i)));
     }
     return list;
   }
 
-  Widget buildProperty(Property property, int index){
+  Widget buildProperty(Property property, int index) {
     return GestureDetector(
       onTap: () {
         Navigator.push(
@@ -254,7 +234,6 @@ class _SearchState extends State<Search> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-
                 Container(
                   decoration: BoxDecoration(
                     color: Colors.yellow[700],
@@ -263,7 +242,9 @@ class _SearchState extends State<Search> {
                     ),
                   ),
                   width: 80,
-                  padding: EdgeInsets.symmetric(vertical: 4,),
+                  padding: EdgeInsets.symmetric(
+                    vertical: 4,
+                  ),
                   child: Center(
                     child: Text(
                       "FOR " + property.label,
@@ -275,18 +256,14 @@ class _SearchState extends State<Search> {
                     ),
                   ),
                 ),
-
                 Expanded(
                   child: Container(),
                 ),
-
                 Column(
                   children: [
-
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-
                         Text(
                           property.name,
                           style: TextStyle(
@@ -295,7 +272,6 @@ class _SearchState extends State<Search> {
                             fontWeight: FontWeight.bold,
                           ),
                         ),
-
                         Text(
                           r"$" + property.price,
                           style: TextStyle(
@@ -304,31 +280,24 @@ class _SearchState extends State<Search> {
                             fontWeight: FontWeight.bold,
                           ),
                         ),
-
                       ],
                     ),
-
                     SizedBox(
                       height: 4,
                     ),
-
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-
                         Row(
                           children: [
-
                             Icon(
                               Icons.location_on,
                               color: Colors.white,
                               size: 14,
                             ),
-
                             SizedBox(
                               width: 4,
                             ),
-
                             Text(
                               property.location,
                               style: TextStyle(
@@ -336,21 +305,17 @@ class _SearchState extends State<Search> {
                                 fontSize: 14,
                               ),
                             ),
-
                             SizedBox(
                               width: 8,
                             ),
-
                             Icon(
                               Icons.zoom_out_map,
                               color: Colors.white,
                               size: 16,
                             ),
-
                             SizedBox(
                               width: 4,
                             ),
-
                             Text(
                               property.sqm + " sq/m",
                               style: TextStyle(
@@ -358,23 +323,18 @@ class _SearchState extends State<Search> {
                                 fontSize: 14,
                               ),
                             ),
-
                           ],
                         ),
-
                         Row(
                           children: [
-
                             Icon(
                               Icons.star,
                               color: Colors.yellow[700],
                               size: 14,
                             ),
-
                             SizedBox(
                               width: 4,
                             ),
-
                             Text(
                               property.review + " Reviews",
                               style: TextStyle(
@@ -382,15 +342,12 @@ class _SearchState extends State<Search> {
                                 fontSize: 14,
                               ),
                             ),
-
                           ],
                         ),
-
                       ],
                     ),
                   ],
                 ),
-
               ],
             ),
           ),
@@ -399,7 +356,7 @@ class _SearchState extends State<Search> {
     );
   }
 
-  void _showBottomSheet(){
+  void _showBottomSheet() {
     showModalBottomSheet(
         context: context,
         isScrollControlled: true,
@@ -409,14 +366,12 @@ class _SearchState extends State<Search> {
             topRight: Radius.circular(30),
           ),
         ),
-        builder: (BuildContext context){
+        builder: (BuildContext context) {
           return Wrap(
             children: [
               Filter(),
             ],
           );
-        }
-    );
+        });
   }
-
 }

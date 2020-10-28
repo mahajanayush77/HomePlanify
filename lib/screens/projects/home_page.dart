@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import './projects_list.dart';
+import 'package:housing/widgets/bottom_bar.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -25,27 +26,7 @@ class _HomePageState extends State<HomePage> {
       body: Center(
         child: _widgetOptions.elementAt(_selectedIndex),
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        backgroundColor: Colors.white,
-        unselectedItemColor:  Colors.grey.shade300,
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-              icon: Icon(Icons.search),
-              title: Text("")
-          ),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.bookmark_border),
-              title: Text("")
-          ),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.person_outline),
-              title: Text("")
-          ),
-        ],
-        currentIndex: _selectedIndex,
-        selectedItemColor: Colors.grey.shade800,
-        onTap: _onItemTapped,
-      ),
+      bottomNavigationBar: bottom_bar(0),
     );
   }
 
