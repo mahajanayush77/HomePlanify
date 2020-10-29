@@ -79,4 +79,31 @@ class Property {
       features: json['features'],
     );
   }
+
+  dynamic toJson() => {
+        'id': id,
+        'type': type,
+        'property_name': property_name,
+        'city': city,
+        'bedrooms': bedrooms,
+        'bathrooms': bathrooms,
+        'rooms': rooms,
+        'construction_status': construction_status,
+        'available_from': available_from,
+        'price_sq': price_sq,
+        'total_price': total_price,
+        'additional_features': additional_features,
+        'visible': visible,
+        'verified': verified,
+        'views': views,
+        'label': label,
+        'dateadded': dateadded,
+        'main_image': main_image,
+        'youtube_video': youtube_video,
+        'youtube_video_2': youtube_video_2,
+        'video': video,
+        'featured': featured,
+        'owner': owner,
+        'features': features,
+      };
 }
