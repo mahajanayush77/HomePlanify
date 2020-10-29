@@ -5,7 +5,7 @@ class FeaturedProperty {
   String description;
   String image;
   String link;
-  DateTime datetime;
+  String datetime;
 
   FeaturedProperty({
     this.id,

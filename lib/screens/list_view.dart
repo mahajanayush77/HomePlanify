@@ -14,136 +14,119 @@ class _SearchState extends State<Search> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Text('Properties'),
+      ),
       backgroundColor: Colors.white,
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Padding(
-            padding: EdgeInsets.only(top: 48, left: 24, right: 24, bottom: 16),
-            child: TextField(
-              style: TextStyle(
-                fontSize: 28,
-                height: 1,
-                color: Colors.black,
-                fontWeight: FontWeight.bold,
-              ),
-              decoration: InputDecoration(
-                hintText: 'Search',
-                hintStyle: TextStyle(
-                  fontSize: 28,
-                  color: Colors.grey[400],
-                ),
-                enabledBorder: UnderlineInputBorder(
-                  borderSide: BorderSide(color: Colors.grey[400]),
-                ),
-                focusedBorder: UnderlineInputBorder(
-                  borderSide: BorderSide(color: Colors.grey[400]),
-                ),
-                border: UnderlineInputBorder(
-                  borderSide: BorderSide(color: Colors.grey[400]),
-                ),
-                suffixIcon: Padding(
-                  padding: EdgeInsets.only(left: 16),
-                  child: Icon(
-                    Icons.search,
-                    color: Colors.grey[400],
-                    size: 28,
-                  ),
-                ),
-              ),
-            ),
-          ),
-          Padding(
-            padding: EdgeInsets.only(top: 16),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Expanded(
-                  child: Container(
-                    height: 32,
-                    child: Stack(
-                      children: [
-                        ListView(
-                          physics: BouncingScrollPhysics(),
-                          scrollDirection: Axis.horizontal,
-                          children: [
-                            SizedBox(
-                              width: 24,
-                            ),
-                            buildFilter("House"),
-                            buildFilter("Price"),
-                            buildFilter("Security"),
-                            buildFilter("Bedrooms"),
-                            buildFilter("Garage"),
-                            buildFilter("Swimming Pool"),
-                            SizedBox(
-                              width: 8,
-                            ),
-                          ],
-                        ),
-                        Align(
-                          alignment: Alignment.centerRight,
-                          child: Container(
-                            width: 28,
-                            decoration: BoxDecoration(
-                              gradient: LinearGradient(
-                                begin: Alignment.centerRight,
-                                end: Alignment.centerLeft,
-                                stops: [0.0, 1.0],
-                                colors: [
-                                  Theme.of(context).scaffoldBackgroundColor,
-                                  Theme.of(context)
-                                      .scaffoldBackgroundColor
-                                      .withOpacity(0.0),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-                GestureDetector(
-                  onTap: () {
-                    _showBottomSheet();
-                  },
-                  child: Padding(
-                    padding: EdgeInsets.only(left: 16, right: 24),
-                    child: Text(
-                      "Filters",
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-          Padding(
-            padding: EdgeInsets.only(right: 24, left: 24, top: 24, bottom: 12),
-            child: Row(
-              children: [
-                Text(
-                  "53",
-                  style: TextStyle(
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                SizedBox(
-                  width: 8,
-                ),
-                Text(
-                  "Results found",
-                  style: TextStyle(
-                    fontSize: 24,
-                  ),
-                ),
-              ],
-            ),
+//          Padding(
+//            padding: EdgeInsets.only(top: 48, left: 24, right: 24, bottom: 16),
+//            child: TextField(
+//              style: TextStyle(
+//                fontSize: 28,
+//                height: 1,
+//                color: Colors.black,
+//                fontWeight: FontWeight.bold,
+//              ),
+//              decoration: InputDecoration(
+//                hintText: 'Search',
+//                hintStyle: TextStyle(
+//                  fontSize: 28,
+//                  color: Colors.grey[400],
+//                ),
+//                enabledBorder: UnderlineInputBorder(
+//                  borderSide: BorderSide(color: Colors.grey[400]),
+//                ),
+//                focusedBorder: UnderlineInputBorder(
+//                  borderSide: BorderSide(color: Colors.grey[400]),
+//                ),
+//                border: UnderlineInputBorder(
+//                  borderSide: BorderSide(color: Colors.grey[400]),
+//                ),
+//                suffixIcon: Padding(
+//                  padding: EdgeInsets.only(left: 16),
+//                  child: Icon(
+//                    Icons.search,
+//                    color: Colors.grey[400],
+//                    size: 28,
+//                  ),
+//                ),
+//              ),
+//            ),
+//          ),
+//          Padding(
+//            padding: EdgeInsets.only(top: 16),
+//            child: Row(
+//              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+//              children: [
+//                Expanded(
+//                  child: Container(
+//                    height: 32,
+//                    child: Stack(
+//                      children: [
+//                        ListView(
+//                          physics: BouncingScrollPhysics(),
+//                          scrollDirection: Axis.horizontal,
+//                          children: [
+//                            SizedBox(
+//                              width: 24,
+//                            ),
+//                            buildFilter("House"),
+//                            buildFilter("Price"),
+//                            buildFilter("Security"),
+//                            buildFilter("Bedrooms"),
+//                            buildFilter("Garage"),
+//                            buildFilter("Swimming Pool"),
+//                            SizedBox(
+//                              width: 8,
+//                            ),
+//                          ],
+//                        ),
+//                        Align(
+//                          alignment: Alignment.centerRight,
+//                          child: Container(
+//                            width: 28,
+//                            decoration: BoxDecoration(
+//                              gradient: LinearGradient(
+//                                begin: Alignment.centerRight,
+//                                end: Alignment.centerLeft,
+//                                stops: [0.0, 1.0],
+//                                colors: [
+//                                  Theme.of(context).scaffoldBackgroundColor,
+//                                  Theme.of(context)
+//                                      .scaffoldBackgroundColor
+//                                      .withOpacity(0.0),
+//                                ],
+//                              ),
+//                            ),
+//                          ),
+//                        ),
+//                      ],
+//                    ),
+//                  ),
+//                ),
+//                GestureDetector(
+//                  onTap: () {
+//                    _showBottomSheet();
+//                  },
+//                  child: Padding(
+//                    padding: EdgeInsets.only(left: 16, right: 24),
+//                    child: Text(
+//                      "Filters",
+//                      style: TextStyle(
+//                        fontSize: 18,
+//                        fontWeight: FontWeight.bold,
+//                      ),
+//                    ),
+//                  ),
+//                ),
+//              ],
+//            ),
+//          ),
+          SizedBox(
+            height: 20.0,
           ),
           Expanded(
             child: Container(

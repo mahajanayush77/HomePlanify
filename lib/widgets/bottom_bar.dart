@@ -75,9 +75,13 @@ class _bottom_barState extends State<bottom_bar> {
           ),
           FlatButton(
             padding: EdgeInsets.symmetric(vertical: 10.0),
-            onPressed: () {
+            onPressed: () async {
               updateUI(1);
-              Navigator.pushReplacementNamed(context, '/add_property');
+              var result = await AuthHelper.autoLogin();
+              if (result)
+                Navigator.pushReplacementNamed(context, '/add_property');
+              else
+                Navigator.pushNamed(context, '/login');
             },
             child: Column(
               children: <Widget>[

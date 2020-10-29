@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:http/http.dart';
-import 'dart:convert';
-
+import 'package:housing/screens/data.dart';
+import 'package:housing/screens/detail_page.dart';
+import 'package:housing/screens/home_page.dart';
+import 'package:housing/widgets/hot_deal_card.dart';
 import './project_detail.dart';
 
 class Hotels_List extends StatefulWidget {
@@ -10,33 +11,188 @@ class Hotels_List extends StatefulWidget {
 }
 
 class _Hotels_ListState extends State<Hotels_List> {
-  List hotelsList = [];
-  List popularList = [];
-  List recommendList = [];
-
-  Future<void> getHotels() async {
-    Response response = await get(
-        "https://tripadvisor1.p.rapidapi.com/hotels/list?location_id=293919&adults=1&checkin=2020-10-15&rooms=1&nights=2",
-        headers: {
-          "x-rapidapi-host": "tripadvisor1.p.rapidapi.com",
-          "x-rapidapi-key":
-              "ac4e5d787emsh6696682a7764cfep1000b9jsna60f5676c20f",
-        });
-    Map hotels = jsonDecode(response.body);
-    hotelsList = hotels["data"];
-    popularList = hotelsList.sublist(0, 10);
-    recommendList = hotelsList.sublist(10, 20);
+  List<Property> properties = getPropertyList();
+  var _trendingList;
+  var _featuredList;
+  List<Widget> buildProperties() {
+    List<Widget> list = [];
+    for (var i = 0; i < properties.length; i++) {
+      list.add(Hero(
+          tag: properties[i].frontImage,
+          child: buildProperty(properties[i], i)));
+    }
+    return list;
   }
 
-  hotelApiCall() async {
-    await getHotels();
-    setState(() {});
+  Widget buildProperty(Property property, int index) {
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => Detail(property: property)),
+        );
+      },
+      child: Card(
+        margin: EdgeInsets.only(bottom: 24),
+        clipBehavior: Clip.antiAlias,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(
+            Radius.circular(15),
+          ),
+        ),
+        child: Container(
+          height: 210,
+          decoration: BoxDecoration(
+            image: DecorationImage(
+              image: AssetImage(property.frontImage),
+              fit: BoxFit.cover,
+            ),
+          ),
+          child: Container(
+            padding: EdgeInsets.all(20),
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                stops: [0.5, 1.0],
+                colors: [
+                  Colors.transparent,
+                  Colors.black.withOpacity(0.7),
+                ],
+              ),
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                  decoration: BoxDecoration(
+                    color: Colors.yellow[700],
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(5),
+                    ),
+                  ),
+                  width: 80,
+                  padding: EdgeInsets.symmetric(
+                    vertical: 4,
+                  ),
+                  child: Center(
+                    child: Text(
+                      "FOR " + property.label,
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 14,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                ),
+                Expanded(
+                  child: Container(),
+                ),
+                Column(
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          property.name,
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        Text(
+                          r"$" + property.price,
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(
+                      height: 4,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Row(
+                          children: [
+                            Icon(
+                              Icons.location_on,
+                              color: Colors.white,
+                              size: 14,
+                            ),
+                            SizedBox(
+                              width: 4,
+                            ),
+                            Text(
+                              property.location,
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 14,
+                              ),
+                            ),
+                            SizedBox(
+                              width: 8,
+                            ),
+                            Icon(
+                              Icons.zoom_out_map,
+                              color: Colors.white,
+                              size: 16,
+                            ),
+                            SizedBox(
+                              width: 4,
+                            ),
+                            Text(
+                              property.sqm + " sq/m",
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 14,
+                              ),
+                            ),
+                          ],
+                        ),
+                        Row(
+                          children: [
+                            Icon(
+                              Icons.star,
+                              color: Colors.yellow[700],
+                              size: 14,
+                            ),
+                            SizedBox(
+                              width: 4,
+                            ),
+                            Text(
+                              property.review + " Reviews",
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 14,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
   }
 
   @override
   void initState() {
+    // TODO: implement initState
+    var list = HomePage.featuredDeals.list;
+    _trendingList = list.where((element) => element.expiry == null).toList();
+    _featuredList = list.where((element) => element.expiry != null).toList();
     super.initState();
-    hotelApiCall();
   }
 
   @override
@@ -80,13 +236,74 @@ class _Hotels_ListState extends State<Hotels_List> {
                 ),
               ],
             ),
-            SizedBox(height: 50),
+            SizedBox(height: 40),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
-                  Text("Popular",
+                  Text("Properties",
+                      style: TextStyle(fontWeight: FontWeight.w900)),
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.pushNamed(context, '/properties');
+                    },
+                    child: Text("See all",
+                        style: TextStyle(
+                            color: Colors.pink, fontWeight: FontWeight.w700)),
+                  ),
+                ],
+              ),
+            ),
+            SizedBox(height: 15),
+            Padding(
+              padding: const EdgeInsets.only(left: 20),
+              child: SizedBox(
+                height: MediaQuery.of(context).size.height / 4.25,
+                child: ListView.separated(
+                  separatorBuilder: (context, index) => SizedBox(width: 15),
+                  shrinkWrap: true,
+                  scrollDirection: Axis.horizontal,
+                  itemCount: 4,
+                  itemBuilder: (context, index) {
+                    return buildProperties()[index];
+                  },
+                ),
+              ),
+            ),
+            SizedBox(height: 20),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: <Widget>[
+                  Text("Cities", style: TextStyle(fontWeight: FontWeight.w900)),
+                ],
+              ),
+            ),
+            SizedBox(height: 15),
+            Padding(
+              padding: const EdgeInsets.only(left: 20),
+              child: SizedBox(
+                height: MediaQuery.of(context).size.height / 12,
+                child: ListView.separated(
+                  separatorBuilder: (context, index) => SizedBox(width: 15),
+                  shrinkWrap: true,
+                  scrollDirection: Axis.horizontal,
+                  itemCount: 4,
+                  itemBuilder: (context, index) {
+                    return listViewItemCities(index);
+                  },
+                ),
+              ),
+            ),
+            SizedBox(height: 40),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Text("Trending",
                       style: TextStyle(fontWeight: FontWeight.w900)),
                   Text("See all",
                       style: TextStyle(
@@ -103,36 +320,13 @@ class _Hotels_ListState extends State<Hotels_List> {
                   separatorBuilder: (context, index) => SizedBox(width: 15),
                   shrinkWrap: true,
                   scrollDirection: Axis.horizontal,
-                  itemCount: popularList.length,
+                  itemCount: _trendingList.length,
                   itemBuilder: (context, index) {
-                    return listViewItemPopular(index);
-                  },
-                ),
-              ),
-            ),
-            SizedBox(height: 40),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: <Widget>[
-                  Text("Categories",
-                      style: TextStyle(fontWeight: FontWeight.w900)),
-                ],
-              ),
-            ),
-            SizedBox(height: 15),
-            Padding(
-              padding: const EdgeInsets.only(left: 20),
-              child: SizedBox(
-                height: MediaQuery.of(context).size.height / 12,
-                child: ListView.separated(
-                  separatorBuilder: (context, index) => SizedBox(width: 15),
-                  shrinkWrap: true,
-                  scrollDirection: Axis.horizontal,
-                  itemCount: 4,
-                  itemBuilder: (context, index) {
-                    return listViewItemCategories(index);
+                    final item = _trendingList[index];
+                    return deal_card(
+                      propertyTitle: item.propertyTitle,
+                      location: item.location,
+                    );
                   },
                 ),
               ),
@@ -143,8 +337,7 @@ class _Hotels_ListState extends State<Hotels_List> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
-                  Text("Recommend",
-                      style: TextStyle(fontWeight: FontWeight.w900)),
+                  Text("Invest", style: TextStyle(fontWeight: FontWeight.w900)),
                   Text("See all",
                       style: TextStyle(
                           color: Colors.pink, fontWeight: FontWeight.w700)),
@@ -155,13 +348,14 @@ class _Hotels_ListState extends State<Hotels_List> {
             Padding(
               padding: const EdgeInsets.only(left: 20),
               child: SizedBox(
-                height: MediaQuery.of(context).size.height / 6,
+                height: MediaQuery.of(context).size.height / 4.25,
                 child: ListView.separated(
                   separatorBuilder: (context, index) => SizedBox(width: 15),
                   shrinkWrap: true,
                   scrollDirection: Axis.horizontal,
-                  itemCount: 5,
+                  itemCount: _featuredList.length,
                   itemBuilder: (context, index) {
+                    final item = _featuredList[index];
                     return listViewItemRecommend(index);
                   },
                 ),
@@ -186,90 +380,14 @@ class _Hotels_ListState extends State<Hotels_List> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           Text(
-            "Your Location",
-            style: TextStyle(color: Colors.white, fontWeight: FontWeight.w500),
-          ),
-          SizedBox(height: 7),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Icon(
-                Icons.location_on,
+            "Home Planify",
+            style: TextStyle(
+                letterSpacing: 2.0,
+                fontSize: 30,
                 color: Colors.white,
-                size: 18,
-              ),
-              SizedBox(width: 5),
-              Text(
-                "Oran, Algeria",
-                style: TextStyle(
-                    letterSpacing: 2.0,
-                    fontSize: 20,
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold),
-              ),
-            ],
+                fontWeight: FontWeight.bold),
           ),
         ],
-      ),
-    );
-  }
-
-  listViewItemPopular(int index) {
-    return GestureDetector(
-      onTap: () {
-        Navigator.push(context, MaterialPageRoute(builder: (context) {
-          return HotelDetail(
-            hotel: popularList[index],
-          );
-        }));
-      },
-      child: Container(
-        width: MediaQuery.of(context).size.width / 1.25,
-        height: MediaQuery.of(context).size.height / 4.25,
-        decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(15),
-            image: DecorationImage(
-                image: NetworkImage(popularList[index]["photo"]["images"]
-                        ["medium"]["url"]
-                    .toString()),
-                fit: BoxFit.fill)),
-        child: Padding(
-          padding: const EdgeInsets.fromLTRB(20, 0, 20, 15),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: <Widget>[
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: <Widget>[
-                  Text(
-                    popularList[index]["price"].toString(),
-                    style: TextStyle(
-                        letterSpacing: 2.0,
-                        fontSize: 20,
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold),
-                  ),
-                  SizedBox(
-                    width: MediaQuery.of(context).size.width / 1.6,
-                    child: Text(
-                      popularList[index]["name"].toString(),
-                      style: TextStyle(
-                          color: Colors.white, fontWeight: FontWeight.w500),
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                  ),
-                ],
-              ),
-              Icon(
-                Icons.arrow_forward,
-                color: Colors.white,
-                size: 24,
-              ),
-            ],
-          ),
-        ),
       ),
     );
   }
@@ -280,15 +398,9 @@ class _Hotels_ListState extends State<Hotels_List> {
     Color(0xFFFD4867),
     Color(0xFF8E8CD8)
   ];
-  List<String> categories = ["Country Side", "Beach", "Romantic", "Downtown"];
-  List<Icon> icons = [
-    Icon(Icons.home, color: Colors.white),
-    Icon(Icons.beach_access, color: Colors.white),
-    Icon(Icons.favorite, color: Colors.white),
-    Icon(Icons.train, color: Colors.white)
-  ];
+  List<String> cities = ["Gurgaon", "Faridabad", "Sonipat", "Karnal"];
 
-  listViewItemCategories(int index) {
+  listViewItemCities(int index) {
     return Container(
       width: MediaQuery.of(context).size.width / 2.25,
       height: MediaQuery.of(context).size.height / 12,
@@ -300,11 +412,11 @@ class _Hotels_ListState extends State<Hotels_List> {
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          icons[index],
           SizedBox(width: 7),
           Text(
-            categories[index],
+            cities[index],
             style: TextStyle(
+                fontSize: 20,
                 letterSpacing: 1.5,
                 color: Colors.white,
                 fontWeight: FontWeight.w500),
@@ -317,11 +429,11 @@ class _Hotels_ListState extends State<Hotels_List> {
   listViewItemRecommend(int index) {
     return GestureDetector(
       onTap: () {
-        Navigator.push(context, MaterialPageRoute(builder: (context) {
-          return HotelDetail(
-            hotel: recommendList[index],
-          );
-        }));
+//        Navigator.push(context, MaterialPageRoute(builder: (context) {
+//          return HotelDetail(
+//            hotel: recommendList[index],
+//          );
+//        }));
       },
       child: Container(
         width: MediaQuery.of(context).size.width / 1.65,
@@ -329,9 +441,8 @@ class _Hotels_ListState extends State<Hotels_List> {
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(15),
             image: DecorationImage(
-                image: NetworkImage(recommendList[index]["photo"]["images"]
-                        ["medium"]["url"]
-                    .toString()),
+                image: NetworkImage(
+                    'https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/home-decor-ideas-sfshowcaselivingroom-03-1585257771.jpg?crop=0.654xw:1.00xh;0.125xw,0&resize=640:*'),
                 fit: BoxFit.fill)),
         child: Padding(
           padding: const EdgeInsets.fromLTRB(20, 0, 20, 15),
@@ -344,19 +455,19 @@ class _Hotels_ListState extends State<Hotels_List> {
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: <Widget>[
                   Text(
-                    recommendList[index]["price"],
+                    _featuredList[index].propertyTitle,
                     style: TextStyle(
                         letterSpacing: 2.0,
-                        fontSize: 16,
+                        fontSize: 18,
                         color: Colors.white,
                         fontWeight: FontWeight.bold),
                   ),
                   SizedBox(
                     width: MediaQuery.of(context).size.width / 2.5,
                     child: Text(
-                      recommendList[index]["name"].toString(),
+                      _featuredList[index].location,
                       style: TextStyle(
-                          fontSize: 11,
+                          fontSize: 15,
                           color: Colors.white,
                           fontWeight: FontWeight.w500),
                       overflow: TextOverflow.ellipsis,

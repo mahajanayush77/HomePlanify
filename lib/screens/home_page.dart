@@ -189,9 +189,6 @@ class _HomePageState extends State<HomePage> {
                       final item = _featuredList[index];
                       return deal_card(
                         propertyTitle: item.propertyTitle,
-                        price: item.price,
-                        expiry: item.expiry,
-                        company: item.company,
                         location: item.location,
                       );
                     },
