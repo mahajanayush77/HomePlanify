@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:housing/constant.dart';
+import 'package:housing/screens/onboarding/Login/login_screen.dart';
+import 'package:housing/screens/profile_page.dart';
+import 'package:housing/screens/splash_screen.dart';
+import '../utilities/auth_helper.dart' as AuthHelper;
 
 class bottom_bar extends StatefulWidget {
   final current_index;
@@ -105,9 +109,27 @@ class _bottom_barState extends State<bottom_bar> {
           ),
           FlatButton(
             padding: EdgeInsets.symmetric(vertical: 10.0),
-            onPressed: () {
+            onPressed: () async {
               updateUI(3);
-              Navigator.pushReplacementNamed(context, '/profile');
+              var result = await AuthHelper.autoLogin();
+              if (result)
+                Navigator.pushReplacementNamed(context, '/profile');
+              else
+                Navigator.pushNamed(context, '/login');
+//              FutureBuilder(
+//                future: AuthHelper.autoLogin(),
+//                builder: (context, authResultSnapshot) {
+//                  if (authResultSnapshot.connectionState ==
+//                      ConnectionState.waiting) return SplashScreen();
+//                  if (authResultSnapshot.hasData) {
+//                    if (authResultSnapshot.data) {
+//                      print('prefs exist');
+//                      return profile_page();
+//                    }
+//                  }
+//                  return LoginScreen();
+//                },
+//              );
             },
             child: Column(
               children: <Widget>[

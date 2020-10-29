@@ -8,7 +8,7 @@ import 'package:housing/screens/onboarding/Login/login_screen.dart';
 import 'package:housing/screens/onboarding/Signup/signup_screen.dart';
 import 'package:housing/screens/onboarding/Welcome/welcome_screen.dart';
 import 'package:housing/screens/profile_page.dart';
-
+import './utilities/auth_helper.dart';
 // import 'screens/projects/home_page.dart';
 import 'screens/list_view.dart';
 

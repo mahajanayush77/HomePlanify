@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:housing/constant.dart';
 import '../../Login/login_screen.dart';
 import './background.dart';
 import './or_divider.dart';
@@ -9,7 +10,20 @@ import '../../../../components/Onboarding/rounded_input_field.dart';
 import '../../../../components/Onboarding/rounded_password_field.dart';
 import 'package:flutter_svg/svg.dart';
 
-class Body extends StatelessWidget {
+class Body extends StatefulWidget {
+  @override
+  _BodyState createState() => _BodyState();
+}
+
+class _BodyState extends State<Body> {
+  final TextEditingController emailCtl = TextEditingController();
+
+  final TextEditingController passwordCtl = TextEditingController();
+
+  bool _isLoading = false;
+
+  bool _isPasswordHidden = true;
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -29,10 +43,30 @@ class Body extends StatelessWidget {
             ),
             RoundedInputField(
               hintText: "Your Email",
-              onChanged: (value) {},
             ),
-            RoundedPasswordField(
-              onChanged: (value) {},
+            TextField(
+              controller: passwordCtl,
+              obscureText: _isPasswordHidden,
+              cursorColor: kPrimaryColor,
+              decoration: InputDecoration(
+                hintText: "Password",
+                icon: Icon(
+                  Icons.lock,
+                  color: kPrimaryColor,
+                ),
+                suffixIcon: IconButton(
+                  icon: Icon(_isPasswordHidden
+                      ? Icons.visibility
+                      : Icons.visibility_off),
+                  color: kPrimaryColor,
+                  onPressed: () {
+                    setState(() {
+                      _isPasswordHidden = !_isPasswordHidden;
+                    });
+                  },
+                ),
+                border: InputBorder.none,
+              ),
             ),
             RoundedButton(
               text: "SIGNUP",

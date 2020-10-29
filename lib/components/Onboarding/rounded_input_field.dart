@@ -5,19 +5,21 @@ import 'package:housing/constant.dart';
 class RoundedInputField extends StatelessWidget {
   final String hintText;
   final IconData icon;
-  final ValueChanged<String> onChanged;
+  final Function onSaved;
+  final TextEditingController controller;
   const RoundedInputField({
     Key key,
     this.hintText,
     this.icon = Icons.person,
-    this.onChanged,
+    this.controller,
+    this.onSaved,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return TextFieldContainer(
-      child: TextField(
-        onChanged: onChanged,
+      child: TextFormField(
+        controller: controller,
         cursorColor: kPrimaryColor,
         decoration: InputDecoration(
           icon: Icon(
@@ -27,6 +29,13 @@ class RoundedInputField extends StatelessWidget {
           hintText: hintText,
           border: InputBorder.none,
         ),
+        onSaved: onSaved,
+        validator: (value) {
+          if (value.isEmpty) {
+            return 'Email can\'t be empty';
+          }
+          return null;
+        },
       ),
     );
   }

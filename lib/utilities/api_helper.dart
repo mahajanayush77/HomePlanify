@@ -9,13 +9,9 @@ import 'dart:convert';
 class ApiHelper {
   final String _userIDStorageKey = 'USER_ID';
   final String _authTokenStorageKey = 'AUTH_TOKEN';
-  final String _libraryStorageKey = 'LIBRARY_ID';
-  final String _currentBranchStorageKey = 'BRANCH_ID';
-  final String _baseUrl = '52.66.106.45';
+  final String _baseUrl = 'www.homeplanify.com';
 
   static String _authToken;
-  static String _libraryID;
-  static String _currentBranchID;
   static String _userID;
 
   Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
@@ -57,26 +53,6 @@ class ApiHelper {
     prefs.setString(_userIDStorageKey, uID);
   }
 
-  String getLibraryID() {
-    return _libraryID;
-  }
-
-  Future<void> setLibraryID(String libraryID) async {
-    final SharedPreferences prefs = await _prefs;
-    _libraryID = libraryID;
-    prefs.setString(_libraryStorageKey, libraryID);
-  }
-
-  String getCurrentBranchID() {
-    return _currentBranchID;
-  }
-
-  Future<void> setCurrentBranchID(String branchID) async {
-    final SharedPreferences prefs = await _prefs;
-    _currentBranchID = branchID;
-    prefs.setString(_currentBranchStorageKey, branchID);
-  }
-
   //Authentication
 
   Future<bool> isLoggedIn() async {
@@ -86,8 +62,6 @@ class ApiHelper {
     if (token.isNotEmpty) {
       _authToken = token;
       _userID = prefs.getString(_userIDStorageKey) ?? '';
-      _libraryID = prefs.getString(_libraryStorageKey) ?? '';
-      _currentBranchID = prefs.getString(_currentBranchStorageKey) ?? '';
     }
     return token.isNotEmpty;
   }
@@ -100,9 +74,9 @@ class ApiHelper {
       final uri = Uri.http(_baseUrl, eLogIn);
       print(uri);
       final response = await http.post(uri, body: data);
-
+      print(response.statusCode);
       if (response.statusCode == 200) {
-        //print('200 ran');
+        print('200 ran');
         responseBody = jsonDecode(response.body);
         //print(responseBody);
         await _setAuthToken(responseBody['key']);
@@ -132,8 +106,6 @@ class ApiHelper {
     prefs.clear();
     _userID = null;
     _authToken = null;
-    _libraryID = null;
-    _currentBranchID = null;
   }
 
   //GET
@@ -212,7 +184,8 @@ class ApiHelper {
   }
 
   //PATCH
-  Future<ApiResponse> patchRequest({String endpoint, var data, File file, String fileFieldName}) async {
+  Future<ApiResponse> patchRequest(
+      {String endpoint, var data, File file, String fileFieldName}) async {
     if (_authToken.isEmpty || _authToken == null) {
       return ApiResponse(error: true, errorMessage: 'User not logged in');
     }
@@ -222,14 +195,13 @@ class ApiHelper {
       print(uri);
 
       // multipart that takes file
-      if(file!= null){
+      if (file != null) {
         Map<String, String> headers = {
           HttpHeaders.authorizationHeader: 'Token $_authToken',
-
         };
         var request = new http.MultipartRequest("PATCH", uri);
         http.MultipartFile multipartFile =
-        await http.MultipartFile.fromPath('image', file.path);
+            await http.MultipartFile.fromPath('image', file.path);
         request.files.add(multipartFile);
         request.headers.addAll(headers);
 
@@ -238,10 +210,9 @@ class ApiHelper {
           print(request.fields.toString());
         });
         final streamedResponse = await request.send();
-         response = await http.Response.fromStream(streamedResponse);
+        response = await http.Response.fromStream(streamedResponse);
         // add file to multipart
-      }
-      else{
+      } else {
         Map<String, String> headers = {
           HttpHeaders.authorizationHeader: 'Token $_authToken',
         };
@@ -289,8 +260,8 @@ class ApiHelper {
       );
 
       if (response.statusCode == 200) {
-        if(response.body!= null)
-        return ApiResponse(data: jsonDecode(response.body));
+        if (response.body != null)
+          return ApiResponse(data: jsonDecode(response.body));
         return ApiResponse(data: 'Success Code 2000');
       } else {
         Map<String, dynamic> data = jsonDecode(response.body);
