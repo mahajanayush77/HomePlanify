@@ -18,13 +18,6 @@ class _MenuOptionsScreenState extends State<MenuOptionsScreen> {
       appBar: AppBar(
         backgroundColor: kPrimaryBackgroundColor,
         title: Text('Profile'),
-        leading: FlatButton(
-          textColor: Colors.white,
-          child: Icon(
-            Icons.arrow_back,
-          ),
-          onPressed: () => print('Back'),
-        ),
         actions: <Widget>[
           FlatButton(
             textColor: Colors.white,
@@ -45,11 +38,11 @@ class _MenuOptionsScreenState extends State<MenuOptionsScreen> {
           if (index == 0) {
             return SizedBox(height: 15.0);
           } else if (index == options.length + 1) {
-            return SizedBox(height: 100.0);
+            return SizedBox(height: 50.0);
           }
           return Container(
             alignment: Alignment.center,
-            margin: EdgeInsets.all(10.0),
+            margin: EdgeInsets.fromLTRB(10, 5, 10, 5),
             width: double.infinity,
             height: 80.0,
             decoration: BoxDecoration(
