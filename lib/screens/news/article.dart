@@ -1,6 +1,11 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_swiper/flutter_swiper.dart';
+import 'package:housing/widgets/rounded_container.dart';
 import 'network_image.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:http/http.dart' as http;
 
 const List<String> images = [
   'https://firebasestorage.googleapis.com/v0/b/dl-flutter-ui-challenges.appspot.com/o/img%2F1.jpg?alt=media',
@@ -12,109 +17,180 @@ const List<String> images = [
   'https://firebasestorage.googleapis.com/v0/b/dl-flutter-ui-challenges.appspot.com/o/img%2F7.jpg?alt=media',
 ];
 
-class ArticleOnePage extends StatelessWidget {
-  static final String path = "lib/src/pages/blog/article1.dart";
+class ArticleOnePage extends StatefulWidget {
+
+  final int index;
+
+  ArticleOnePage({this.index});
+
+  static final String path = "package/lib/src/pages/blog/article1.dart";
+
+  @override
+  _ArticleOnePageState createState() => _ArticleOnePageState(index: index);
+}
+
+class _ArticleOnePageState extends State<ArticleOnePage> {
+
+  final String url = "https://www.homeplanify.com/api/blog-posts/";
+  List data;
+
+  @override
+  void initState(){
+    super.initState();
+    this.getJsonData();
+  }
+
+  Future<void> getJsonData() async{
+    var response = await http.get(
+      Uri.encodeFull(url),
+    );
+
+    print(response.body);
+
+    setState((){
+      var convertDataToJson = json.decode(response.body);
+      data = convertDataToJson;
+    },);
+  }
+
+  final int index;
+  _ArticleOnePageState({this.index});
+
+  Widget _slideImage(){
+    return RoundedContainer(
+      height: 270,
+      borderRadius: BorderRadius.circular(0),
+      color: Colors.amber[200],
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          SizedBox(
+            height: 13.0,
+          ),
+          Expanded(
+            child: Swiper(
+              pagination: SwiperPagination(margin: const EdgeInsets.only()),
+              viewportFraction: 0.9,
+              itemCount: 4,
+              loop: false,
+              itemBuilder: (context, index) {
+                return Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: RoundedContainer(
+                    borderRadius: BorderRadius.circular(4.0),
+                    margin: const EdgeInsets.only(bottom: 20),
+                    child: Row(
+                      children: <Widget>[
+
+                        const SizedBox(width: 10.0),
+                        Expanded(
+                          flex: 2,
+                          child: Container(
+                            color: Colors.red,
+                            child: ListView.builder(
+                              itemCount: data == null ? 0 : 1,
+                              itemBuilder: (BuildContext context, index){
+                                return Image(
+                                  image: NetworkImage(data[index]['image1']),
+                                  fit: BoxFit.fill,
+                                );
+                              },
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                );
+              },
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     String image = images[1];
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Lorem Ipsum'),
-      ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: <Widget>[
-            Stack(
-              children: <Widget>[
-                Container(
-                    height: 300,
-                    width: double.infinity,
-                    child: PNetworkImage(
-                      image,
-                      fit: BoxFit.cover,
-                    )),
-                Positioned(
-                  bottom: 20.0,
-                  left: 20.0,
-                  right: 20.0,
-                  child: Row(
-                    children: <Widget>[
-                      Icon(
-                        Icons.slideshow,
-                        color: Colors.white,
-                      ),
-                      SizedBox(width: 10.0),
-                      Text(
-                        "Home Decor",
-                        style: TextStyle(color: Colors.white),
-                      )
-                    ],
-                  ),
-                )
-              ],
-            ),
-            Padding(
-              padding:
-                  const EdgeInsets.only(left: 16.0, right: 16.0, bottom: 16.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Row(
-                    children: <Widget>[
-                      Expanded(
-                        child: Text("May 21, 2020"),
-                      ),
-                      IconButton(
-                        icon: Icon(Icons.share),
-                        onPressed: () {},
-                      )
-                    ],
-                  ),
-                  Text(
-                    "Lorem ipsum dolor sit amet",
-                    softWrap: true,
-                    style: Theme.of(context).textTheme.headline6,
-                  ),
-                  Divider(),
-                  SizedBox(
-                    height: 10.0,
-                  ),
-                  Row(
-                    children: <Widget>[
-                      Icon(Icons.favorite_border),
-                      SizedBox(
-                        width: 5.0,
-                      ),
-                      Text("20.2k"),
-                      SizedBox(
-                        width: 16.0,
-                      ),
-                      Icon(Icons.comment),
-                      SizedBox(
-                        width: 5.0,
-                      ),
-                      Text("2.2k"),
-                    ],
-                  ),
-                  SizedBox(
-                    height: 10.0,
-                  ),
-                  Text(
-                    "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Aperiam, ullam? Fuga doloremque repellendus aut sequi officiis dignissimos, enim assumenda tenetur reprehenderit quam error, accusamus ipsa? Officiis voluptatum sequi voluptas omnis. Lorem ipsum dolor, sit amet consectetur adipisicing elit. Aperiam, ullam? Fuga doloremque repellendus aut sequi officiis dignissimos, enim assumenda tenetur reprehenderit quam error, accusamus ipsa? Officiis voluptatum sequi voluptas omnis.",
-                    textAlign: TextAlign.justify,
-                    softWrap: true,
-                    style: GoogleFonts.sourceSansPro(
-                      fontSize: 18.0,
-                      fontWeight: FontWeight.w400,
-                      wordSpacing: 1,
-                    ),
-                  )
-                ],
-              ),
-            ),
-          ],
+        appBar: AppBar(
+          title: Text('Lorem Ipsum'),
         ),
-      ),
+        body: ListView.builder(
+            itemCount: data == null ? 0 : 1,
+            itemBuilder: (BuildContext context, int index){
+              return Column(
+                children: <Widget>[
+                  Stack(
+                    children: <Widget>[
+                      _slideImage(),
+                    ],
+                  ),
+                  Padding(
+                    padding:
+                    const EdgeInsets.only(left: 16.0, right: 16.0, bottom: 16.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Row(
+                          children: <Widget>[
+                            Expanded(
+                              child: Text(data[index]['date']),
+                            ),
+                            IconButton(
+                              icon: Icon(Icons.share),
+                              onPressed: () {},
+                            )
+                          ],
+                        ),
+                        Text(
+                          data[index]['title'],
+                          softWrap: true,
+                          style: Theme.of(context).textTheme.headline6,
+                        ),
+                        Divider(),
+                        SizedBox(
+                          height: 10.0,
+                        ),
+                        Row(
+                          children: <Widget>[
+                            Icon(Icons.favorite_border),
+                            SizedBox(
+                              width: 5.0,
+                            ),
+                            Text("20.2k"),
+                            SizedBox(
+                              width: 16.0,
+                            ),
+                            Icon(Icons.comment),
+                            SizedBox(
+                              width: 5.0,
+                            ),
+                            Text("2.2k"),
+                          ],
+                        ),
+                        SizedBox(
+                          height: 10.0,
+                        ),
+                        Text(
+                          data[index]['content'],
+                          textAlign: TextAlign.justify,
+                          softWrap: true,
+                          style: GoogleFonts.sourceSansPro(
+                            fontSize: 18.0,
+                            fontWeight: FontWeight.w400,
+                            wordSpacing: 1,
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                ],
+              );
+            })
     );
   }
 }
+
+

@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:housing/widgets/bottom_bar.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
@@ -5,6 +7,7 @@ import 'package:housing/screens/news/article.dart';
 import '../constant.dart';
 import '../widgets/rounded_container.dart';
 import 'news/network_image.dart';
+import 'package:http/http.dart' as http;
 
 const List<String> images = [
   'https://firebasestorage.googleapis.com/v0/b/dl-flutter-ui-challenges.appspot.com/o/img%2F1.jpg?alt=media',
@@ -16,35 +19,143 @@ const List<String> images = [
   'https://firebasestorage.googleapis.com/v0/b/dl-flutter-ui-challenges.appspot.com/o/img%2F7.jpg?alt=media',
 ];
 
-class news_page extends StatelessWidget {
+
+
+class news_page extends StatefulWidget {
+  @override
+  _news_pageState createState() => _news_pageState();
+}
+
+class _news_pageState extends State<news_page> {
+
+  final String url = "https://www.homeplanify.com/api/blog-posts/";
+  List data;
+
+  @override
+  void initState(){
+    super.initState();
+    this.getJsonData();
+  }
+
+  Future<void> getJsonData() async{
+    var response = await http.get(
+      Uri.encodeFull(url),
+    );
+
+    print(response.body);
+
+    setState((){
+      var convertDataToJson = json.decode(response.body);
+      data = convertDataToJson;
+    },);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      body: ListView(
-        children: <Widget>[
-          _buildFeaturedNews(),
-          const SizedBox(height: 10.0),
-          _buildHeading("Popular posts"),
-          _buildItem(color: Colors.green.shade200),
-          _buildItem(color: Colors.red.shade200),
-          _buildItem(color: Colors.blue.shade200),
-          _buildItem(color: Colors.red.shade200),
-        ],
+      appBar: AppBar(
+        title: Text(
+          'News',
+          style: TextStyle(
+            fontSize: 23,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        centerTitle: true,
       ),
+      body: ListView.builder(
+        itemCount: data == null? 0 : data.length,
+        itemBuilder: (BuildContext context, int index){
+          return Container(
+            child: Column(
+              children: [
+                // _buildNewsHeading("News"),
+                const SizedBox(height: 10.0),
+                _buildHeading("Popular posts"),
+
+                Card(
+                  child: InkWell(
+                    onTap: () {
+                      print(index);
+                      Navigator.push(
+                          context, MaterialPageRoute(builder: (context) => ArticleOnePage(index: index)));
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
+                      child: Row(
+                        children: <Widget>[
+                          Container(
+                            height: 100,
+                            width: 100,
+                            margin: const EdgeInsets.only(right: 10.0),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              color: Colors.green,
+                            ),
+                          ),
+                          Expanded(
+                            child: Visibility(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                                  Text(
+                                    data[index]["slug"],
+                                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17.0),
+                                    maxLines: 1,
+                                  ),
+                                  const SizedBox(height: 5.0),
+                                  Text(
+                                    data[index]["title"],
+                                    style: TextStyle(fontWeight: FontWeight.bold),
+                                    maxLines: 1,
+                                  ),
+                                  const SizedBox(height: 10.0),
+                                  Text(
+                                    data[index]["content"],
+                                    style: TextStyle(),
+                                    maxLines: 2,
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+
+                _buildItem(color: Colors.green.shade200),
+                _buildItem(color: Colors.red.shade200),
+                _buildItem(color: Colors.blue.shade200),
+                _buildItem(color: Colors.red.shade200),
+                _buildItem(color: Colors.green.shade200),
+                _buildItem(color: Colors.red.shade200),
+                _buildItem(color: Colors.blue.shade200),
+                _buildItem(color: Colors.red.shade200),
+              ],
+            ),
+          );
+        },
+      ),
+
+
       bottomNavigationBar: bottom_bar(2),
     );
   }
 
   Padding _buildHeading(String title) {
     return Padding(
-      padding: const EdgeInsets.all(8.0),
+      padding: const EdgeInsets.all(7.0),
       child: Row(
         children: <Widget>[
           Expanded(
             child: Text(
               title,
-              style: kShadedTitle,
+              style: TextStyle(
+                  fontSize: 22.0, fontWeight: FontWeight.bold, color: Colors.grey.shade600
+              ),
             ),
           ),
           MaterialButton(
@@ -172,14 +283,3 @@ class _buildItem extends StatelessWidget {
     );
   }
 }
-
-//@override
-//Widget build(BuildContext context) {
-//  return Scaffold(
-//    appBar: AppBar(
-//      title: Text('News'),
-//      backgroundColor: Colors.amber,
-//    ),
-//    bottomNavigationBar: bottom_bar(1),
-//  );
-//}

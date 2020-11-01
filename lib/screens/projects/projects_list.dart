@@ -49,7 +49,7 @@ class _Hotels_ListState extends State<Hotels_List> {
             ),
           ),
           child: Container(
-            padding: EdgeInsets.all(10),
+            padding: EdgeInsets.all(20),
             decoration: BoxDecoration(
               gradient: LinearGradient(
                 begin: Alignment.topCenter,
@@ -103,7 +103,7 @@ class _Hotels_ListState extends State<Hotels_List> {
                           ),
                         ),
                         Text(
-                          r"₹" + property.price,
+                          r"$" + property.price,
                           style: TextStyle(
                             color: Colors.white,
                             fontSize: 18,
@@ -242,7 +242,7 @@ class _Hotels_ListState extends State<Hotels_List> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
-                  Text("Featured Properties",
+                  Text("Properties",
                       style: TextStyle(fontWeight: FontWeight.w900)),
                   GestureDetector(
                     onTap: () {
@@ -303,7 +303,7 @@ class _Hotels_ListState extends State<Hotels_List> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
-                  Text("Trending Projects",
+                  Text("Trending",
                       style: TextStyle(fontWeight: FontWeight.w900)),
                   Text("See all",
                       style: TextStyle(
@@ -337,8 +337,7 @@ class _Hotels_ListState extends State<Hotels_List> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
-                  Text("Invest with HomePlanify",
-                      style: TextStyle(fontWeight: FontWeight.w900)),
+                  Text("Invest", style: TextStyle(fontWeight: FontWeight.w900)),
                   Text("See all",
                       style: TextStyle(
                           color: Colors.pink, fontWeight: FontWeight.w700)),
@@ -381,7 +380,7 @@ class _Hotels_ListState extends State<Hotels_List> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           Text(
-            "HomePlanify",
+            "Home Planify",
             style: TextStyle(
                 letterSpacing: 2.0,
                 fontSize: 30,
