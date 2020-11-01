@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:housing/screens/data.dart';
-import 'package:housing/screens/detail_page.dart';
-import 'package:housing/screens/home_page.dart';
+import 'package:housing/screens/splash_screen.dart';
+import 'package:housing/screens/webview.dart';
+import 'package:housing/utilities/api-response.dart';
+import 'package:housing/utilities/api_endpoints.dart';
+import 'package:housing/utilities/api_helper.dart';
 import 'package:housing/widgets/hot_deal_card.dart';
-import './project_detail.dart';
 
 class Hotels_List extends StatefulWidget {
   @override
@@ -11,187 +12,26 @@ class Hotels_List extends StatefulWidget {
 }
 
 class _Hotels_ListState extends State<Hotels_List> {
-  List<Property> properties = getPropertyList();
-  var _trendingList;
-  var _featuredList;
-  List<Widget> buildProperties() {
-    List<Widget> list = [];
-    for (var i = 0; i < properties.length; i++) {
-      list.add(Hero(
-          tag: properties[i].frontImage,
-          child: buildProperty(properties[i], i)));
-    }
-    return list;
-  }
-
-  Widget buildProperty(Property property, int index) {
-    return GestureDetector(
-      onTap: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => Detail(property: property)),
-        );
-      },
-      child: Card(
-        margin: EdgeInsets.only(bottom: 24),
-        clipBehavior: Clip.antiAlias,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(
-            Radius.circular(15),
-          ),
-        ),
-        child: Container(
-          height: 210,
-          decoration: BoxDecoration(
-            image: DecorationImage(
-              image: AssetImage(property.frontImage),
-              fit: BoxFit.cover,
-            ),
-          ),
-          child: Container(
-            padding: EdgeInsets.all(10),
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-                stops: [0.5, 1.0],
-                colors: [
-                  Colors.transparent,
-                  Colors.black.withOpacity(0.7),
-                ],
-              ),
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Container(
-                  decoration: BoxDecoration(
-                    color: Colors.yellow[700],
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(5),
-                    ),
-                  ),
-                  width: 80,
-                  padding: EdgeInsets.symmetric(
-                    vertical: 4,
-                  ),
-                  child: Center(
-                    child: Text(
-                      "FOR " + property.label,
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 14,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
-                ),
-                Expanded(
-                  child: Container(),
-                ),
-                Column(
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          property.name,
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        Text(
-                          r"₹" + property.price,
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ],
-                    ),
-                    SizedBox(
-                      height: 4,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Row(
-                          children: [
-                            Icon(
-                              Icons.location_on,
-                              color: Colors.white,
-                              size: 14,
-                            ),
-                            SizedBox(
-                              width: 4,
-                            ),
-                            Text(
-                              property.location,
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 14,
-                              ),
-                            ),
-                            SizedBox(
-                              width: 8,
-                            ),
-                            Icon(
-                              Icons.zoom_out_map,
-                              color: Colors.white,
-                              size: 16,
-                            ),
-                            SizedBox(
-                              width: 4,
-                            ),
-                            Text(
-                              property.sqm + " sq/m",
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 14,
-                              ),
-                            ),
-                          ],
-                        ),
-                        Row(
-                          children: [
-                            Icon(
-                              Icons.star,
-                              color: Colors.yellow[700],
-                              size: 14,
-                            ),
-                            SizedBox(
-                              width: 4,
-                            ),
-                            Text(
-                              property.review + " Reviews",
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 14,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ),
-        ),
-      ),
-    );
-  }
+  Future<ApiResponse> _properties;
+  Future<ApiResponse> featuredProperties;
+  Future<ApiResponse> investProperties;
 
   @override
   void initState() {
     // TODO: implement initState
-    var list = HomePage.featuredDeals.list;
-    _trendingList = list.where((element) => element.expiry == null).toList();
-    _featuredList = list.where((element) => element.expiry != null).toList();
+    _properties = ApiHelper().getWithoutAuthRequest(
+      endpoint: eProperties,
+      query: {
+        'visible': 'true',
+        'verified': 'true',
+      },
+    );
+    featuredProperties = ApiHelper().getWithoutAuthRequest(
+      endpoint: eFeaturedProperties,
+    );
+    investProperties = ApiHelper().getWithoutAuthRequest(
+      endpoint: eInvestProperties,
+    );
     super.initState();
   }
 
@@ -242,7 +82,7 @@ class _Hotels_ListState extends State<Hotels_List> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
-                  Text("Featured Properties",
+                  Text("Properties",
                       style: TextStyle(fontWeight: FontWeight.w900)),
                   GestureDetector(
                     onTap: () {
@@ -260,13 +100,42 @@ class _Hotels_ListState extends State<Hotels_List> {
               padding: const EdgeInsets.only(left: 20),
               child: SizedBox(
                 height: MediaQuery.of(context).size.height / 4.25,
-                child: ListView.separated(
-                  separatorBuilder: (context, index) => SizedBox(width: 15),
-                  shrinkWrap: true,
-                  scrollDirection: Axis.horizontal,
-                  itemCount: 4,
-                  itemBuilder: (context, index) {
-                    return buildProperties()[index];
+                child: FutureBuilder(
+                  future: _properties,
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      return ListView.separated(
+                        separatorBuilder: (context, index) =>
+                            SizedBox(width: 15),
+                        shrinkWrap: true,
+                        scrollDirection: Axis.horizontal,
+                        itemCount: snapshot.data.data.length < 4
+                            ? snapshot.data.data.length
+                            : 4,
+                        itemBuilder: (context, index) {
+                          final Map<String, dynamic> property =
+                              snapshot.data.data.toList()[index];
+                          print(property);
+                          return Prop(
+                            id: property['id'],
+                            type: property['type'],
+                            property_name: property['property_name'],
+                            city: property['city'].split(" ")[0],
+                            construction_status:
+                                property['construction_status'],
+                            available_from: property['available_from'],
+                            price_sq: property['price_sq'],
+                            total_price: property['total_price'],
+                            views: property['views'],
+                            main_image: property['main_image'],
+                          );
+                        },
+                      );
+                    } else if (snapshot.hasError) {
+                      return Text("${snapshot.error}");
+                    }
+                    // By default, show a loading spinner.
+                    return SplashScreen();
                   },
                 ),
               ),
@@ -303,7 +172,7 @@ class _Hotels_ListState extends State<Hotels_List> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
-                  Text("Trending Projects",
+                  Text("Trending",
                       style: TextStyle(fontWeight: FontWeight.w900)),
                   Text("See all",
                       style: TextStyle(
@@ -316,17 +185,34 @@ class _Hotels_ListState extends State<Hotels_List> {
               padding: const EdgeInsets.only(left: 20),
               child: SizedBox(
                 height: MediaQuery.of(context).size.height / 4.25,
-                child: ListView.separated(
-                  separatorBuilder: (context, index) => SizedBox(width: 15),
-                  shrinkWrap: true,
-                  scrollDirection: Axis.horizontal,
-                  itemCount: _trendingList.length,
-                  itemBuilder: (context, index) {
-                    final item = _trendingList[index];
-                    return deal_card(
-                      propertyTitle: item.propertyTitle,
-                      location: item.location,
-                    );
+                child: FutureBuilder(
+                  future: featuredProperties,
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      return ListView.separated(
+                        separatorBuilder: (context, index) =>
+                            SizedBox(width: 15),
+                        shrinkWrap: true,
+                        scrollDirection: Axis.horizontal,
+                        itemCount: snapshot.data.data.length < 4
+                            ? snapshot.data.data.length
+                            : 4,
+                        itemBuilder: (context, index) {
+                          final Map<String, dynamic> item =
+                              snapshot.data.data.toList()[index];
+                          print(item);
+                          return deal_card(
+                            propertyTitle: item['name'],
+                            location: item['location'],
+                            image: item['image'],
+                          );
+                        },
+                      );
+                    } else if (snapshot.hasError) {
+                      return Text("${snapshot.error}");
+                    }
+                    // By default, show a loading spinner.
+                    return SplashScreen();
                   },
                 ),
               ),
@@ -337,8 +223,7 @@ class _Hotels_ListState extends State<Hotels_List> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
-                  Text("Invest with HomePlanify",
-                      style: TextStyle(fontWeight: FontWeight.w900)),
+                  Text("Invest", style: TextStyle(fontWeight: FontWeight.w900)),
                   Text("See all",
                       style: TextStyle(
                           color: Colors.pink, fontWeight: FontWeight.w700)),
@@ -350,14 +235,33 @@ class _Hotels_ListState extends State<Hotels_List> {
               padding: const EdgeInsets.only(left: 20),
               child: SizedBox(
                 height: MediaQuery.of(context).size.height / 4.25,
-                child: ListView.separated(
-                  separatorBuilder: (context, index) => SizedBox(width: 15),
-                  shrinkWrap: true,
-                  scrollDirection: Axis.horizontal,
-                  itemCount: _featuredList.length,
-                  itemBuilder: (context, index) {
-                    final item = _featuredList[index];
-                    return listViewItemRecommend(index);
+                child: FutureBuilder(
+                  future: investProperties,
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      return ListView.separated(
+                        separatorBuilder: (context, index) =>
+                            SizedBox(width: 15),
+                        shrinkWrap: true,
+                        scrollDirection: Axis.horizontal,
+                        itemCount: snapshot.data.data.length < 4
+                            ? snapshot.data.data.length
+                            : 4,
+                        itemBuilder: (context, index) {
+                          final Map<String, dynamic> item =
+                              snapshot.data.data.toList()[index];
+                          print(item);
+                          return InvestProp(
+                            title: item['title'],
+                            image: item['image'],
+                          );
+                        },
+                      );
+                    } else if (snapshot.hasError) {
+                      return Text("${snapshot.error}");
+                    }
+                    // By default, show a loading spinner.
+                    return SplashScreen();
                   },
                 ),
               ),
@@ -381,7 +285,7 @@ class _Hotels_ListState extends State<Hotels_List> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           Text(
-            "HomePlanify",
+            "Home Planify",
             style: TextStyle(
                 letterSpacing: 2.0,
                 fontSize: 30,
@@ -426,60 +330,243 @@ class _Hotels_ListState extends State<Hotels_List> {
       ),
     );
   }
+}
 
-  listViewItemRecommend(int index) {
-    return GestureDetector(
-      onTap: () {
-//        Navigator.push(context, MaterialPageRoute(builder: (context) {
-//          return HotelDetail(
-//            hotel: recommendList[index],
-//          );
-//        }));
-      },
-      child: Container(
-        width: MediaQuery.of(context).size.width / 1.65,
-        height: MediaQuery.of(context).size.height / 6,
-        decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(15),
-            image: DecorationImage(
-                image: NetworkImage(
-                    'https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/home-decor-ideas-sfshowcaselivingroom-03-1585257771.jpg?crop=0.654xw:1.00xh;0.125xw,0&resize=640:*'),
-                fit: BoxFit.fill)),
-        child: Padding(
-          padding: const EdgeInsets.fromLTRB(20, 0, 20, 15),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: <Widget>[
-              Column(
+class InvestProp extends StatelessWidget {
+  String title;
+  String image;
+  String link;
+  InvestProp({this.title, this.image, this.link});
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: MediaQuery.of(context).size.width / 1.65,
+      height: MediaQuery.of(context).size.height / 6,
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(15),
+          image: DecorationImage(
+              image: NetworkImage(
+                image,
+              ),
+              fit: BoxFit.fill)),
+      child: Padding(
+        padding: const EdgeInsets.fromLTRB(20, 0, 20, 15),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: <Widget>[
+            Expanded(
+              child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: <Widget>[
                   Text(
-                    _featuredList[index].propertyTitle,
+                    title,
+                    softWrap: true,
+                    overflow: TextOverflow.fade,
                     style: TextStyle(
                         letterSpacing: 2.0,
                         fontSize: 18,
                         color: Colors.white,
                         fontWeight: FontWeight.bold),
                   ),
-                  SizedBox(
-                    width: MediaQuery.of(context).size.width / 2.5,
-                    child: Text(
-                      _featuredList[index].location,
-                      style: TextStyle(
-                          fontSize: 15,
-                          color: Colors.white,
-                          fontWeight: FontWeight.w500),
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                  ),
                 ],
               ),
-              Icon(
+            ),
+            IconButton(
+              icon: Icon(
                 Icons.arrow_forward,
-                color: Colors.white,
                 size: 24,
+              ),
+              color: Colors.white,
+              onPressed: () {
+                Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => WebScreen(
+                    url: link,
+                  ),
+                ));
+              },
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class Prop extends StatelessWidget {
+  int id;
+  String type;
+  String property_name;
+  String city;
+  String construction_status;
+  String available_from;
+  int price_sq;
+  int total_price;
+  int views;
+  String main_image;
+
+  Prop({
+    this.id,
+    this.main_image,
+    this.city,
+    this.construction_status,
+    this.total_price,
+    this.property_name,
+    this.views,
+    this.type,
+    this.available_from,
+    this.price_sq,
+  });
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      margin: EdgeInsets.only(bottom: 24),
+      clipBehavior: Clip.antiAlias,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.all(
+          Radius.circular(15),
+        ),
+      ),
+      child: Container(
+        height: 210,
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            image: NetworkImage(
+              main_image,
+            ),
+            fit: BoxFit.cover,
+          ),
+        ),
+        child: Container(
+          padding: EdgeInsets.all(20),
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              stops: [0.5, 1.0],
+              colors: [
+                Colors.transparent,
+                Colors.black.withOpacity(0.7),
+              ],
+            ),
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Container(
+                decoration: BoxDecoration(
+                  color: Colors.yellow[700],
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(5),
+                  ),
+                ),
+                width: 80,
+                padding: EdgeInsets.symmetric(
+                  vertical: 4,
+                ),
+                child: Center(
+                  child: Text(
+                    type == 'S' ? "FOR SALE" : "FOR RENT",
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 14,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+              ),
+              Expanded(
+                child: Container(),
+              ),
+              Column(
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        property_name,
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      Text(
+                        " Rs " + total_price.toString(),
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(
+                    height: 4,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Row(
+                        children: [
+                          Icon(
+                            Icons.location_on,
+                            color: Colors.white,
+                            size: 14,
+                          ),
+                          SizedBox(
+                            width: 4,
+                          ),
+                          Text(
+                            city.substring(0),
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 14,
+                            ),
+                          ),
+                          SizedBox(
+                            width: 8,
+                          ),
+                          Icon(
+                            Icons.zoom_out_map,
+                            color: Colors.white,
+                            size: 16,
+                          ),
+                          SizedBox(
+                            width: 4,
+                          ),
+                          Text(
+                            price_sq.toString() + " sq/m",
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 14,
+                            ),
+                          ),
+                        ],
+                      ),
+                      Row(
+                        children: [
+                          Icon(
+                            Icons.remove_red_eye,
+                            color: Colors.yellow[700],
+                            size: 14,
+                          ),
+                          SizedBox(
+                            width: 4,
+                          ),
+                          Text(
+                            views.toString() + " Views",
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 14,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ],
               ),
             ],
           ),

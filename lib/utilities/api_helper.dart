@@ -71,7 +71,7 @@ class ApiHelper {
 
     try {
 //      final url = '$_baseUrl$eLogIn';
-      final uri = Uri.http(_baseUrl, eLogIn);
+      final uri = Uri.https(_baseUrl, eLogIn);
       print(uri);
       final response = await http.post(uri, body: data);
       print(response.statusCode);
@@ -146,6 +146,37 @@ class ApiHelper {
     }
   }
 
+  //GET Without Auth
+  Future<ApiResponse> getWithoutAuthRequest(
+      {String endpoint, Map<String, String> query}) async {
+    try {
+      //final url = '$_baseUrl$endpoint';
+      final uri = Uri.https(_baseUrl, endpoint, query);
+      print(uri);
+      final response = await http.get(
+        uri,
+      );
+
+      if (response.statusCode == 200) {
+        return ApiResponse(data: jsonDecode(response.body));
+      } else {
+        Map<String, dynamic> data = jsonDecode(response.body);
+        String error = 'Error occurred';
+        data.keys.forEach((String key) {
+          if (key.contains('error')) {
+            error = data[key][0];
+            print(error);
+          }
+        });
+        return ApiResponse(error: true, errorMessage: error);
+      }
+    } on SocketException catch (error) {
+      throw HttpException(message: 'No Internet Connection');
+    } catch (e) {
+      throw e;
+    }
+  }
+
   //POST
   Future<ApiResponse> postRequest(
       String endpoint, Map<String, dynamic> data) async {
@@ -154,7 +185,7 @@ class ApiHelper {
     }
     try {
 //      final url = '$_baseUrl$endpoint';
-      final uri = Uri.http(_baseUrl, endpoint);
+      final uri = Uri.https(_baseUrl, endpoint);
 
       final response = await http.post(uri,
           headers: {
@@ -191,7 +222,7 @@ class ApiHelper {
     }
     try {
       http.Response response;
-      final uri = Uri.http(_baseUrl, endpoint);
+      final uri = Uri.https(_baseUrl, endpoint);
       print(uri);
 
       // multipart that takes file
@@ -250,7 +281,7 @@ class ApiHelper {
     }
     try {
       //final url = '$_baseUrl$endpoint';
-      final uri = Uri.http(_baseUrl, endpoint, query);
+      final uri = Uri.https(_baseUrl, endpoint, query);
       print(uri);
       final response = await http.delete(
         uri,

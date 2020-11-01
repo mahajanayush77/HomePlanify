@@ -4,8 +4,8 @@ import 'package:google_fonts/google_fonts.dart';
 class deal_card extends StatelessWidget {
   final String propertyTitle;
   final String location;
-  final Image image;
-  deal_card({this.location, this.propertyTitle, this.image = null});
+  final String image;
+  deal_card({this.location, this.propertyTitle, this.image});
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -19,7 +19,7 @@ class deal_card extends StatelessWidget {
             Expanded(
               child: Image(
                 image: NetworkImage(
-                  'https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/home-decor-ideas-sfshowcaselivingroom-03-1585257771.jpg?crop=0.654xw:1.00xh;0.125xw,0&resize=640:*',
+                  image,
                 ),
                 fit: BoxFit.fill,
               ),
@@ -31,12 +31,16 @@ class deal_card extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
-                  Text(
-                    '$propertyTitle',
-                    textAlign: TextAlign.start,
-                    style: GoogleFonts.sourceSansPro(
-                      fontWeight: FontWeight.w600,
-                      fontSize: 22.0,
+                  Expanded(
+                    child: Text(
+                      '$propertyTitle',
+                      textAlign: TextAlign.start,
+                      softWrap: true,
+                      overflow: TextOverflow.ellipsis,
+                      style: GoogleFonts.sourceSansPro(
+                        fontWeight: FontWeight.w600,
+                        fontSize: 22.0,
+                      ),
                     ),
                   ),
                 ],

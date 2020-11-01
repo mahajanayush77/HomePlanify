@@ -3,14 +3,13 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
 class HotelDetail extends StatefulWidget {
   Map hotel;
-
   HotelDetail({this.hotel});
-
   @override
   _HotelDetailState createState() => _HotelDetailState();
 }
 
-class _HotelDetailState extends State<HotelDetail> with SingleTickerProviderStateMixin {
+class _HotelDetailState extends State<HotelDetail>
+    with SingleTickerProviderStateMixin {
   TabController tabController;
 
   @override
@@ -77,17 +76,21 @@ class _HotelDetailState extends State<HotelDetail> with SingleTickerProviderStat
                             itemSize: 24,
                             itemPadding: EdgeInsets.symmetric(horizontal: 3.0),
                             onRatingUpdate: null,
-                            initialRating:double.parse(widget.hotel["rating"]),
+                            initialRating: double.parse(widget.hotel["rating"]),
                             itemBuilder: (context, _) => Icon(
                               Icons.star,
                               color: Colors.white,
                             ),
-                            itemCount: double.parse(widget.hotel["rating"]).round(),
+                            itemCount:
+                                double.parse(widget.hotel["rating"]).round(),
                           ),
                           SizedBox(height: 10),
                           Text(
                             widget.hotel["name"],
-                            style: TextStyle(color: Colors.white, fontWeight: FontWeight.w600, fontSize: 20),
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.w600,
+                                fontSize: 20),
                             overflow: TextOverflow.ellipsis,
                           ),
                           SizedBox(height: 10),
@@ -96,8 +99,10 @@ class _HotelDetailState extends State<HotelDetail> with SingleTickerProviderStat
                             child: Text(
                               widget.hotel["ranking"],
                               textAlign: TextAlign.center,
-                              style:
-                              TextStyle(color: Colors.white, fontWeight: FontWeight.w400, fontSize: 14),
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w400,
+                                  fontSize: 14),
                             ),
                           ),
                         ],
@@ -114,18 +119,21 @@ class _HotelDetailState extends State<HotelDetail> with SingleTickerProviderStat
                 height: MediaQuery.of(context).size.height / 3,
                 width: MediaQuery.of(context).size.width,
                 decoration: BoxDecoration(
-                  borderRadius:
-                  BorderRadius.only(topLeft: Radius.circular(25), topRight: Radius.circular(25)),
+                  borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(25),
+                      topRight: Radius.circular(25)),
                   color: Colors.white,
                 ),
                 child: ClipRRect(
-                  borderRadius:
-                  BorderRadius.only(topLeft: Radius.circular(25), topRight: Radius.circular(25)),
+                  borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(25),
+                      topRight: Radius.circular(25)),
                   child: Scaffold(
                     appBar: TabBar(
                         labelColor: Colors.black,
                         labelStyle: TextStyle(fontWeight: FontWeight.bold),
-                        unselectedLabelStyle: TextStyle(fontWeight: FontWeight.w600),
+                        unselectedLabelStyle:
+                            TextStyle(fontWeight: FontWeight.w600),
                         indicatorColor: Colors.white,
                         unselectedLabelColor: Colors.grey.shade500,
                         controller: tabController,
@@ -148,7 +156,8 @@ class _HotelDetailState extends State<HotelDetail> with SingleTickerProviderStat
                                   ),
                                   Text(
                                     "8 hours",
-                                    style: TextStyle(fontWeight: FontWeight.bold),
+                                    style:
+                                        TextStyle(fontWeight: FontWeight.bold),
                                   ),
                                 ],
                               ),
@@ -161,7 +170,8 @@ class _HotelDetailState extends State<HotelDetail> with SingleTickerProviderStat
                                   ),
                                   Text(
                                     "Offered in: English",
-                                    style: TextStyle(fontWeight: FontWeight.bold),
+                                    style:
+                                        TextStyle(fontWeight: FontWeight.bold),
                                   ),
                                 ],
                               ),
@@ -180,31 +190,39 @@ class _HotelDetailState extends State<HotelDetail> with SingleTickerProviderStat
                                     children: <Widget>[
                                       Text(
                                         widget.hotel["price"],
-                                        style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                                        style: TextStyle(
+                                            fontSize: 20,
+                                            fontWeight: FontWeight.bold),
                                       ),
                                       Text(
                                         "per person",
-                                        style: TextStyle(color: Colors.grey.shade600),
+                                        style: TextStyle(
+                                            color: Colors.grey.shade600),
                                       ),
                                     ],
                                   ),
                                   Expanded(
                                       child: Padding(
-                                        padding: const EdgeInsets.symmetric(horizontal: 15),
-                                        child: Container(
-                                          decoration: BoxDecoration(borderRadius: BorderRadius.circular(25),color: Colors.pink,),
-
-                                          child: Center(
-                                            child: Padding(
-                                              padding: const EdgeInsets.symmetric(vertical: 13),
-                                              child: Text(
-                                                "Book now",
-                                                style: TextStyle(color: Colors.white),
-                                              ),
-                                            ),
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 15),
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(25),
+                                        color: Colors.pink,
+                                      ),
+                                      child: Center(
+                                        child: Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                              vertical: 13),
+                                          child: Text(
+                                            "Book now",
+                                            style:
+                                                TextStyle(color: Colors.white),
                                           ),
                                         ),
-                                      )),
+                                      ),
+                                    ),
+                                  )),
                                 ],
                               ),
                             ],

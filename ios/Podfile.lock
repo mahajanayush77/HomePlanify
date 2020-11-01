@@ -24,6 +24,8 @@ PODS:
   - sqflite (0.0.1):
     - Flutter
     - FMDB (~> 2.7.2)
+  - webview_flutter (0.0.1):
+    - Flutter
 
 DEPENDENCIES:
   - Flutter (from `Flutter`)
@@ -37,6 +39,7 @@ DEPENDENCIES:
   - shared_preferences_web (from `.symlinks/plugins/shared_preferences_web/ios`)
   - shared_preferences_windows (from `.symlinks/plugins/shared_preferences_windows/ios`)
   - sqflite (from `.symlinks/plugins/sqflite/ios`)
+  - webview_flutter (from `.symlinks/plugins/webview_flutter/ios`)
 
 SPEC REPOS:
   trunk:
@@ -65,6 +68,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/shared_preferences_windows/ios"
   sqflite:
     :path: ".symlinks/plugins/sqflite/ios"
+  webview_flutter:
+    :path: ".symlinks/plugins/webview_flutter/ios"
 
 SPEC CHECKSUMS:
   Flutter: 0e3d915762c693b495b44d77113d4970485de6ec
@@ -79,6 +84,7 @@ SPEC CHECKSUMS:
   shared_preferences_web: 141cce0c3ed1a1c5bf2a0e44f52d31eeb66e5ea9
   shared_preferences_windows: 36b76d6f54e76ead957e60b49e2f124b4cd3e6ae
   sqflite: 4001a31ff81d210346b500c55b17f4d6c7589dd0
+  webview_flutter: d2b4d6c66968ad042ad94cbb791f5b72b4678a96
 
 PODFILE CHECKSUM: f32fb4e7c14f8b3ca19a369d7be425dd9241af27
 
