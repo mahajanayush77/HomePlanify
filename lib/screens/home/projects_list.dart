@@ -172,11 +172,17 @@ class _Hotels_ListState extends State<Hotels_List> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
-                  Text("Trending",
+                  Text("Featured Projects",
                       style: TextStyle(fontWeight: FontWeight.w900)),
-                  Text("See all",
-                      style: TextStyle(
-                          color: Colors.pink, fontWeight: FontWeight.w700)),
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.pushNamed(context, '/featured_projects');
+                    },
+                    child: Text("See all",
+                        style: TextStyle(
+                            color: Colors.pink, fontWeight: FontWeight.w700)),
+                  ),
+
                 ],
               ),
             ),
@@ -224,9 +230,14 @@ class _Hotels_ListState extends State<Hotels_List> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
                   Text("Invest", style: TextStyle(fontWeight: FontWeight.w900)),
-                  Text("See all",
-                      style: TextStyle(
-                          color: Colors.pink, fontWeight: FontWeight.w700)),
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.pushNamed(context, '/invest_properties');
+                    },
+                    child: Text("See all",
+                        style: TextStyle(
+                            color: Colors.pink, fontWeight: FontWeight.w700)),
+                  ),
                 ],
               ),
             ),

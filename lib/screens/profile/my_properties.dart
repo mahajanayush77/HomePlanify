@@ -29,10 +29,6 @@ class _MyPropertiesState extends State<MyProperties> {
     // TODO: implement initState
     _properties = ApiHelper().getRequest(
       endpoint: eMyProperties,
-      query: {
-        'visible': 'true',
-        'verified': 'true',
-      },
     );
     super.initState();
   }

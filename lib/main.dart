@@ -2,8 +2,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:housing/constant.dart';
 import 'package:housing/screens/add_property.dart';
+import 'package:housing/screens/home/featured_projects.dart';
+import 'package:housing/screens/home/invest_properties.dart';
 import 'package:housing/screens/profile/bookmarks.dart';
-import 'package:housing/screens/projects/home_page.dart';
+import 'package:housing/screens/profile/my_properties.dart';
+import 'package:housing/screens/home/home_page.dart';
 import 'package:housing/screens/news_page.dart';
 import 'package:housing/screens/onboarding/Login/login_screen.dart';
 import 'package:housing/screens/onboarding/Signup/signup_screen.dart';
@@ -29,15 +32,19 @@ class MyApp extends StatelessWidget {
       ),
       initialRoute: '/',
       routes: {
-        '/': (context) => Bookmarks(),
+        '/': (context) => HomePage(),
         '/home': (context) => HomePage(),
         '/welcome': (context) => WelcomeScreen(),
         '/login': (context) => LoginScreen(),
         '/signup': (context) => SignUpScreen(),
         '/properties': (context) => Search(),
+        '/invest_properties': (context) => InvestProperties(),
+        '/featured_projects': (context) => FeaturedProjects(),
         '/news': (context) => news_page(),
         '/add_property': (context) => AddProperty(),
         '/profile': (context) => MenuOptionsScreen(),
+        '/bookmarks': (context) => Bookmarks(),
+        '/my_properties': (context) => MyProperties(),
       },
     );
   }
