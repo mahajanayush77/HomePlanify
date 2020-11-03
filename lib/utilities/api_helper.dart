@@ -117,7 +117,7 @@ class ApiHelper {
     }
     try {
       //final url = '$_baseUrl$endpoint';
-      final uri = Uri.http(_baseUrl, endpoint, query);
+      final uri = Uri.https(_baseUrl, endpoint, query);
       print(uri);
       final response = await http.get(
         uri,

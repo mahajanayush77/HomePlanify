@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:housing/constant.dart';
 import 'package:housing/screens/onboarding/Login/login_screen.dart';
-import 'package:housing/screens/profile_page.dart';
 import 'package:housing/screens/splash_screen.dart';
 import '../utilities/auth_helper.dart' as AuthHelper;
 
