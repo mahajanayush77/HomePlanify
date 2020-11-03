@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:housing/screens/home/property_detail.dart';
 import 'package:housing/screens/splash_screen.dart';
 import 'package:housing/screens/webview.dart';
 import 'package:housing/utilities/api-response.dart';
@@ -116,7 +117,13 @@ class _Hotels_ListState extends State<Hotels_List> {
                           final Map<String, dynamic> property =
                               snapshot.data.data.toList()[index];
                           print(property);
-                          return Prop(
+                          return GestureDetector(
+                            onTap: () {
+                              print(index);
+                              Navigator.push(
+                                  context, MaterialPageRoute(builder: (context) => PropertyDetail(id: property['id'])));
+                            },
+                          child: Prop(
                             id: property['id'],
                             type: property['type'],
                             property_name: property['property_name'],
@@ -128,6 +135,7 @@ class _Hotels_ListState extends State<Hotels_List> {
                             total_price: property['total_price'],
                             views: property['views'],
                             main_image: property['main_image'],
+                          )
                           );
                         },
                       );

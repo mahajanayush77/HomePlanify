@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
 class HotelDetail extends StatefulWidget {
+
+  int id;
   Map hotel;
-  HotelDetail({this.hotel});
+  HotelDetail({this.id});
   @override
   _HotelDetailState createState() => _HotelDetailState();
 }
