@@ -3,7 +3,7 @@ import './data.dart';
 
 class Detail extends StatelessWidget {
 
-  final Property property;
+  final Property2 property;
 
   Detail({@required this.property});
 

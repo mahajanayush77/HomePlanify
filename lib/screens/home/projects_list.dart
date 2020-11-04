@@ -121,7 +121,7 @@ class _Hotels_ListState extends State<Hotels_List> {
                             onTap: () {
                               print(index);
                               Navigator.push(
-                                  context, MaterialPageRoute(builder: (context) => PropertyDetail(id: property['id'])));
+                                  context, MaterialPageRoute(builder: (context) => Detail(id: property['id'])));
                             },
                           child: Prop(
                             id: property['id'],

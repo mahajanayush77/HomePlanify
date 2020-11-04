@@ -1,4 +1,4 @@
-class Property {
+class Property2 {
 
   String label;
   String name;
@@ -11,13 +11,13 @@ class Property {
   String ownerImage;
   List<String> images;
 
-  Property(this.label, this.name, this.price, this.location, this.sqm, this.review, this.description, this.frontImage, this.ownerImage, this.images);
+  Property2(this.label, this.name, this.price, this.location, this.sqm, this.review, this.description, this.frontImage, this.ownerImage, this.images);
 
 }
 
-List<Property> getPropertyList(){
-  return <Property>[
-    Property(
+List<Property2> getPropertyList(){
+  return <Property2>[
+    Property2(
       "SALE",
       "Clinton Villa",
       "3,500.00",
@@ -35,7 +35,7 @@ List<Property> getPropertyList(){
         "assets/images/living_room.jpg",
       ],
     ),
-    Property(
+    Property2(
       "RENT",
       "Salu House",
       "3,500.00",
@@ -53,7 +53,7 @@ List<Property> getPropertyList(){
         "assets/images/living_room.jpg",
       ],
     ),
-    Property(
+    Property2(
       "RENT",
       "Hilton House",
       "3,100.00",
@@ -71,7 +71,7 @@ List<Property> getPropertyList(){
         "assets/images/living_room.jpg",
       ],
     ),
-    Property(
+    Property2(
       "SALE",
       "Ibe House",
       "4,500.00",
@@ -89,7 +89,7 @@ List<Property> getPropertyList(){
         "assets/images/living_room.jpg",
       ],
     ),
-    Property(
+    Property2(
       "SALE",
       "Aventura",
       "5,200.00",
@@ -107,7 +107,7 @@ List<Property> getPropertyList(){
         "assets/images/living_room.jpg",
       ],
     ),
-    Property(
+    Property2(
       "SALE",
       "North House",
       "3,500.00",
@@ -125,7 +125,7 @@ List<Property> getPropertyList(){
         "assets/images/living_room.jpg",
       ],
     ),
-    Property(
+    Property2(
       "RENT",
       "Rasmus Resident",
       "2,900.00",
@@ -143,7 +143,7 @@ List<Property> getPropertyList(){
         "assets/images/living_room.jpg",
       ],
     ),
-    Property(
+    Property2(
       "RENT",
       "Simone House",
       "3,900.00",

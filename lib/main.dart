@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:housing/constant.dart';
 import 'package:housing/screens/add_property.dart';
+import 'package:housing/screens/detail_page.dart';
 import 'package:housing/screens/home/featured_projects.dart';
 import 'package:housing/screens/home/invest_properties.dart';
 
@@ -16,7 +17,7 @@ import 'package:housing/screens/profile/menu_options_screen.dart';
 
 import './utilities/auth_helper.dart';
 // import 'screens/projects/home_page.dart';
-import 'screens/list_view.dart';
+import 'screens/home/list_view.dart';
 
 void main() {
   runApp(MyApp());
