@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:housing/screens/detail_page.dart';
+import 'package:housing/screens/home/property_detail.dart';
 import '../constant.dart';
 
 class TrendingProjectsCard extends StatelessWidget {

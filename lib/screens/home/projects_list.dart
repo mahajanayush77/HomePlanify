@@ -131,7 +131,7 @@ class _Hotels_ListState extends State<Hotels_List> {
                             construction_status:
                                 property['construction_status'],
                             available_from: property['available_from'],
-                            price_sq: property['price_sq'],
+                            bedrooms: property['bedrooms'],
                             total_price: property['total_price'],
                             views: property['views'],
                             main_image: property['main_image'],
@@ -219,6 +219,7 @@ class _Hotels_ListState extends State<Hotels_List> {
                             propertyTitle: item['name'],
                             location: item['location'],
                             image: item['image'],
+                            link: item['link'],
                           );
                         },
                       );
@@ -237,7 +238,7 @@ class _Hotels_ListState extends State<Hotels_List> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
-                  Text("Invest", style: TextStyle(fontWeight: FontWeight.w900)),
+                  Text("Invest with HomePlanify", style: TextStyle(fontWeight: FontWeight.w900)),
                   GestureDetector(
                     onTap: () {
                       Navigator.pushNamed(context, '/invest_properties');
@@ -273,6 +274,7 @@ class _Hotels_ListState extends State<Hotels_List> {
                           return InvestProp(
                             title: item['title'],
                             image: item['image'],
+                            link: item['link'],
                           );
                         },
                       );
@@ -392,20 +394,25 @@ class InvestProp extends StatelessWidget {
                 ],
               ),
             ),
-            IconButton(
-              icon: Icon(
-                Icons.arrow_forward,
-                size: 24,
+
+            if (link != null)
+              IconButton(
+                icon: Icon(
+                  Icons.arrow_forward,
+                  size: 24,
+                ),
+                color: Colors.white,
+                onPressed: () {
+                  Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) =>
+                        WebScreen(
+                          url: link,
+                        ),
+                  ));
+                },
               ),
-              color: Colors.white,
-              onPressed: () {
-                Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => WebScreen(
-                    url: link,
-                  ),
-                ));
-              },
-            ),
+
+
           ],
         ),
       ),
@@ -420,7 +427,7 @@ class Prop extends StatelessWidget {
   String city;
   String construction_status;
   String available_from;
-  int price_sq;
+  int bedrooms;
   int total_price;
   int views;
   String main_image;
@@ -435,7 +442,7 @@ class Prop extends StatelessWidget {
     this.views,
     this.type,
     this.available_from,
-    this.price_sq,
+    this.bedrooms,
   });
   @override
   Widget build(BuildContext context) {
@@ -548,7 +555,7 @@ class Prop extends StatelessWidget {
                             width: 8,
                           ),
                           Icon(
-                            Icons.zoom_out_map,
+                            Icons.hotel,
                             color: Colors.white,
                             size: 16,
                           ),
@@ -556,7 +563,7 @@ class Prop extends StatelessWidget {
                             width: 4,
                           ),
                           Text(
-                            price_sq.toString() + " sq/m",
+                            bedrooms.toString(),
                             style: TextStyle(
                               color: Colors.white,
                               fontSize: 14,

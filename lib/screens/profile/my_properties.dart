@@ -1,12 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:housing/screens/home/property_detail.dart';
 import 'package:housing/screens/splash_screen.dart';
 import 'package:housing/utilities/api-response.dart';
 import 'package:housing/utilities/api_endpoints.dart';
 import 'package:housing/utilities/api_helper.dart';
 import '../data.dart';
 import '../filter.dart';
-import '../detail_page.dart';
 
 
 
@@ -60,17 +60,24 @@ class _MyPropertiesState extends State<MyProperties> {
                       itemBuilder: (context, index){
                         final Map<String, dynamic> property = snapshot.data.data.toList()[index];
                         print(property);
-                        return Prop(
+                        return GestureDetector(
+                            onTap: () {
+                          print(index);
+                          Navigator.push(
+                              context, MaterialPageRoute(builder: (context) => Detail(id: property['id'])));
+                        },
+                        child: Prop(
                           id: property['id'],
                           type: property['type'],
                           property_name: property['property_name'],
                           city: property['city'].split(" ")[0],
                           construction_status: property['construction_status'],
                           available_from: property['available_from'],
-                          price_sq: property['price_sq'],
+                          bedrooms: property['bedrooms'],
                           total_price: property['total_price'],
                           views: property['views'],
                           main_image: property['main_image'],
+                        )
                         );
                       },
                     );
@@ -103,7 +110,7 @@ class Prop extends StatelessWidget {
   String city;
   String construction_status;
   String available_from;
-  int price_sq;
+  int bedrooms;
   int total_price;
   int views;
   String main_image;
@@ -118,7 +125,7 @@ class Prop extends StatelessWidget {
     this.views,
     this.type,
     this.available_from,
-    this.price_sq,
+    this.bedrooms,
   });
   @override
   Widget build(BuildContext context) {
@@ -239,7 +246,7 @@ class Prop extends StatelessWidget {
                             width: 4,
                           ),
                           Text(
-                            price_sq.toString() + " sq/m",
+                            bedrooms.toString(),
                             style: TextStyle(
                               color: Colors.white,
                               fontSize: 14,

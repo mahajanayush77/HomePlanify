@@ -6,7 +6,6 @@ import 'package:housing/utilities/api_endpoints.dart';
 import 'package:housing/utilities/api_helper.dart';
 import '../data.dart';
 import '../filter.dart';
-import '../detail_page.dart';
 
 class Search extends StatefulWidget {
   @override
@@ -170,7 +169,7 @@ class _SearchState extends State<Search> {
                           city: property['city'].split(" ")[0],
                           construction_status: property['construction_status'],
                           available_from: property['available_from'],
-                          price_sq: property['price_sq'],
+                          bedrooms: property['bedrooms'],
                           total_price: property['total_price'],
                           views: property['views'],
                           main_image: property['main_image'],

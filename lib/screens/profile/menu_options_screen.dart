@@ -56,11 +56,11 @@ class _MenuOptionsScreenState extends State<MenuOptionsScreen> {
                   ? Border.all(color: Colors.black26)
                   : null,
             ),
-            child: GestureDetector(
+            child: InkWell(
               onTap: () {
               Navigator.pushNamed(context, options[index-1].gesturelink);
               },
-          child: ListTile(
+            child: ListTile(
               leading: options[index - 1].icon,
               title: Text(
                 options[index - 1].title,

@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:housing/screens/webview.dart';
 
 class deal_card extends StatelessWidget {
   final String propertyTitle;
   final String location;
   final String image;
-  deal_card({this.location, this.propertyTitle, this.image});
+  final String link;
+  deal_card({this.location, this.propertyTitle, this.image, this.link});
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -13,7 +15,14 @@ class deal_card extends StatelessWidget {
       child: Card(
         color: Colors.grey[200],
         elevation: 5.0,
-        child: Column(
+        child: InkWell(
+        onTap: () {
+          Navigator.of(context).push(MaterialPageRoute(
+            builder: (context) => WebScreen(
+            url: link,
+            ),
+            ));},
+          child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
             Expanded(
@@ -69,6 +78,7 @@ class deal_card extends StatelessWidget {
             ),
           ],
         ),
+      ),
       ),
     );
   }

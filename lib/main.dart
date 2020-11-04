@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:housing/constant.dart';
 import 'package:housing/screens/add_property.dart';
-import 'package:housing/screens/detail_page.dart';
 import 'package:housing/screens/home/featured_projects.dart';
 import 'package:housing/screens/home/invest_properties.dart';
 
