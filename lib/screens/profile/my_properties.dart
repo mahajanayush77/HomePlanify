@@ -24,6 +24,14 @@ class MyProperties extends StatefulWidget {
 
 class _MyPropertiesState extends State<MyProperties> {
   Future<ApiResponse> _properties;
+  Future<ApiResponse> _response_delete;
+
+  void delete_property(id) {
+    _response_delete = ApiHelper().getRequest(
+      endpoint: eMyProperties + id + "/",
+    );
+    
+  }
 
   void initState() {
     // TODO: implement initState
@@ -163,28 +171,77 @@ class Prop extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Container(
-                decoration: BoxDecoration(
-                  color: Colors.yellow[700],
-                  borderRadius: BorderRadius.all(
-                    Radius.circular(5),
-                  ),
-                ),
-                width: 80,
-                padding: EdgeInsets.symmetric(
-                  vertical: 4,
-                ),
-                child: Center(
-                  child: Text(
-                    type == 'S' ? "FOR SALE" : "FOR RENT",
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 14,
-                      fontWeight: FontWeight.bold,
+
+
+              Row(
+                children: [
+                  Container(
+                    decoration: BoxDecoration(
+                      color: Colors.yellow[700],
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(5),
+                      ),
+                    ),
+                    width: 80,
+                    padding: EdgeInsets.symmetric(
+                      vertical: 4,
+                    ),
+                    child: Center(
+                      child: Text(
+                        type == 'S' ? "FOR SALE" : "FOR RENT",
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 14,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
                     ),
                   ),
-                ),
+                  Expanded(
+                    flex: 2,
+                    child: Column(
+
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            IconButton(
+                              icon: Icon(Icons.edit),
+                              color: Colors.black,
+                              onPressed: (){},
+                            ),
+                            IconButton(
+                              icon: Icon(Icons.delete),
+                              color: Colors.red,
+                              onPressed: (){},
+                            ),
+                          ],
+                        )
+                      ],
+                    ),
+                  ),
+                  // Expanded(
+                  //   flex: 1,
+                  //   child: Column(
+                  //     children: [
+                  //       IconButton(
+                  //         icon: Icon(Icons.delete),
+                  //         color: Colors.black,
+                  //         onPressed: (){},
+                  //       )
+                  //     ],
+                  //   ),
+                  // ),
+                  // IconButton(
+                  //   icon: Icon(Icons.delete),
+                  //   color: Colors.red,
+                  //   onPressed: (){},
+                  // ),
+                ],
               ),
+
+
+
               Expanded(
                 child: Container(),
               ),
