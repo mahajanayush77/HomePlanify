@@ -40,11 +40,7 @@ class _MenuOptionsScreenState extends State<MenuOptionsScreen> {
           } else if (index == options.length + 1) {
             return SizedBox(height: 50.0);
           }
-          return GestureDetector(
-            onTap: () {
-              Navigator.pushNamed(context, options[index-1].gesturelink);
-            },
-            child: Container(
+          return Container(
             alignment: Alignment.center,
             margin: EdgeInsets.fromLTRB(10, 5, 10, 5),
             width: double.infinity,
@@ -56,11 +52,8 @@ class _MenuOptionsScreenState extends State<MenuOptionsScreen> {
                   ? Border.all(color: Colors.black26)
                   : null,
             ),
-            child: InkWell(
-              onTap: () {
-              Navigator.pushNamed(context, options[index-1].gesturelink);
-              },
             child: ListTile(
+
               leading: options[index - 1].icon,
               title: Text(
                 options[index - 1].title,
@@ -82,10 +75,9 @@ class _MenuOptionsScreenState extends State<MenuOptionsScreen> {
                 setState(() {
                   _selectedOption = index - 1;
                 });
+                Navigator.pushNamed(context, options[index-1].gesturelink);
               },
             ),
-            ),
-          )
           );
         },
       ),

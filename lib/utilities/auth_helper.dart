@@ -8,6 +8,22 @@ Future<bool> autoLogin() async {
   return status;
 }
 
+Future<void> SignUp(String email, String password) async {
+  print('email: $email password: $password');
+  Map<String, String> data = {
+    'email': email,
+    'password1': password,
+    'password2': password,
+  };
+  try {
+    await ApiHelper().logIn(data);
+  } on HttpException catch (error) {
+    throw HttpException(message: error.toString());
+  } catch (error) {
+    throw error;
+  }
+}
+
 Future<void> logIn(String email, String password) async {
   print('email: $email password: $password');
   Map<String, String> data = {
