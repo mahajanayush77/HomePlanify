@@ -42,7 +42,7 @@ class MyApp extends StatelessWidget {
         '/invest_properties': (context) => InvestProperties(),
         '/featured_projects': (context) => FeaturedProjects(),
         '/news': (context) => news_page(),
-        '/add_property': (context) => AddProperty(),
+        '/addProperty': (context) => AddProperty(),
 
         '/profile': (context) => MenuOptionsScreen(),
         '/account_profile': (context) => MenuOptionsScreen(),

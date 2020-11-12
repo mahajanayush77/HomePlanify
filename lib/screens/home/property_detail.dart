@@ -33,6 +33,7 @@ class _DetailState extends State<Detail> {
     super.initState();
   }
 
+  List<String> featuresList = ['Parking', 'Free ka Wifi', 'Garden', 'Swimming Pool'];
   Property2 property = Property2(
     "RENT",
     "Salu House",
@@ -51,6 +52,7 @@ class _DetailState extends State<Detail> {
       "assets/images/living_room.jpg",
     ],
   );
+
 
   @override
   Widget build(BuildContext context) {
@@ -102,7 +104,7 @@ class _DetailState extends State<Detail> {
                   children: [
                     Padding(
                       padding:
-                          EdgeInsets.symmetric(horizontal: 24, vertical: 48),
+                          EdgeInsets.symmetric(horizontal: 16, vertical: 48),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -113,7 +115,7 @@ class _DetailState extends State<Detail> {
                             child: Icon(
                               Icons.arrow_back_ios,
                               color: Colors.white,
-                              size: 24,
+                              size: 16,
                             ),
                           ),
 
@@ -130,7 +132,7 @@ class _DetailState extends State<Detail> {
                     ),
                     Padding(
                       padding:
-                          EdgeInsets.symmetric(horizontal: 24, vertical: 8),
+                          EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                       child: Container(
                         decoration: BoxDecoration(
                           color: Colors.yellow[700],
@@ -155,7 +157,7 @@ class _DetailState extends State<Detail> {
                       ),
                     ),
                     Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 24),
+                      padding: EdgeInsets.symmetric(horizontal: 16),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -187,8 +189,8 @@ class _DetailState extends State<Detail> {
                     ),
                     Padding(
                       padding: EdgeInsets.only(
-                        left: 24,
-                        right: 24,
+                        left: 16,
+                        right: 16,
                         top: 8,
                         bottom: 16,
                       ),
@@ -245,223 +247,233 @@ class _DetailState extends State<Detail> {
               DraggableScrollableSheet(
                 initialChildSize: 0.65,
                 minChildSize:0.65,
+                maxChildSize: 0.95,
                 builder: (context, scrollController){
-                  return SingleChildScrollView(
-                    controller: scrollController,
-                    child: Container(
-                      height: size.height * 0.65,
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(30),
-                          topRight: Radius.circular(30),
-                        ),
+                  return Container(
+                    // height: size.height,
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(30),
+                        topRight: Radius.circular(30),
                       ),
-                      child: Center(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Padding(
-                              padding: EdgeInsets.all(24),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    ),
+                    child: ListView(
+                      // crossAxisAlignment: CrossAxisAlignment.start,
+                      // mainAxisAlignment: MainAxisAlignment.center,
+                      controller: scrollController,
+                      shrinkWrap: true,
+                      children: [
+                        Padding(
+                          padding: EdgeInsets.all(16),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Row(
                                 children: [
-                                  Row(
-                                    children: [
-                                      Container(
-                                        height: 65,
-                                        width: 65,
-                                        decoration: BoxDecoration(
-                                          image: DecorationImage(
-                                            image: AssetImage(property.ownerImage),
-                                            fit: BoxFit.cover,
-                                          ),
-                                          shape: BoxShape.circle,
-                                        ),
+                                  Container(
+                                    height: 65,
+                                    width: 65,
+                                    decoration: BoxDecoration(
+                                      image: DecorationImage(
+                                        image: AssetImage(property.ownerImage),
+                                        fit: BoxFit.cover,
                                       ),
-                                      SizedBox(
-                                        width: 16,
-                                      ),
-                                      Column(
-                                        crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            "Kunal Sharma",
-                                            style: TextStyle(
-                                              fontSize: 20,
-                                              fontWeight: FontWeight.bold,
-                                            ),
-                                          ),
-                                          SizedBox(
-                                            height: 4,
-                                          ),
-                                          Text(
-                                            "Agent",
-                                            style: TextStyle(
-                                              fontSize: 18,
-                                              color: Colors.grey[500],
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ],
+                                      shape: BoxShape.circle,
+                                    ),
                                   ),
-                                  Row(
+                                  SizedBox(
+                                    width: 16,
+                                  ),
+                                  Column(
+                                    crossAxisAlignment:
+                                    CrossAxisAlignment.start,
                                     children: [
-                                      Container(
-                                        height: 50,
-                                        width: 50,
-                                        decoration: BoxDecoration(
-                                          color:
-                                          Colors.yellow[700].withOpacity(0.1),
-                                          shape: BoxShape.circle,
-                                        ),
-                                        child: Center(
-                                          child: IconButton(
-                                            icon: Icon(Icons.phone),
-                                            color: Colors.yellow[700],
-                                            iconSize: 20,
-                                            onPressed: () =>
-                                                launch("tel://9999998627"),
-                                          ),
+                                      Text(
+                                        "Kunal Sharma",
+                                        style: TextStyle(
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.bold,
                                         ),
                                       ),
                                       SizedBox(
-                                        width: 16,
+                                        height: 4,
                                       ),
-                                      Container(
-                                        height: 50,
-                                        width: 50,
-                                        decoration: BoxDecoration(
-                                          color:
-                                          Colors.yellow[700].withOpacity(0.1),
-                                          shape: BoxShape.circle,
-                                        ),
-                                        child: Center(
-                                          child: Icon(
-                                            Icons.message,
-                                            color: Colors.yellow[700],
-                                            size: 20,
-                                          ),
+                                      Text(
+                                        "Agent",
+                                        style: TextStyle(
+                                          fontSize: 18,
+                                          color: Colors.grey[500],
                                         ),
                                       ),
                                     ],
                                   ),
                                 ],
                               ),
-                            ),
-                            Padding(
-                              padding: EdgeInsets.only(
-                                right: 24,
-                                left: 24,
-                                bottom: 24,
-                              ),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              Row(
                                 children: [
-                                  buildFeature(Icons.hotel,
-                                      property2.bedrooms.toString() + " Bedroom"),
-                                  buildFeature(Icons.wc,
-                                      property2.bathrooms.toString() + " Bathroom"),
-                                  buildFeature(Icons.kitchen,
-                                      property2.rooms.toString() + " Room"),
-                                  buildFeature(Icons.local_parking,
-                                      property2.construction_status.toString()),
-                                ],
-                              ),
-                            ),
-                            Padding(
-                              padding: EdgeInsets.only(
-                                right: 24,
-                                left: 24,
-                                bottom: 16,
-                              ),
-                              child: Text(
-                                "Description",
-                                style: TextStyle(
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ),
-                            Padding(
-                              padding: EdgeInsets.only(
-                                right: 24,
-                                left: 24,
-                                bottom: 24,
-                              ),
-                              child: Text(
-                                property2.additional_features,
-                                style: TextStyle(
-                                  fontSize: 16,
-                                  color: Colors.grey[500],
-                                ),
-                              ),
-                            ),
-
-                            Padding(
-                              padding: EdgeInsets.only(
-                                right: 24,
-                                left: 24,
-                                bottom: 16,
-                              ),
-                              child: Text(
-                                "Photos",
-                                style: TextStyle(
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ),
-                            Expanded(
-                              child: Padding(
-                                padding: EdgeInsets.only(
-                                  bottom: 24,
-                                ),
-                                child: ListView(
-                                  physics: BouncingScrollPhysics(),
-                                  scrollDirection: Axis.horizontal,
-                                  shrinkWrap: true,
-                                  children: buildPhotos(property.images),
-                                ),
-                              ),
-                            ),
-                            Padding(
-                              padding: EdgeInsets.only(
-                                right: 24,
-                                left: 24,
-                                bottom: 16,
-                              ),
-                              child: Text(
-                                "Features",
-                                style: TextStyle(
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ),
-                            Padding(
-                              padding: EdgeInsets.only(
-                                right: 24,
-                                left: 24,
-                                bottom: 16,
-                              ),
-                              child: Column(
-                                children: [
-
-                                  ListTile(
-                                    leading: Icon(Icons.check),
-                                    title: Text('Parking'),
+                                  Container(
+                                    height: 50,
+                                    width: 50,
+                                    decoration: BoxDecoration(
+                                      color:
+                                      Colors.yellow[700].withOpacity(0.1),
+                                      shape: BoxShape.circle,
+                                    ),
+                                    child: Center(
+                                      child: IconButton(
+                                        icon: Icon(Icons.phone),
+                                        color: Colors.yellow[700],
+                                        iconSize: 20,
+                                        onPressed: () =>
+                                            launch("tel://9999998627"),
+                                      ),
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    width: 16,
+                                  ),
+                                  Container(
+                                    height: 50,
+                                    width: 50,
+                                    decoration: BoxDecoration(
+                                      color:
+                                      Colors.yellow[700].withOpacity(0.1),
+                                      shape: BoxShape.circle,
+                                    ),
+                                    child: Center(
+                                      child: Icon(
+                                        Icons.message,
+                                        color: Colors.yellow[700],
+                                        size: 20,
+                                      ),
+                                    ),
                                   ),
                                 ],
                               ),
-                            ),
-
-                          ],
+                            ],
+                          ),
                         ),
-                      ),
+                        Padding(
+                          padding: EdgeInsets.only(
+                            right: 16,
+                            left: 16,
+                            bottom: 16,
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              buildFeature(Icons.hotel,
+                                  property2.bedrooms.toString() + " Bedroom"),
+                              buildFeature(Icons.wc,
+                                  property2.bathrooms.toString() + " Bathroom"),
+                              buildFeature(Icons.kitchen,
+                                  property2.rooms.toString() + " Room"),
+                              buildFeature(Icons.local_parking,
+                                  property2.construction_status.toString()),
+                            ],
+                          ),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.only(
+                            right: 16,
+                            left: 16,
+                            bottom: 16,
+                          ),
+                          child: Text(
+                            "Description",
+                            style: TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.only(
+                            right: 16,
+                            left: 16,
+                            bottom: 16,
+                          ),
+                          child: Text(
+                            property2.additional_features,
+                            style: TextStyle(
+                              fontSize: 16,
+                              color: Colors.grey[500],
+                            ),
+                          ),
+                        ),
+
+                        Padding(
+                          padding: EdgeInsets.only(
+                            right: 16,
+                            left: 16,
+                            bottom: 16,
+                          ),
+                          child: Text(
+                            "Photos",
+                            style: TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                        Container(
+                          height: size.height*0.2,
+                          padding: EdgeInsets.only(
+                            right: 16,
+                            left: 16,
+                            bottom: 16,
+                          ),
+                          child: ListView.builder(
+                            physics: BouncingScrollPhysics(),
+                            scrollDirection: Axis.horizontal,
+                            shrinkWrap: true,
+                            itemCount: property.images.length,
+                            itemBuilder: (context, index){
+                              return Container(
+                                width: size.width*0.5,
+                                margin: EdgeInsets.only(right: 8),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.all(
+                                    Radius.circular(10),
+                                  ),
+                                  image: DecorationImage(
+                                    image: NetworkImage('https://images.pexels.com/photos/674800/pexels-photo-674800.jpeg'),
+                                    fit: BoxFit.cover,
+                                  ),
+                                ),
+                              );
+                            },
+                          ),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.only(
+                            top: 8.0,
+                            right: 16,
+                            left: 16,
+                            bottom:8,
+                          ),
+                          child: Text(
+                            "Features",
+                            style: TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal:16.0),
+                          child: Wrap(
+                            spacing: 12.0,
+                            children: featuresList.map((e) => Chip(
+                              label: Text(e, style: TextStyle(fontSize: 16, color: Colors.black87),),
+                              backgroundColor: Colors.yellow[700],
+                              deleteIcon: null,
+                            )).toList(),
+                          ),
+                        ),
+
+                      ],
                     ),
                   );
                 },
@@ -502,7 +514,7 @@ class _DetailState extends State<Detail> {
   List<Widget> buildPhotos(List<String> images) {
     List<Widget> list = [];
     list.add(SizedBox(
-      width: 24,
+      width: 16,
     ));
     for (var i = 0; i < images.length; i++) {
       list.add(buildPhoto(images[i]));
@@ -514,13 +526,13 @@ class _DetailState extends State<Detail> {
     return AspectRatio(
       aspectRatio: 3 / 2,
       child: Container(
-        margin: EdgeInsets.only(right: 24),
+        margin: EdgeInsets.only(right: 16),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.all(
             Radius.circular(10),
           ),
           image: DecorationImage(
-            image: AssetImage(url),
+            image: NetworkImage(url),
             fit: BoxFit.cover,
           ),
         ),

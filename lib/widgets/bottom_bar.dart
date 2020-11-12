@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:housing/constant.dart';
+import 'package:housing/screens/add_property.dart';
 import 'package:housing/screens/onboarding/Login/login_screen.dart';
 import 'package:housing/screens/splash_screen.dart';
 import '../utilities/auth_helper.dart' as AuthHelper;
@@ -77,8 +78,8 @@ class _bottom_barState extends State<bottom_bar> {
             onPressed: () async {
               updateUI(1);
               var result = await AuthHelper.autoLogin();
-              if (result)
-                Navigator.pushReplacementNamed(context, '/add_property');
+              if (true)
+                Navigator.pushReplacementNamed(context, AddProperty.routeName);
               else
                 Navigator.pushNamed(context, '/login');
             },

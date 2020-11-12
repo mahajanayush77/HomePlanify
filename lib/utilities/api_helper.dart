@@ -9,7 +9,7 @@ import 'dart:convert';
 class ApiHelper {
   final String _userIDStorageKey = 'USER_ID';
   final String _authTokenStorageKey = 'AUTH_TOKEN';
-  final String _baseUrl = 'www.homeplanify.com';
+  final String _baseUrl = 'www.homeplanify.com'; //'36eb00ef8692.ngrok.io'
 
   static String _authToken;
   static String _userID;
@@ -272,6 +272,64 @@ class ApiHelper {
     }
   }
 
+  //POST WITH FILE
+  Future<ApiResponse> postWithFileRequest(
+      {String endpoint, var data, File file, String fileFieldName}) async {
+    if (_authToken.isEmpty || _authToken == null) {
+      return ApiResponse(error: true, errorMessage: 'User not logged in');
+    }
+    try {
+      http.Response response;
+      final uri = Uri.https(_baseUrl, endpoint);
+      print(uri);
+
+      // multipart that takes file
+      if (file != null) {
+        Map<String, String> headers = {
+          HttpHeaders.authorizationHeader: 'Token $_authToken',
+          HttpHeaders.contentTypeHeader:'multipart/form-data'
+        };
+        var request = new http.MultipartRequest("POST", uri);
+        http.MultipartFile multipartFile =
+        await http.MultipartFile.fromPath(fileFieldName, file.path);
+        request.files.add(multipartFile);
+        request.headers.addAll(headers);
+
+        data.forEach((key, value) {
+          request.fields[key] = value.toString();
+          print(request.fields.toString());
+        });
+        final streamedResponse = await request.send();
+        response = await http.Response.fromStream(streamedResponse);
+        // add file to multipart
+      } else {
+        Map<String, String> headers = {
+          HttpHeaders.authorizationHeader: 'Token $_authToken',
+        };
+        response = await http.patch(uri, headers: headers, body: data);
+      }
+//      print('code is ${response.statusCode}');
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        print('response is: ${jsonDecode(response.body)}');
+        return ApiResponse(data: jsonDecode(response.body));
+      } else {
+        print('error occurred: ${response.statusCode}: ${response.body}');
+        Map<String, dynamic> data = jsonDecode(response.body);
+        String error = 'Error occurred';
+        data.keys.forEach((String key) {
+          if (key.contains('error')) {
+            error = data[key][0];
+            print(error);
+          }
+        });
+        return ApiResponse(error: true, errorMessage: error);
+      }
+    } on SocketException catch (error) {
+      throw HttpException(message: 'No Internet Connection');
+    } catch (e) {
+      throw e;
+    }
+  }
   //DELETE
   Future<ApiResponse> deleteRequest(
       {String endpoint, Map<String, String> query}) async {
