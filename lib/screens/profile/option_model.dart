@@ -31,7 +31,7 @@ final options = [
     icon: Icon(Icons.chat_rounded, size: 40.0),
     title: 'Contact Us',
     subtitle: 'Lorem ipsum dolor sit amet, consect.',
-    gesturelink: '/contact_us',
+    gesturelink: '/contactUs',
   ),
   Option(
     icon: Icon(Icons.wysiwyg_rounded, size: 40.0),

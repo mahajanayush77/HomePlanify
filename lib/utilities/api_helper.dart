@@ -193,10 +193,11 @@ class ApiHelper {
           },
           body: data);
 //      print('code is ${response.statusCode}');
-      if (response.statusCode == 200) {
+      if (response.statusCode == 200 || response.statusCode == 201) {
         return ApiResponse(data: jsonDecode(response.body));
       } else {
         print(response.body);
+        print(response.statusCode);
         Map<String, dynamic> data = jsonDecode(response.body);
         String error = 'Error occurred';
         data.keys.forEach((String key) {

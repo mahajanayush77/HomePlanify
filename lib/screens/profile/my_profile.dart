@@ -10,24 +10,31 @@ import 'package:housing/utilities/api_helper.dart';
 import 'package:housing/widgets/bottom_bar.dart';
 import 'package:housing/utilities/http_exception.dart';
 
-class ContactUs extends StatefulWidget {
+class MyProfile extends StatefulWidget {
   static const routeName = '/ContactUs';
 
   @override
-  _ContactUsState createState() => _ContactUsState();
+  _MyProfileState createState() => _MyProfileState();
 }
 
-class _ContactUsState extends State<ContactUs> {
+class _MyProfileState extends State<MyProfile> {
   bool _isLoading = false;
 
   final _formKey = GlobalKey<FormState>();
-  final TextEditingController nameCtl = TextEditingController();
-  final TextEditingController emailCtl = TextEditingController();
-  final TextEditingController mobileCtl = TextEditingController();
-  final TextEditingController messageCtl = TextEditingController();
+  final TextEditingController firstnameCtl = TextEditingController();
+  final TextEditingController lastnameCtl = TextEditingController();
+
+  Future<ApiResponse> _response;
 
   @override
   void initState() {
+
+    _response = ApiHelper().getRequest(
+      endpoint: eMyProperties,
+    );
+    firstnameCtl.text
+    
+
     super.initState();
   }
 
@@ -41,8 +48,8 @@ class _ContactUsState extends State<ContactUs> {
     });
 
     Map<String, dynamic> data = {
-      'name': nameCtl.text,
-      'email': emailCtl.text,
+      'first_name': nameCtl.text,
+      'last_name': emailCtl.text,
       'mobile': mobileCtl.text,
       'message': messageCtl.text,
     };
@@ -58,10 +65,8 @@ class _ContactUsState extends State<ContactUs> {
           duration: Duration(seconds: 3),
         )
           ..show(context);
-        nameCtl.clear();
-        emailCtl.clear();
-        mobileCtl.clear();
-        messageCtl.clear();
+        firstnameCtl.clear();
+        lastnameCtl.clear();
       }
       else {
         Flushbar(
@@ -87,7 +92,7 @@ class _ContactUsState extends State<ContactUs> {
     final size = DeviceSize(context: context);
 
     final MaterialLocalizations localizations =
-        MaterialLocalizations.of(context);
+    MaterialLocalizations.of(context);
 
     return Scaffold(
       appBar: AppBar(
@@ -117,16 +122,16 @@ class _ContactUsState extends State<ContactUs> {
                     )
                 ),
                 Container(
-                  child: Center(
-                    child: Text(
-                      "We're here to help you.",
-                      style: TextStyle(
-                        color: Colors.black54,
-                        fontSize: 25,
-                        fontWeight: FontWeight.bold,
+                    child: Center(
+                      child: Text(
+                        "We're here to help you.",
+                        style: TextStyle(
+                          color: Colors.black54,
+                          fontSize: 25,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
-                    ),
-                  )
+                    )
                 ),
                 SizedBox(
                   height: 20.0,
@@ -219,19 +224,19 @@ class _ContactUsState extends State<ContactUs> {
 
                 (_isLoading)
                     ? SpinKitThreeBounce(
-                        color: Theme.of(context).primaryColor,
-                      )
+                  color: Theme.of(context).primaryColor,
+                )
                     : MaterialButton(
-                        height: 30,
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(18.0)),
-                        color: kPrimaryBackgroundColor,
-                        textColor: Colors.white,
-                        onPressed: () async {
-                          _saveForm();
-                        },
-                        child: Text('Send Message'),
-                      ),
+                  height: 30,
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(18.0)),
+                  color: kPrimaryBackgroundColor,
+                  textColor: Colors.white,
+                  onPressed: () async {
+                    _saveForm();
+                  },
+                  child: Text('Send Message'),
+                ),
               ],
             ),
           ),

@@ -24,14 +24,20 @@ class MyProperties extends StatefulWidget {
 
 class _MyPropertiesState extends State<MyProperties> {
   Future<ApiResponse> _properties;
-  Future<ApiResponse> _response_delete;
 
   void delete_property(id) {
-    _response_delete = ApiHelper().getRequest(
-      endpoint: eMyProperties + id + "/",
+    Future<ApiResponse> _response_delete;
+
+    _response_delete = ApiHelper().deleteRequest(
+      endpoint: eProperties + id.toString() + "/",
     );
-    
+    _properties = ApiHelper().getRequest(
+      endpoint: eMyProperties,
+    );
+    setState(() {
+    });
   }
+
 
   void initState() {
     // TODO: implement initState
@@ -67,10 +73,10 @@ class _MyPropertiesState extends State<MyProperties> {
                       itemCount: snapshot.data.data.length,
                       itemBuilder: (context, index){
                         final Map<String, dynamic> property = snapshot.data.data.toList()[index];
-                        print(property);
+                        // print(property);
                         return GestureDetector(
                             onTap: () {
-                          print(index);
+                          // print(index);
                           Navigator.push(
                               context, MaterialPageRoute(builder: (context) => Detail(id: property['id'])));
                         },
@@ -85,6 +91,7 @@ class _MyPropertiesState extends State<MyProperties> {
                           total_price: property['total_price'],
                           views: property['views'],
                           main_image: property['main_image'],
+                          delete_action: delete_property,
                         )
                         );
                       },
@@ -122,6 +129,8 @@ class Prop extends StatelessWidget {
   int total_price;
   int views;
   String main_image;
+  Function delete_action;
+
 
   Prop({
     this.id,
@@ -134,6 +143,7 @@ class Prop extends StatelessWidget {
     this.type,
     this.available_from,
     this.bedrooms,
+    this.delete_action,
   });
   @override
   Widget build(BuildContext context) {
@@ -213,7 +223,9 @@ class Prop extends StatelessWidget {
                             IconButton(
                               icon: Icon(Icons.delete),
                               color: Colors.red,
-                              onPressed: (){},
+                              onPressed: (){
+                                return delete_action(id);
+                              },
                             ),
                           ],
                         )

@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:housing/constant.dart';
 import 'package:housing/screens/add_property.dart';
+import 'package:housing/screens/contact_us/contact.dart';
 import 'package:housing/screens/home/featured_projects.dart';
 import 'package:housing/screens/home/invest_properties.dart';
 
@@ -43,12 +44,11 @@ class MyApp extends StatelessWidget {
         '/featured_projects': (context) => FeaturedProjects(),
         '/news': (context) => news_page(),
         '/addProperty': (context) => AddProperty(),
-
         '/profile': (context) => MenuOptionsScreen(),
         '/account_profile': (context) => MenuOptionsScreen(),
         '/bookmarks': (context) => Bookmarks(),
         '/my_properties': (context) => MyProperties(),
-        '/contact_us': (context) => MyProperties(),
+        '/contactUs': (context) => ContactUs(),
         '/faq': (context) => MyProperties(),
         '/change_password': (context) => MyProperties(),
         '/logout': (context) => MyProperties(),

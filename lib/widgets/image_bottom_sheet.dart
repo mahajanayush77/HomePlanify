@@ -54,7 +54,7 @@ class ImageBottomSheet extends StatelessWidget {
                             Icon(
                               Icons.camera_alt,
                               size: 60.0,
-                              color: kPrimaryColor,
+                              color: Theme.of(context).primaryColor,
                             ),
                             Text(
                               'Camera',
@@ -96,7 +96,7 @@ class ImageBottomSheet extends StatelessWidget {
                             Icon(
                               Icons.image,
                               size: 60.0,
-                              color: kPrimaryColor,
+                              color: Theme.of(context).primaryColor,
                             ),
                             Text(
                               'Gallery',

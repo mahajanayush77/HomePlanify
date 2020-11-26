@@ -8,3 +8,5 @@ String get eInvestProperties => '/api/invest_properties/';
 
 String get eMyProperties => '/api/properties/my_properties/';
 String get eBookmarks => '/api/properties/bookmarks/';
+
+String get eContact => '/api/contact/';
