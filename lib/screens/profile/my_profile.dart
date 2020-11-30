@@ -28,12 +28,10 @@ class _MyProfileState extends State<MyProfile> {
 
   @override
   void initState() {
-
     _response = ApiHelper().getRequest(
       endpoint: eMyProperties,
     );
-    firstnameCtl.text
-    
+    firstnameCtl.text;
 
     super.initState();
   }
@@ -48,10 +46,8 @@ class _MyProfileState extends State<MyProfile> {
     });
 
     Map<String, dynamic> data = {
-      'first_name': nameCtl.text,
-      'last_name': emailCtl.text,
-      'mobile': mobileCtl.text,
-      'message': messageCtl.text,
+      'first_name': firstnameCtl.text,
+      'last_name': lastnameCtl.text,
     };
 
     try {
@@ -63,12 +59,10 @@ class _MyProfileState extends State<MyProfile> {
         Flushbar(
           message: 'Message Sent successfully!',
           duration: Duration(seconds: 3),
-        )
-          ..show(context);
+        )..show(context);
         firstnameCtl.clear();
         lastnameCtl.clear();
-      }
-      else {
+      } else {
         Flushbar(
           message: response.errorMessage ?? 'Unable to send',
           duration: Duration(seconds: 3),
@@ -92,7 +86,7 @@ class _MyProfileState extends State<MyProfile> {
     final size = DeviceSize(context: context);
 
     final MaterialLocalizations localizations =
-    MaterialLocalizations.of(context);
+        MaterialLocalizations.of(context);
 
     return Scaffold(
       appBar: AppBar(
@@ -111,33 +105,31 @@ class _MyProfileState extends State<MyProfile> {
               children: [
                 Container(
                     child: Center(
-                      child: Text(
-                        "HomePlanify",
-                        style: TextStyle(
-                          color: kPrimaryBackgroundColor,
-                          fontSize: 30,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    )
-                ),
+                  child: Text(
+                    "HomePlanify",
+                    style: TextStyle(
+                      color: kPrimaryBackgroundColor,
+                      fontSize: 30,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                )),
                 Container(
                     child: Center(
-                      child: Text(
-                        "We're here to help you.",
-                        style: TextStyle(
-                          color: Colors.black54,
-                          fontSize: 25,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    )
-                ),
+                  child: Text(
+                    "We're here to help you.",
+                    style: TextStyle(
+                      color: Colors.black54,
+                      fontSize: 25,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                )),
                 SizedBox(
                   height: 20.0,
                 ),
                 TextFormField(
-                  controller: nameCtl,
+                  controller: firstnameCtl,
                   keyboardType: TextInputType.text,
                   style: TextStyle(height: 1.0),
                   decoration: InputDecoration(
@@ -158,7 +150,7 @@ class _MyProfileState extends State<MyProfile> {
                   height: 18.0,
                 ),
                 TextFormField(
-                  controller: emailCtl,
+                  controller: lastnameCtl,
                   keyboardType: TextInputType.emailAddress,
                   style: TextStyle(height: 1.0),
                   decoration: InputDecoration(
@@ -178,65 +170,64 @@ class _MyProfileState extends State<MyProfile> {
                 SizedBox(
                   height: 18.0,
                 ),
-                TextFormField(
-                  controller: mobileCtl,
-                  keyboardType: TextInputType.number,
-                  style: TextStyle(height: 1.0),
-                  decoration: InputDecoration(
-                    labelText: 'Mobile Number',
-                    labelStyle: TextStyle(
-                      fontWeight: FontWeight.w600,
-                      fontSize: 18,
-                    ),
-                    border: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(15.0))),
-                  ),
-                  validator: (value) {
-                    if (value.isEmpty) return 'Please provide a Mobile Number';
-                    return null;
-                  },
-                ),
+                // TextFormField(
+                //   controller: mobileCtl,
+                //   keyboardType: TextInputType.number,
+                //   style: TextStyle(height: 1.0),
+                //   decoration: InputDecoration(
+                //     labelText: 'Mobile Number',
+                //     labelStyle: TextStyle(
+                //       fontWeight: FontWeight.w600,
+                //       fontSize: 18,
+                //     ),
+                //     border: OutlineInputBorder(
+                //         borderRadius: BorderRadius.all(Radius.circular(15.0))),
+                //   ),
+                //   validator: (value) {
+                //     if (value.isEmpty) return 'Please provide a Mobile Number';
+                //     return null;
+                //   },
+                // ),
+                // SizedBox(
+                //   height: 18.0,
+                // ),
+                // TextFormField(
+                //   controller: messageCtl,
+                //   keyboardType: TextInputType.multiline,
+                //   style: TextStyle(height: 1.0),
+                //   maxLines: 3,
+                //   decoration: InputDecoration(
+                //     labelText: 'Message',
+                //     labelStyle: TextStyle(
+                //       fontWeight: FontWeight.w600,
+                //       fontSize: 18,
+                //     ),
+                //     border: OutlineInputBorder(
+                //         borderRadius: BorderRadius.all(Radius.circular(15.0))),
+                //   ),
+                //   validator: (value) {
+                //     if (value.isEmpty) return 'Message can\'t be empty';
+                //     return null;
+                //   },
+                // ),
                 SizedBox(
                   height: 18.0,
                 ),
-                TextFormField(
-                  controller: messageCtl,
-                  keyboardType: TextInputType.multiline,
-                  style: TextStyle(height: 1.0),
-                  maxLines: 3,
-                  decoration: InputDecoration(
-                    labelText: 'Message',
-                    labelStyle: TextStyle(
-                      fontWeight: FontWeight.w600,
-                      fontSize: 18,
-                    ),
-                    border: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(15.0))),
-                  ),
-                  validator: (value) {
-                    if (value.isEmpty) return 'Message can\'t be empty';
-                    return null;
-                  },
-                ),
-                SizedBox(
-                  height: 18.0,
-                ),
-
                 (_isLoading)
                     ? SpinKitThreeBounce(
-                  color: Theme.of(context).primaryColor,
-                )
+                        color: Theme.of(context).primaryColor,
+                      )
                     : MaterialButton(
-                  height: 30,
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(18.0)),
-                  color: kPrimaryBackgroundColor,
-                  textColor: Colors.white,
-                  onPressed: () async {
-                    _saveForm();
-                  },
-                  child: Text('Send Message'),
-                ),
+                        height: 30,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(18.0)),
+                        color: kPrimaryBackgroundColor,
+                        textColor: Colors.white,
+                        onPressed: () async {
+                          _saveForm();
+                        },
+                        child: Text('Send Message'),
+                      ),
               ],
             ),
           ),

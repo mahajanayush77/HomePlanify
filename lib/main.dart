@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:housing/constant.dart';
+import 'package:housing/provider/my_properties.dart' as my_prop;
+import 'package:housing/provider/properties.dart';
 import 'package:housing/screens/add_property.dart';
 import 'package:housing/screens/contact_us/contact.dart';
 import 'package:housing/screens/home/featured_projects.dart';
@@ -14,6 +16,7 @@ import 'package:housing/screens/onboarding/Login/login_screen.dart';
 import 'package:housing/screens/onboarding/Signup/signup_screen.dart';
 import 'package:housing/screens/onboarding/Welcome/welcome_screen.dart';
 import 'package:housing/screens/profile/menu_options_screen.dart';
+import 'package:provider/provider.dart';
 
 import './utilities/auth_helper.dart';
 // import 'screens/projects/home_page.dart';
@@ -26,33 +29,39 @@ void main() {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData.light().copyWith(
-        primaryColor: kPrimaryBackgroundColor,
-        accentColor: kAccentBackgroundColor,
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (ctx) => my_prop.MyProperties()),
+        ChangeNotifierProvider(create: (ctx) => Property())
+      ],
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        theme: ThemeData.light().copyWith(
+          primaryColor: kPrimaryBackgroundColor,
+          accentColor: kAccentBackgroundColor,
+        ),
+        initialRoute: '/',
+        routes: {
+          '/': (context) => HomePage(),
+          '/home': (context) => HomePage(),
+          '/welcome': (context) => WelcomeScreen(),
+          '/login': (context) => LoginScreen(),
+          '/signup': (context) => SignUpScreen(),
+          '/properties': (context) => Search(),
+          '/invest_properties': (context) => InvestProperties(),
+          '/featured_projects': (context) => FeaturedProjects(),
+          '/news': (context) => news_page(),
+          '/addProperty': (context) => AddProperty(),
+          '/profile': (context) => MenuOptionsScreen(),
+          '/account_profile': (context) => MenuOptionsScreen(),
+          '/bookmarks': (context) => Bookmarks(),
+          '/my_properties': (context) => MyProperties(),
+          '/contactUs': (context) => ContactUs(),
+          '/faq': (context) => MyProperties(),
+          '/change_password': (context) => MyProperties(),
+          '/logout': (context) => MyProperties(),
+        },
       ),
-      initialRoute: '/',
-      routes: {
-        '/': (context) => HomePage(),
-        '/home': (context) => HomePage(),
-        '/welcome': (context) => WelcomeScreen(),
-        '/login': (context) => LoginScreen(),
-        '/signup': (context) => SignUpScreen(),
-        '/properties': (context) => Search(),
-        '/invest_properties': (context) => InvestProperties(),
-        '/featured_projects': (context) => FeaturedProjects(),
-        '/news': (context) => news_page(),
-        '/addProperty': (context) => AddProperty(),
-        '/profile': (context) => MenuOptionsScreen(),
-        '/account_profile': (context) => MenuOptionsScreen(),
-        '/bookmarks': (context) => Bookmarks(),
-        '/my_properties': (context) => MyProperties(),
-        '/contactUs': (context) => ContactUs(),
-        '/faq': (context) => MyProperties(),
-        '/change_password': (context) => MyProperties(),
-        '/logout': (context) => MyProperties(),
-      },
     );
   }
 }

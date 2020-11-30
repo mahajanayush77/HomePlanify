@@ -1,21 +1,16 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:housing/provider/my_properties.dart' as prop;
+import 'package:housing/provider/properties.dart';
+import 'package:housing/screens/add_property.dart';
 import 'package:housing/screens/home/property_detail.dart';
 import 'package:housing/screens/splash_screen.dart';
 import 'package:housing/utilities/api-response.dart';
 import 'package:housing/utilities/api_endpoints.dart';
 import 'package:housing/utilities/api_helper.dart';
+import 'package:provider/provider.dart';
 import '../data.dart';
 import '../filter.dart';
-
-
-
-
-
-
-
-
-
 
 class MyProperties extends StatefulWidget {
   @override
@@ -25,30 +20,19 @@ class MyProperties extends StatefulWidget {
 class _MyPropertiesState extends State<MyProperties> {
   Future<ApiResponse> _properties;
 
-  void delete_property(id) {
-    Future<ApiResponse> _response_delete;
+  // void initState() {
+  //   // TODO: implement initState
 
-    _response_delete = ApiHelper().deleteRequest(
-      endpoint: eProperties + id.toString() + "/",
-    );
-    _properties = ApiHelper().getRequest(
-      endpoint: eMyProperties,
-    );
-    setState(() {
-    });
-  }
+  //   _properties = ApiHelper().getRequest(
+  //     endpoint: eMyProperties,
+  //   );
 
-
-  void initState() {
-    // TODO: implement initState
-    _properties = ApiHelper().getRequest(
-      endpoint: eMyProperties,
-    );
-    super.initState();
-  }
+  //   super.initState();
+  // }
 
   @override
   Widget build(BuildContext context) {
+    final proper = Provider.of<prop.MyProperties>(context);
     return Scaffold(
       appBar: AppBar(
         title: Text('My Properties'),
@@ -62,47 +46,55 @@ class _MyPropertiesState extends State<MyProperties> {
           ),
           Expanded(
             child: Container(
-              padding: EdgeInsets.symmetric(horizontal: 24),
-              child:FutureBuilder(
-                future: _properties,
-                builder: (context, snapshot){
-                  if (snapshot.hasData){
-                    return ListView.separated(
-                      separatorBuilder: (context, index) => SizedBox(width: 15),
-                      shrinkWrap: true,
-                      itemCount: snapshot.data.data.length,
-                      itemBuilder: (context, index){
-                        final Map<String, dynamic> property = snapshot.data.data.toList()[index];
-                        // print(property);
-                        return GestureDetector(
-                            onTap: () {
-                          // print(index);
-                          Navigator.push(
-                              context, MaterialPageRoute(builder: (context) => Detail(id: property['id'])));
+                padding: EdgeInsets.symmetric(horizontal: 24),
+                child: FutureBuilder(
+                  future: proper.fetchProducts(),
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      return ListView.separated(
+                        separatorBuilder: (context, index) =>
+                            SizedBox(width: 15),
+                        shrinkWrap: true,
+                        itemCount: snapshot.data.data.length,
+                        itemBuilder: (context, index) {
+                          print(snapshot.data.data.length);
+                          final property = snapshot.data.data.toList();
+                          // print(property);
+                          //proper.properties(property);
+                          print(snapshot.data.data.length);
+                          // print(property);
+                          return GestureDetector(
+                              onTap: () {
+                                // print(index);
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            Detail(id: property[index]['id'])));
+                              },
+                              child: Prop(
+                                owner: property[index]['owner'].toString(),
+                                id: property[index]['id'],
+                                type: property[index]['type'],
+                                property_name: property[index]['property_name'],
+                                city: property[index]['city'].split(" ")[0],
+                                construction_status: property[index]
+                                    ['construction_status'],
+                                available_from: property[index]
+                                    ['available_from'],
+                                bedrooms: property[index]['bedrooms'],
+                                total_price: property[index]['total_price'],
+                                views: property[index]['views'],
+                                main_image: property[index]['main_image'],
+                              ));
                         },
-                        child: Prop(
-                          id: property['id'],
-                          type: property['type'],
-                          property_name: property['property_name'],
-                          city: property['city'].split(" ")[0],
-                          construction_status: property['construction_status'],
-                          available_from: property['available_from'],
-                          bedrooms: property['bedrooms'],
-                          total_price: property['total_price'],
-                          views: property['views'],
-                          main_image: property['main_image'],
-                          delete_action: delete_property,
-                        )
-                        );
-                      },
-                    );
-                  } else if (snapshot.hasError){
-                    return Text("${snapshot.error}");
-                  }
-                  return SplashScreen();
-                },
-              )
-            ),
+                      );
+                    } else if (snapshot.hasError) {
+                      return Text("${snapshot.error}");
+                    }
+                    return SplashScreen();
+                  },
+                )),
           )
         ],
       ),
@@ -110,29 +102,20 @@ class _MyPropertiesState extends State<MyProperties> {
   }
 }
 
-
-
-
-
-
-
-
-
 class Prop extends StatelessWidget {
-  int id;
-  String type;
-  String property_name;
-  String city;
-  String construction_status;
-  String available_from;
-  int bedrooms;
-  int total_price;
-  int views;
-  String main_image;
-  Function delete_action;
-
-
+  final int id;
+  final String type;
+  final String property_name;
+  final String city;
+  final String construction_status;
+  final String available_from;
+  final int bedrooms;
+  final int total_price;
+  final int views;
+  final String main_image;
+  final String owner;
   Prop({
+    this.owner,
     this.id,
     this.main_image,
     this.city,
@@ -143,10 +126,12 @@ class Prop extends StatelessWidget {
     this.type,
     this.available_from,
     this.bedrooms,
-    this.delete_action,
   });
+
   @override
   Widget build(BuildContext context) {
+    final editproperty = Provider.of<Property>(context, listen: false);
+    final proper = Provider.of<prop.MyProperties>(context, listen: false);
     return Card(
       margin: EdgeInsets.only(bottom: 24),
       clipBehavior: Clip.antiAlias,
@@ -181,8 +166,6 @@ class Prop extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-
-
               Row(
                 children: [
                   Container(
@@ -210,7 +193,6 @@ class Prop extends StatelessWidget {
                   Expanded(
                     flex: 2,
                     child: Column(
-
                       children: [
                         Row(
                           mainAxisAlignment: MainAxisAlignment.end,
@@ -218,14 +200,19 @@ class Prop extends StatelessWidget {
                             IconButton(
                               icon: Icon(Icons.edit),
                               color: Colors.black,
-                              onPressed: (){},
+                              onPressed: () {
+                                Provider.of<Property>(context, listen: false)
+                                    .fetchAllProperties()
+                                    .whenComplete(() => Navigator.of(context)
+                                        .pushReplacementNamed(
+                                            AddProperty.routeName,
+                                            arguments: id));
+                              },
                             ),
                             IconButton(
                               icon: Icon(Icons.delete),
                               color: Colors.red,
-                              onPressed: (){
-                                return delete_action(id);
-                              },
+                              onPressed: () => proper.deleteProperty(id),
                             ),
                           ],
                         )
@@ -251,9 +238,6 @@ class Prop extends StatelessWidget {
                   // ),
                 ],
               ),
-
-
-
               Expanded(
                 child: Container(),
               ),

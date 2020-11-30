@@ -6,6 +6,7 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:housing/constant.dart';
 import 'package:housing/models/feature.dart';
 import 'package:housing/models/property.dart';
+import 'package:housing/provider/properties.dart' as newprop;
 import 'package:housing/utilities/api-response.dart';
 import 'package:housing/utilities/api_endpoints.dart';
 import 'package:housing/utilities/api_helper.dart';
@@ -14,9 +15,11 @@ import 'package:housing/widgets/image_bottom_sheet.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:housing/utilities/http_exception.dart';
+import 'package:provider/provider.dart';
 
 class AddProperty extends StatefulWidget {
   static const routeName = '/addProperty';
+
   @override
   _AddPropertyState createState() => _AddPropertyState();
 }
@@ -30,6 +33,21 @@ class _AddPropertyState extends State<AddProperty> {
   var _status = {
     'RM': "Ready to Move",
     'UC': "Under Construction",
+  };
+  Map<String, dynamic> _initProduct = {
+    'type': ' ',
+    'property_name': ' ',
+    'city': ' ',
+    'bedrooms': ' ',
+    'bathrooms': ' ',
+    'rooms': ' ',
+    'construction_status': ' ',
+    'available_from': ' ',
+    'total_price': ' ',
+    'features': ' ',
+    'youtube_video': ' ',
+    'youtube_video_2': ' ',
+    'owner': ' ',
   };
   int room = 0;
   int bedroom = 0;
@@ -52,7 +70,8 @@ class _AddPropertyState extends State<AddProperty> {
   String _typeValue;
   String _statusValue;
   bool _noImageError = false;
-
+  Map<String, dynamic> _editedData;
+  bool _initial = true;
   Future getImage(ImageSource source) async {
     final picker = ImagePicker();
     final pickedFile = await picker.getImage(source: source);
@@ -70,32 +89,67 @@ class _AddPropertyState extends State<AddProperty> {
     super.initState();
   }
 
-  void _fetchFeatures()async{
-    ApiResponse response = await ApiHelper().getWithoutAuthRequest(endpoint: eFeatures);
-    if(!response.error){
+  @override
+  void didChangeDependencies() {
+    if (_initial) {
+      final id = ModalRoute.of(context).settings.arguments as int;
+      print(id);
+      if (id != null) {
+        _editedData = Provider.of<newprop.Property>(context).findById(id);
+        _initProduct = {
+          'type': _editedData['type'],
+          'property_name': _editedData['property_name'],
+          'city': _editedData['city'],
+          'bedrooms': _editedData['bedrooms'],
+          'bathrooms': _editedData['bathrooms'],
+          'rooms': _editedData['rooms'],
+          'construction_status': _editedData['construction_status'],
+          'available_from': _editedData['available_from'],
+          'total_price': _editedData['total_price'],
+          'features': _editedData['features'],
+          'youtube_video': _editedData['youtube_video'],
+          'youtube_video_2': _editedData['youtube_video_2'],
+          'owner': _editedData['owner'],
+        };
+        print(_editedData);
+        print(_initProduct['property_name']);
+        print(_editedData['property_name']);
+      }
+    }
+    _initial = false;
+    super.didChangeDependencies();
+  }
 
+  void _fetchFeatures() async {
+    ApiResponse response =
+        await ApiHelper().getWithoutAuthRequest(endpoint: eFeatures);
+    if (!response.error) {
       final List featureData = response.data.toList();
       List<Feature> tempList = [];
       featureData.forEach((element) {
-        final Feature feature = Feature(id: element['id'].toString(), title: element['title'], description: element['description']);
+        final Feature feature = Feature(
+            id: element['id'].toString(),
+            title: element['title'],
+            description: element['description']);
         tempList.add(feature);
       });
       setState(() {
         featuresList.addAll(tempList);
       });
-    }else{
+    } else {
       Flushbar(
         message: 'Unable to fetch features',
         duration: Duration(seconds: 3),
       )..show(context);
     }
   }
-  void _saveForm() async {
+
+  void _saveForm(BuildContext context) async {
     final isValid = _formKey.currentState.validate();
     if (!isValid) return;
     _formKey.currentState.save();
 
-    if(_imageFile == null){
+    if (_imageFile == null) {
       setState(() {
         _noImageError = true;
       });
@@ -106,16 +160,16 @@ class _AddPropertyState extends State<AddProperty> {
     });
 
     Property property = Property(
-        type: _typeValue,
-        property_name: titleCtl.text,
-        city: cityCtl.text,
+        type: _editedData['type'],
+        property_name: _editedData['property_name'],
+        city: _editedData['city'],
         bedrooms: bedroom,
         bathrooms: bathroom,
         rooms: room,
         features: features,
-        total_price: int.parse(priceCtl.text),
-        construction_status: _statusValue,
-        available_from: dateCtl.text);
+        total_price: _editedData['total_price'],
+        construction_status: _editedData['construction_status'],
+        available_from: _editedData['available_from']);
     if (ytVideoLink1.text.isNotEmpty)
       property.youtube_video = ytVideoLink1.text;
     if (ytVideoLink2.text.isNotEmpty)
@@ -172,6 +226,8 @@ class _AddPropertyState extends State<AddProperty> {
 
   @override
   Widget build(BuildContext context) {
+    final prop = Provider.of<newprop.Property>(context, listen: false);
+    final id = ModalRoute.of(context).settings.arguments as int;
     final size = DeviceSize(context: context);
     var myFormat = DateFormat('yyyy-MM-dd');
     final MaterialLocalizations localizations =
@@ -180,7 +236,7 @@ class _AddPropertyState extends State<AddProperty> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: kPrimaryBackgroundColor,
-        title: Text('Add Property'),
+        title: _initial ? Text('Edit Prperty') : Text('Add Property'),
       ),
       bottomNavigationBar: bottom_bar(1),
       body: SingleChildScrollView(
@@ -193,7 +249,8 @@ class _AddPropertyState extends State<AddProperty> {
               mainAxisSize: MainAxisSize.min,
               children: [
                 TextFormField(
-                  controller: titleCtl,
+                  initialValue: _initProduct['property_name'],
+                  // controller: titleCtl,
                   keyboardType: TextInputType.text,
                   style: TextStyle(height: 1.0),
                   decoration: InputDecoration(
@@ -209,12 +266,15 @@ class _AddPropertyState extends State<AddProperty> {
                     if (value.isEmpty) return 'Title can\'t be empty';
                     return null;
                   },
+                  onSaved: (value) {
+                    _editedData['property_name'] = value;
+                  },
                 ),
                 SizedBox(
                   height: 18.0,
                 ),
                 TextFormField(
-                  controller: priceCtl,
+                  initialValue: _initProduct['total_price'].toString(),
                   keyboardType: TextInputType.number,
                   style: TextStyle(height: 1.0),
                   decoration: InputDecoration(
@@ -230,42 +290,52 @@ class _AddPropertyState extends State<AddProperty> {
                     if (value.isEmpty) return 'Price can\'t be empty';
                     return null;
                   },
+                  onSaved: (value) {
+                    _editedData['total_price'] = value;
+                  },
                 ),
                 SizedBox(
                   height: 18.0,
                 ),
                 DropdownButtonFormField(
                   decoration: InputDecoration(
-                      labelText: 'Type',
-                      prefixText: _typeValue == null ? 'Select' : '',
+                      labelText: _initProduct['type'].toString().trim().isEmpty
+                          ? 'Type'
+                          : _initProduct['type'],
+                      prefixText: _initProduct['type'].toString().trim().isEmpty
+                          ? (_typeValue == null ? 'Select' : '')
+                          : '',
                       labelStyle: TextStyle(
                         fontWeight: FontWeight.w600,
                         fontSize: 18,
                       ),
                       border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(15.0))),
-                  value: _typeValue,
+                  value: (_initProduct['type'].toString().trim().isEmpty
+                      ? _typeValue
+                      : _initProduct['type']),
                   isDense: true,
-                    items: _type
-                        .map((key, value) {
-                      return MapEntry(
-                          key,
-                          DropdownMenuItem<String>(
-                            value: key,
-                            child: Text(value),
-                          ));
-                    })
-                        .values
-                        .toList(),
+                  items: _type
+                      .map((key, value) {
+                        return MapEntry(
+                            key,
+                            DropdownMenuItem<String>(
+                              value: key,
+                              child: Text(value),
+                            ));
+                      })
+                      .values
+                      .toList(),
                   // items: _type.map((String value) {
                   //   return DropdownMenuItem<String>(
                   //     value: value,
                   //     child: Text(value),
                   //   );
                   // }).toList(),
-                  onChanged: (String newValue) {
+                  onChanged: (newValue) {
                     setState(() {
                       _typeValue = newValue;
+                      _editedData['type'] = newValue;
                     });
                   },
                   validator: (value) {
@@ -277,6 +347,7 @@ class _AddPropertyState extends State<AddProperty> {
                   height: 18.0,
                 ),
                 TextFormField(
+                  //initialValue: _editedData[''],
                   controller: areaCtl,
                   keyboardType: TextInputType.number,
                   style: TextStyle(height: 1.0),
@@ -293,6 +364,9 @@ class _AddPropertyState extends State<AddProperty> {
                     if (value.isEmpty) return 'Area can\'t be empty';
                     return null;
                   },
+                  // onSaved: (value){
+                  //   _editedData['']
+                  // },
                 ),
                 SizedBox(
                   height: 18.0,
@@ -321,16 +395,31 @@ class _AddPropertyState extends State<AddProperty> {
                 ),
                 DropdownButtonFormField(
                   decoration: InputDecoration(
-                      labelText: 'Construction Status',
+                      labelText: _initProduct['construction_status']
+                              .toString()
+                              .trim()
+                              .isEmpty
+                          ? 'Construction Status'
+                          : _initProduct['construction_status'],
                       hintText: 'Select',
-                      prefixText: _statusValue == null ? 'Select' : '',
+                      prefixText: _initProduct['construction_status']
+                              .toString()
+                              .trim()
+                              .isEmpty
+                          ? (_statusValue == null ? 'Select' : '')
+                          : '',
                       labelStyle: TextStyle(
                         fontWeight: FontWeight.w600,
                         fontSize: 18,
                       ),
                       border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(15.0))),
-                  value: _statusValue,
+                  value: _initProduct['construction_status']
+                          .toString()
+                          .trim()
+                          .isEmpty
+                      ? _statusValue
+                      : _initProduct['construction_status'],
                   isDense: true,
                   // items: _status.map((String value) {
                   //   return DropdownMenuItem<String>(
@@ -341,19 +430,19 @@ class _AddPropertyState extends State<AddProperty> {
 
                   items: _status
                       .map((key, value) {
-                    return MapEntry(
-                        key,
-                        DropdownMenuItem<String>(
-                          value: key,
-                          child: Text(value),
-                        ));
-                  })
+                        return MapEntry(
+                            key,
+                            DropdownMenuItem<String>(
+                              value: key,
+                              child: Text(value),
+                            ));
+                      })
                       .values
                       .toList(),
 
-                  onChanged: (String newValue) {
+                  onChanged: (newValue) {
                     setState(() {
-                      _statusValue = newValue;
+                      _editedData['construction_status'] = newValue;
                     });
                   },
                   validator: (value) {
@@ -365,8 +454,9 @@ class _AddPropertyState extends State<AddProperty> {
                   height: 18.0,
                 ),
                 TextFormField(
+                  initialValue: _initProduct['available_from'],
                   keyboardType: TextInputType.datetime,
-                  controller: dateCtl,
+                  // controller: dateCtl,
                   decoration: InputDecoration(
                     suffixIcon: IconButton(
                       icon: Icon(Icons.date_range),
@@ -402,6 +492,9 @@ class _AddPropertyState extends State<AddProperty> {
                     if (value.isEmpty) return 'Date can\'t be empty';
                     return null;
                   },
+                  onSaved: (value) {
+                    _editedData['available_from'] = value;
+                  },
                 ),
                 SizedBox(
                   height: 18.0,
@@ -412,7 +505,10 @@ class _AddPropertyState extends State<AddProperty> {
                       padding: EdgeInsets.symmetric(horizontal: 10.0),
                       width: 155.0,
                       child: Text(
-                        'Rooms : ' + room.toString(),
+                        'Rooms : ' +
+                            (_initProduct['rooms'].toString().trim().isEmpty
+                                ? room.toString()
+                                : _initProduct['rooms'].toString()),
                         style: TextStyle(
                           fontSize: 18.0,
                           fontWeight: FontWeight.w500,
@@ -432,7 +528,7 @@ class _AddPropertyState extends State<AddProperty> {
                           max: 10,
                           onChanged: (value) {
                             setState(() {
-                              room = value.toInt();
+                              _editedData['rooms'] = value.toInt();
                             });
                           },
                         ),
@@ -446,7 +542,10 @@ class _AddPropertyState extends State<AddProperty> {
                       padding: EdgeInsets.symmetric(horizontal: 10.0),
                       width: 155.0,
                       child: Text(
-                        'Bedrooms : ' + bedroom.toString(),
+                        'Bedrooms : ' +
+                            (_initProduct['bedrooms'].toString().trim().isEmpty
+                                ? room.toString()
+                                : _initProduct['bedrooms'].toString()),
                         style: TextStyle(
                           fontSize: 18.0,
                           fontWeight: FontWeight.w500,
@@ -466,7 +565,7 @@ class _AddPropertyState extends State<AddProperty> {
                           max: 10,
                           onChanged: (value) {
                             setState(() {
-                              bedroom = value.toInt();
+                              _editedData['bedrooms'] = value.toInt();
                             });
                           },
                         ),
@@ -480,7 +579,10 @@ class _AddPropertyState extends State<AddProperty> {
                       padding: EdgeInsets.symmetric(horizontal: 10.0),
                       width: 155.0,
                       child: Text(
-                        'Bathrooms : ' + bathroom.toString(),
+                        'Bathrooms : ' +
+                            (_initProduct['bathrooms'].toString().trim().isEmpty
+                                ? room.toString()
+                                : _initProduct['bathrooms'].toString()),
                         style: TextStyle(
                           fontSize: 18.0,
                           fontWeight: FontWeight.w500,
@@ -500,7 +602,7 @@ class _AddPropertyState extends State<AddProperty> {
                           max: 10,
                           onChanged: (value) {
                             setState(() {
-                              bathroom = value.toInt();
+                              _editedData['bathrooms'] = value.toInt();
                             });
                           },
                         ),
@@ -512,7 +614,8 @@ class _AddPropertyState extends State<AddProperty> {
                   height: 18.0,
                 ),
                 TextFormField(
-                  controller: cityCtl,
+                  initialValue: _initProduct['city'],
+                  // controller: cityCtl,
                   keyboardType: TextInputType.text,
                   style: TextStyle(height: 1.0),
                   decoration: InputDecoration(
@@ -528,12 +631,15 @@ class _AddPropertyState extends State<AddProperty> {
                     if (value.isEmpty) return 'City can\'t be empty';
                     return null;
                   },
+                  onSaved: (value) {
+                    _editedData['city'] = value;
+                  },
                 ),
                 SizedBox(
                   height: 18.0,
                 ),
                 TextFormField(
-                  controller: ytVideoLink1,
+                  initialValue: _initProduct['youtube_video'],
                   keyboardType: TextInputType.url,
                   style: TextStyle(height: 1.0),
                   decoration: InputDecoration(
@@ -545,12 +651,15 @@ class _AddPropertyState extends State<AddProperty> {
                     border: OutlineInputBorder(
                         borderRadius: BorderRadius.all(Radius.circular(15.0))),
                   ),
+                  onSaved: (value) {
+                    _editedData['youtube_video'] = value;
+                  },
                 ),
                 SizedBox(
                   height: 18.0,
                 ),
                 TextFormField(
-                  controller: ytVideoLink2,
+                  initialValue: _initProduct['youtube_video_2'],
                   keyboardType: TextInputType.text,
                   style: TextStyle(height: 1.0),
                   decoration: InputDecoration(
@@ -562,7 +671,9 @@ class _AddPropertyState extends State<AddProperty> {
                     border: OutlineInputBorder(
                         borderRadius: BorderRadius.all(Radius.circular(15.0))),
                   ),
-
+                  onSaved: (value) {
+                    _editedData['youtube_video_2'] = value;
+                  },
                 ),
                 SizedBox(
                   height: 18.0,
@@ -637,17 +748,18 @@ class _AddPropertyState extends State<AddProperty> {
                     ),
                   ),
                 ),
-                if(_noImageError)Container(
-                  alignment: Alignment.topLeft,
-                  child: Text(
-                    'Add a featured image',
-                    style: TextStyle(
-                      fontSize: 18.0,
-                      color: Theme.of(context).errorColor,
-                      fontWeight: FontWeight.w500,
+                if (_noImageError)
+                  Container(
+                    alignment: Alignment.topLeft,
+                    child: Text(
+                      'Add a featured image',
+                      style: TextStyle(
+                        fontSize: 18.0,
+                        color: Theme.of(context).errorColor,
+                        fontWeight: FontWeight.w500,
+                      ),
                     ),
                   ),
-                ),
                 SizedBox(
                   height: 18.0,
                 ),
@@ -661,33 +773,33 @@ class _AddPropertyState extends State<AddProperty> {
                     ),
                   ),
                 ),
-                (featuresList.length>0)?ListView.builder(
-                  itemCount: featuresList.length,
-                  physics: NeverScrollableScrollPhysics(),
-                  shrinkWrap: true,
-                  itemBuilder: (context, index){
-                    return CheckboxListTile(value: features.contains(featuresList[index].id),
-                        title: Text(featuresList[index].title, style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w400
-                        ),),
-
-                        onChanged: (_){
-                      if(features.contains(featuresList[index].id)){
-                        setState(() {
-                          features.remove(featuresList[index].id);
-                        });
-
-                      }else{
-                        setState(() {
-
-                          features.add(featuresList[index].id);
-                        });
-                      }
-                        });
-                  },
-                ):
-                    Text('Loading Features...'),
+                (featuresList.length > 0)
+                    ? ListView.builder(
+                        itemCount: featuresList.length,
+                        physics: NeverScrollableScrollPhysics(),
+                        shrinkWrap: true,
+                        itemBuilder: (context, index) {
+                          return CheckboxListTile(
+                              value: features.contains(featuresList[index].id),
+                              title: Text(
+                                featuresList[index].title,
+                                style: TextStyle(
+                                    fontSize: 16, fontWeight: FontWeight.w400),
+                              ),
+                              onChanged: (_) {
+                                if (features.contains(featuresList[index].id)) {
+                                  setState(() {
+                                    features.remove(featuresList[index].id);
+                                  });
+                                } else {
+                                  setState(() {
+                                    features.add(featuresList[index].id);
+                                  });
+                                }
+                              });
+                        },
+                      )
+                    : Text('Loading Features...'),
                 SizedBox(
                   height: 10.0,
                 ),
@@ -702,7 +814,7 @@ class _AddPropertyState extends State<AddProperty> {
                         color: kPrimaryBackgroundColor,
                         textColor: Colors.white,
                         onPressed: () async {
-                          _saveForm();
+                          _saveForm(context);
                         },
                         child: Text('Add'),
                       ),

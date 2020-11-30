@@ -288,11 +288,11 @@ class ApiHelper {
       if (file != null) {
         Map<String, String> headers = {
           HttpHeaders.authorizationHeader: 'Token $_authToken',
-          HttpHeaders.contentTypeHeader:'multipart/form-data'
+          HttpHeaders.contentTypeHeader: 'multipart/form-data'
         };
         var request = new http.MultipartRequest("POST", uri);
         http.MultipartFile multipartFile =
-        await http.MultipartFile.fromPath(fileFieldName, file.path);
+            await http.MultipartFile.fromPath(fileFieldName, file.path);
         request.files.add(multipartFile);
         request.headers.addAll(headers);
 
@@ -331,6 +331,7 @@ class ApiHelper {
       throw e;
     }
   }
+
   //DELETE
   Future<ApiResponse> deleteRequest(
       {String endpoint, Map<String, String> query}) async {
@@ -367,7 +368,7 @@ class ApiHelper {
     } on SocketException catch (error) {
       throw HttpException(message: 'No Internet Connection');
     } catch (e) {
-      throw e;
+      print(e.toString());
     }
   }
 }
