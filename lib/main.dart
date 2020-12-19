@@ -32,7 +32,7 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (ctx) => my_prop.MyProperties()),
-        ChangeNotifierProvider(create: (ctx) => Property())
+        ChangeNotifierProvider(create: (ctx) => Properties())
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

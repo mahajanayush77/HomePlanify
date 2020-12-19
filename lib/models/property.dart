@@ -1,7 +1,10 @@
-class Property {
+import 'package:flutter/cupertino.dart';
+
+class Property extends ChangeNotifier{
   int id;
   String type;
   String property_name;
+  String description;
   String city;
   int bedrooms;
   int bathrooms;
@@ -39,6 +42,7 @@ class Property {
     this.additional_features,
     this.visible,
     this.verified,
+    this.description,
     this.views,
     this.label,
     this.dateadded,
@@ -59,6 +63,7 @@ class Property {
       city: json['city'],
       bedrooms: json['bedrooms'],
       bathrooms: json['bathrooms'],
+      description: json['description'] ?? '',
       rooms: json['rooms'],
       construction_status: json['construction_status'],
       available_from: json['available_from'],
@@ -97,6 +102,7 @@ class Property {
         'verified': verified,
         'views': views,
         'label': label,
+        'description':description,
         'dateadded': dateadded,
         'main_image': main_image,
         'youtube_video': youtube_video,

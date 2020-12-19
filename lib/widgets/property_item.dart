@@ -1,87 +1,12 @@
-import 'package:flutter/cupertino.dart';
+
 import 'package:flutter/material.dart';
 import 'package:housing/models/property.dart';
-import 'package:housing/provider/my_properties.dart' as prop;
-import 'package:housing/provider/properties.dart';
 import 'package:housing/screens/add_property.dart';
 import 'package:housing/screens/home/property_detail.dart';
-import 'package:housing/screens/splash_screen.dart';
-import 'package:housing/utilities/api-response.dart';
-import 'package:housing/utilities/api_endpoints.dart';
-import 'package:housing/utilities/api_helper.dart';
 import 'package:provider/provider.dart';
-import '../data.dart';
-import '../filter.dart';
+import 'package:housing/provider/my_properties.dart' as prop;
 
-class MyProperties extends StatefulWidget {
-  @override
-  _MyPropertiesState createState() => _MyPropertiesState();
-}
-
-class _MyPropertiesState extends State<MyProperties> {
-  Future<ApiResponse> _properties;
-
-  void initState() {
-    // TODO: implement initState
-
-
-    super.initState();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final proper = Provider.of<prop.MyProperties>(context);
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('My Properties'),
-      ),
-      backgroundColor: Colors.white,
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          SizedBox(
-            height: 20.0,
-          ),
-          Expanded(
-            child: Container(
-                padding: EdgeInsets.symmetric(horizontal: 24),
-                child: FutureBuilder(
-                  future: proper.fetchProducts(),
-                  builder: (context, snapshot) {
-                    if (snapshot.hasData) {
-                      return ListView.separated(
-                        separatorBuilder: (context, index) =>
-                            SizedBox(width: 15),
-                        shrinkWrap: true,
-                        itemCount: proper.myProp.length,
-                        itemBuilder: (context, index) {
-                          print(proper.myProp.length);
-                          final property = proper.myProp;
-                          // print(property);
-                          //proper.properties(property);
-                          print(snapshot.data.data.length);
-                          // print(property);
-                          return  ChangeNotifierProvider.value(
-                            value: property[index],
-                            child: Prop(),
-                          );
-
-                        },
-                      );
-                    } else if (snapshot.hasError) {
-                      return Text("error: ${snapshot.error}");
-                    }
-                    return SplashScreen();
-                  },
-                )),
-          )
-        ],
-      ),
-    );
-  }
-}
-
-class Prop extends StatelessWidget {
+class PropertyItem extends StatelessWidget {
 
 
 

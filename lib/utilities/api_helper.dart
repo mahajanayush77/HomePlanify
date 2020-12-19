@@ -332,16 +332,14 @@ class ApiHelper {
     }
   }
 
-  //DELETE
-  Future<ApiResponse> deleteRequest(
-      {String endpoint, Map<String, String> query}) async {
+  Future<ApiResponse> deleteRequest ({String endpoint}) async{
     if (_authToken.isEmpty || _authToken == null) {
       print('not logged in');
       return ApiResponse(error: true, errorMessage: 'User not logged in');
     }
     try {
       //final url = '$_baseUrl$endpoint';
-      final uri = Uri.https(_baseUrl, endpoint, query);
+      final uri = Uri.https(_baseUrl, endpoint);
       print(uri);
       final response = await http.delete(
         uri,
@@ -350,11 +348,14 @@ class ApiHelper {
         },
       );
 
-      if (response.statusCode == 200) {
+      print(response.statusCode);
+      if (response.statusCode == 200 || response.statusCode == 201) {
         if (response.body != null)
           return ApiResponse(data: jsonDecode(response.body));
-        return ApiResponse(data: 'Success Code 2000');
+        return ApiResponse(data: 'Success Code 200');
       } else {
+        print(response.body);
+        print(response.statusCode);
         Map<String, dynamic> data = jsonDecode(response.body);
         String error = 'Error occurred';
         data.keys.forEach((String key) {
@@ -368,7 +369,9 @@ class ApiHelper {
     } on SocketException catch (error) {
       throw HttpException(message: 'No Internet Connection');
     } catch (e) {
-      print(e.toString());
+      throw e;
     }
-  }
+}
+
+
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:housing/provider/properties.dart';
 import 'package:housing/screens/home/property_detail.dart';
 import 'package:housing/screens/splash_screen.dart';
 import 'package:housing/screens/webview.dart';
@@ -6,6 +7,8 @@ import 'package:housing/utilities/api-response.dart';
 import 'package:housing/utilities/api_endpoints.dart';
 import 'package:housing/utilities/api_helper.dart';
 import 'package:housing/widgets/hot_deal_card.dart';
+import 'package:housing/widgets/search_widget.dart';
+import 'package:provider/provider.dart';
 
 class Hotels_List extends StatefulWidget {
   @override
@@ -30,10 +33,19 @@ class _Hotels_ListState extends State<Hotels_List> {
     featuredProperties = ApiHelper().getWithoutAuthRequest(
       endpoint: eFeaturedProperties,
     );
+
+
+
     investProperties = ApiHelper().getWithoutAuthRequest(
       endpoint: eInvestProperties,
     );
     super.initState();
+  }
+  @override
+  void didChangeDependencies() {
+    final proper = Provider.of<Properties>(context);
+    proper.fetchAllProperties();
+    super.didChangeDependencies();
   }
 
   @override
@@ -57,6 +69,9 @@ class _Hotels_ListState extends State<Hotels_List> {
                       borderRadius: BorderRadius.circular(25),
                       elevation: 7,
                       child: TextField(
+                        onTap: (){
+                          showSearch(context: context, delegate: SearchProperties());
+                        },
                         onChanged: (text) {},
                         decoration: InputDecoration(
                           prefixIcon: Icon(Icons.search),
