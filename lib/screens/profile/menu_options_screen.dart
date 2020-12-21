@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:housing/utilities/api_helper.dart';
 import './option_model.dart';
 import '../../constant.dart';
 import 'package:housing/widgets/bottom_bar.dart';
@@ -38,13 +39,46 @@ class _MenuOptionsScreenState extends State<MenuOptionsScreen> {
           if (index == 0) {
             return SizedBox(height: 15.0);
           } else if (index == options.length + 1) {
+            return Container(
+              alignment: Alignment.center,
+              margin: EdgeInsets.fromLTRB(10, 5, 10, 5),
+              width: double.infinity,
+              height: 60.0,
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(10.0),
+                border: _selectedOption == index - 1
+                    ? Border.all(color: Colors.black26)
+                    : null,
+              ),
+              child: ListTile(
+
+                leading: Icon(Icons.logout, size: 40.0),
+                title: Text(
+                  "Logout",
+                  style: TextStyle(
+                    color: _selectedOption == index - 1
+                        ? Colors.black
+                        : Colors.grey[600],
+                  ),
+                ),
+
+                selected: _selectedOption == index - 1,
+                onTap: () async {
+                  await ApiHelper().logOut().then((_) {
+                    Navigator.of(context).pushNamedAndRemoveUntil(
+                        '/login', (Route<dynamic> route) => false);
+                  });
+                }
+              ),
+            );
             return SizedBox(height: 50.0);
           }
           return Container(
             alignment: Alignment.center,
             margin: EdgeInsets.fromLTRB(10, 5, 10, 5),
             width: double.infinity,
-            height: 80.0,
+            height: 60.0,
             decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.circular(10.0),
@@ -63,13 +97,13 @@ class _MenuOptionsScreenState extends State<MenuOptionsScreen> {
                       : Colors.grey[600],
                 ),
               ),
-              subtitle: Text(
-                options[index - 1].subtitle,
-                style: TextStyle(
-                  color:
-                      _selectedOption == index - 1 ? Colors.black : Colors.grey,
-                ),
-              ),
+              // subtitle: Text(
+              //   options[index - 1].subtitle,
+              //   style: TextStyle(
+              //     color:
+              //         _selectedOption == index - 1 ? Colors.black : Colors.grey,
+              //   ),
+              // ),
               selected: _selectedOption == index - 1,
               onTap: () {
                 setState(() {

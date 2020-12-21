@@ -33,22 +33,22 @@ final options = [
     subtitle: 'Lorem ipsum dolor sit amet, consect.',
     gesturelink: '/contactUs',
   ),
-  Option(
-    icon: Icon(Icons.wysiwyg_rounded, size: 40.0),
-    title: 'F.A.Q.',
-    subtitle: 'Lorem ipsum dolor sit amet, consect.',
-    gesturelink: '/faq',
-  ),
+  // Option(
+  //   icon: Icon(Icons.wysiwyg_rounded, size: 40.0),
+  //   title: 'F.A.Q.',
+  //   subtitle: 'Lorem ipsum dolor sit amet, consect.',
+  //   gesturelink: '/faq',
+  // ),
   Option(
     icon: Icon(Icons.lock_rounded, size: 40.0),
     title: 'Change Passsword',
     subtitle: 'Lorem ipsum dolor sit amet, consect.',
     gesturelink: '/change_password',
   ),
-  Option(
-    icon: Icon(Icons.logout, size: 40.0),
-    title: 'Log Out',
-    subtitle: 'Lorem ipsum dolor sit amet, consect.',
-    gesturelink: '/logout',
-  ),
+  // Option(
+  //   icon: Icon(Icons.logout, size: 40.0),
+  //   title: 'Log Out',
+  //   subtitle: 'Lorem ipsum dolor sit amet, consect.',
+  //   gesturelink: '/logout',
+  // ),
 ];

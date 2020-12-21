@@ -9,6 +9,8 @@ import 'package:housing/screens/home/featured_projects.dart';
 import 'package:housing/screens/home/invest_properties.dart';
 
 import 'package:housing/screens/profile/bookmarks.dart';
+import 'package:housing/screens/profile/change_password.dart';
+import 'package:housing/screens/profile/my_profile.dart';
 import 'package:housing/screens/profile/my_properties.dart';
 import 'package:housing/screens/home/home_page.dart';
 import 'package:housing/screens/news_page.dart';
@@ -53,12 +55,12 @@ class MyApp extends StatelessWidget {
           '/news': (context) => news_page(),
           '/addProperty': (context) => AddProperty(),
           '/profile': (context) => MenuOptionsScreen(),
-          '/account_profile': (context) => MenuOptionsScreen(),
+          '/account_profile': (context) => MyProfile(),
           '/bookmarks': (context) => Bookmarks(),
           '/my_properties': (context) => MyProperties(),
           '/contactUs': (context) => ContactUs(),
           '/faq': (context) => MyProperties(),
-          '/change_password': (context) => MyProperties(),
+          '/change_password': (context) => ChangePassword(),
           '/logout': (context) => MyProperties(),
         },
       ),

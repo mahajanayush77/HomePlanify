@@ -204,6 +204,47 @@ class ApiHelper {
           if (key.contains('error')) {
             error = data[key][0];
             print(error);
+          }else{
+            error = data[key][0];
+          }
+
+        });
+        return ApiResponse(error: true, errorMessage: error);
+      }
+    } on SocketException catch (error) {
+      throw HttpException(message: 'No Internet Connection');
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  // PUT
+  Future<ApiResponse> patchRequest(
+      String endpoint, Map<String, dynamic> data) async {
+    if (_authToken.isEmpty || _authToken == null) {
+      return ApiResponse(error: true, errorMessage: 'User not logged in');
+    }
+    try {
+//      final url = '$_baseUrl$endpoint';
+      final uri = Uri.https(_baseUrl, endpoint);
+
+      final response = await http.patch(uri,
+          headers: {
+            HttpHeaders.authorizationHeader: 'Token $_authToken',
+          },
+          body: data);
+//      print('code is ${response.statusCode}');
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        return ApiResponse(data: jsonDecode(response.body));
+      } else {
+        print(response.body);
+        print(response.statusCode);
+        Map<String, dynamic> data = jsonDecode(response.body);
+        String error = 'Error occurred';
+        data.keys.forEach((String key) {
+          if (key.contains('error')) {
+            error = data[key][0];
+            print(error);
           }
         });
         return ApiResponse(error: true, errorMessage: error);
@@ -215,8 +256,9 @@ class ApiHelper {
     }
   }
 
-  //PATCH
-  Future<ApiResponse> patchRequest(
+
+  //PATCH WITH FIILE
+  Future<ApiResponse> patchRequestwithFile(
       {String endpoint, var data, File file, String fileFieldName}) async {
     if (_authToken.isEmpty || _authToken == null) {
       return ApiResponse(error: true, errorMessage: 'User not logged in');
@@ -332,6 +374,7 @@ class ApiHelper {
     }
   }
 
+  // DELETE
   Future<ApiResponse> deleteRequest ({String endpoint}) async{
     if (_authToken.isEmpty || _authToken == null) {
       print('not logged in');

@@ -115,7 +115,7 @@ class _ArticleOnePageState extends State<ArticleOnePage> {
     String image = images[1];
     return Scaffold(
         appBar: AppBar(
-          title: Text('Lorem Ipsum'),
+          title: Text(data[index]['title']),
         ),
         body: ListView.builder(
             itemCount: data == null ? 0 : 1,
@@ -133,15 +133,18 @@ class _ArticleOnePageState extends State<ArticleOnePage> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
+                        SizedBox(
+                          height: 10.0,
+                        ),
                         Row(
                           children: <Widget>[
                             Expanded(
                               child: Text(data[index]['date']),
                             ),
-                            IconButton(
-                              icon: Icon(Icons.share),
-                              onPressed: () {},
-                            )
+                            // IconButton(
+                            //   icon: Icon(Icons.share),
+                            //   onPressed: () {},
+                            // )
                           ],
                         ),
                         Text(
@@ -153,23 +156,23 @@ class _ArticleOnePageState extends State<ArticleOnePage> {
                         SizedBox(
                           height: 10.0,
                         ),
-                        Row(
-                          children: <Widget>[
-                            Icon(Icons.favorite_border),
-                            SizedBox(
-                              width: 5.0,
-                            ),
-                            Text("20.2k"),
-                            SizedBox(
-                              width: 16.0,
-                            ),
-                            Icon(Icons.comment),
-                            SizedBox(
-                              width: 5.0,
-                            ),
-                            Text("2.2k"),
-                          ],
-                        ),
+                        // Row(
+                        //   children: <Widget>[
+                        //     Icon(Icons.favorite_border),
+                        //     SizedBox(
+                        //       width: 5.0,
+                        //     ),
+                        //     Text("20.2k"),
+                        //     SizedBox(
+                        //       width: 16.0,
+                        //     ),
+                        //     Icon(Icons.comment),
+                        //     SizedBox(
+                        //       width: 5.0,
+                        //     ),
+                        //     Text("2.2k"),
+                        //   ],
+                        // ),
                         SizedBox(
                           height: 10.0,
                         ),

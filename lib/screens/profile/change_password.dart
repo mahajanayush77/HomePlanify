@@ -10,67 +10,30 @@ import 'package:housing/utilities/api_helper.dart';
 import 'package:housing/widgets/bottom_bar.dart';
 import 'package:housing/utilities/http_exception.dart';
 
-class MyProfile extends StatefulWidget {
+class ChangePassword extends StatefulWidget {
   // static const routeName = '/ContactUs';
 
   @override
-  _MyProfileState createState() => _MyProfileState();
+  _ChangePasswordState createState() => _ChangePasswordState();
 }
 
-class _MyProfileState extends State<MyProfile> {
+class _ChangePasswordState extends State<ChangePassword> {
   bool _isLoading = false;
+  bool _isOldPasswordHidden = true;
+  bool _isNewPasswordHidden = true;
+  bool _isConfirmPasswordHidden = true;
 
   final _formKey = GlobalKey<FormState>();
-  final TextEditingController firstnameCtl = TextEditingController();
-  final TextEditingController lastnameCtl = TextEditingController();
-  final TextEditingController emailCtl = TextEditingController();
-  final TextEditingController mobileCtl = TextEditingController();
-
+  final TextEditingController oldPasswordCtl = TextEditingController();
+  final TextEditingController newPasswordCtl = TextEditingController();
+  final TextEditingController confirmPasswordCtl = TextEditingController();
 
   Future<ApiResponse> _response;
 
   @override
   void initState() {
-    // profile = EmployeeProfile();
 
-    _fetchData();
     super.initState();
-  }
-
-  _fetchData() async {
-    setState(() {
-      _isLoading = true;
-    });
-    try {
-      ApiResponse response;
-      response =await ApiHelper().getRequest(
-        endpoint: eUser,
-      );
-      print(response.errorMessage);
-      final Map<String, dynamic> profile = response.data;
-      print(profile);
-      setState(() {
-        firstnameCtl.text = profile['first_name'];
-        lastnameCtl.text = profile['last_name'];
-        emailCtl.text = profile['email'];
-        mobileCtl.text = profile['mobile'];
-
-      });
-    } on HttpException catch (error) {
-      Flushbar(
-        message: '${error.toString()}',
-        duration: Duration(seconds: 3),
-      )..show(context);
-    } catch (error) {
-      print(error);
-      Flushbar(
-        message: 'Failed to load profile.',
-        duration: Duration(seconds: 3),
-      )..show(context);
-    }
-    setState(() {
-      _isLoading = false;
-    });
   }
 
   void _saveForm() async {
@@ -81,25 +44,25 @@ class _MyProfileState extends State<MyProfile> {
     setState(() {
       _isLoading = true;
     });
-
     Map<String, dynamic> data = {
-      'first_name': firstnameCtl.text,
-      'last_name': lastnameCtl.text,
-      'email': emailCtl.text,
-      'mobile': mobileCtl.text,
+      'new_password1': newPasswordCtl.text,
+      'new_password2': confirmPasswordCtl.text,
+      'old_password': oldPasswordCtl.text,
     };
-
+    print(data);
     try {
-      final ApiResponse response = await ApiHelper().patchRequest(
-        '$eUser',
+      final ApiResponse response = await ApiHelper().postRequest(
+        '$eChangePassword',
         data,
       );
       if (!response.error) {
         Flushbar(
-          message: 'Updated successfully!',
+          message: 'Password Updated Successfully!',
           duration: Duration(seconds: 3),
         )..show(context);
-
+      newPasswordCtl.clear();
+      oldPasswordCtl.clear();
+      confirmPasswordCtl.clear();
       } else {
         Flushbar(
           message: response.errorMessage ?? 'Unable to Update',
@@ -124,7 +87,7 @@ class _MyProfileState extends State<MyProfile> {
     final size = DeviceSize(context: context);
 
     final MaterialLocalizations localizations =
-        MaterialLocalizations.of(context);
+    MaterialLocalizations.of(context);
 
     return Scaffold(
       appBar: AppBar(
@@ -143,44 +106,61 @@ class _MyProfileState extends State<MyProfile> {
               children: [
                 Container(
                     child: Center(
-                  child: Text(
-                    "HomePlanify",
-                    style: TextStyle(
-                      color: kPrimaryBackgroundColor,
-                      fontSize: 30,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                )),
+                      child: Text(
+                        "HomePlanify",
+                        style: TextStyle(
+                          color: kPrimaryBackgroundColor,
+                          fontSize: 30,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    )),
                 Container(
                     child: Center(
-                  child: Text(
-                    "Your data is safe with us!",
-                    style: TextStyle(
-                      color: Colors.black54,
-                      fontSize: 25,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                )),
+                      child: Text(
+                        "Your data is safe with us!",
+                        style: TextStyle(
+                          color: Colors.black54,
+                          fontSize: 25,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    )),
                 SizedBox(
                   height: 20.0,
                 ),
                 TextFormField(
-                  controller: firstnameCtl,
+                  obscureText: _isOldPasswordHidden,
+                  controller: oldPasswordCtl,
                   keyboardType: TextInputType.text,
                   style: TextStyle(height: 1.0),
                   decoration: InputDecoration(
-                    labelText: 'First Name',
+                    labelText: "Old Password",
                     labelStyle: TextStyle(
                       fontWeight: FontWeight.w600,
                       fontSize: 18,
                     ),
+                    prefixIcon: Icon(
+                      Icons.lock,
+                    ),
+                    suffixIcon: IconButton(
+                      icon: Icon(_isOldPasswordHidden
+                          ? Icons.visibility
+                          : Icons.visibility_off),
+                      onPressed: () {
+                        setState(() {
+                          _isOldPasswordHidden = !_isOldPasswordHidden;
+                        });
+                      },
+                    ),
                     border: OutlineInputBorder(
                         borderRadius: BorderRadius.all(Radius.circular(15.0))),
+
                   ),
                   validator: (value) {
-                    if (value.isEmpty) return 'First Name can\'t be empty';
+                    if (value.isEmpty) {
+                      return 'Password can\'t be empty';
+                    }
                     return null;
                   },
                 ),
@@ -188,20 +168,37 @@ class _MyProfileState extends State<MyProfile> {
                   height: 18.0,
                 ),
                 TextFormField(
-                  controller: lastnameCtl,
+                  obscureText: _isNewPasswordHidden,
+                  controller: newPasswordCtl,
                   keyboardType: TextInputType.text,
                   style: TextStyle(height: 1.0),
                   decoration: InputDecoration(
-                    labelText: 'Last Name',
+                    labelText: "New Password",
                     labelStyle: TextStyle(
                       fontWeight: FontWeight.w600,
                       fontSize: 18,
                     ),
+                    prefixIcon: Icon(
+                      Icons.lock,
+                    ),
+                    suffixIcon: IconButton(
+                      icon: Icon(_isNewPasswordHidden
+                          ? Icons.visibility
+                          : Icons.visibility_off),
+                      onPressed: () {
+                        setState(() {
+                          _isNewPasswordHidden = !_isNewPasswordHidden;
+                        });
+                      },
+                    ),
                     border: OutlineInputBorder(
                         borderRadius: BorderRadius.all(Radius.circular(15.0))),
+
                   ),
                   validator: (value) {
-                    if (value.isEmpty) return 'Last Name can\'t be empty';
+                    if (value.length < 6) {
+                      return 'Password should contain atleast 6 characters.';
+                    }
                     return null;
                   },
                 ),
@@ -209,41 +206,37 @@ class _MyProfileState extends State<MyProfile> {
                   height: 18.0,
                 ),
                 TextFormField(
-                  controller: mobileCtl,
-                  keyboardType: TextInputType.number,
+                  obscureText: _isConfirmPasswordHidden,
+                  controller: confirmPasswordCtl,
+                  keyboardType: TextInputType.text,
                   style: TextStyle(height: 1.0),
                   decoration: InputDecoration(
-                    labelText: 'Mobile',
+                    labelText: "Confirm Password",
                     labelStyle: TextStyle(
                       fontWeight: FontWeight.w600,
                       fontSize: 18,
                     ),
-                    border: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(15.0))),
-                  ),
-                  validator: (value) {
-                    if (value.length != 10) return 'Mobile Number should be exactly 10 digits.';
-                    return null;
-                  },
-                ),
-                SizedBox(
-                  height: 18.0,
-                ),
-                TextFormField(
-                  controller: emailCtl,
-                  keyboardType: TextInputType.emailAddress,
-                  style: TextStyle(height: 1.0),
-                  decoration: InputDecoration(
-                    labelText: 'Email',
-                    labelStyle: TextStyle(
-                      fontWeight: FontWeight.w600,
-                      fontSize: 18,
+                    prefixIcon: Icon(
+                      Icons.lock,
+                    ),
+                    suffixIcon: IconButton(
+                      icon: Icon(_isConfirmPasswordHidden
+                          ? Icons.visibility
+                          : Icons.visibility_off),
+                      onPressed: () {
+                        setState(() {
+                          _isConfirmPasswordHidden = !_isConfirmPasswordHidden;
+                        });
+                      },
                     ),
                     border: OutlineInputBorder(
                         borderRadius: BorderRadius.all(Radius.circular(15.0))),
+
                   ),
                   validator: (value) {
-                    if (value.isEmpty) return 'Email can\'t be empty';
+                    if (value != newPasswordCtl.text) {
+                      return 'Password doesn\'t match.';
+                    }
                     return null;
                   },
                 ),
@@ -256,19 +249,19 @@ class _MyProfileState extends State<MyProfile> {
                 ),
                 (_isLoading)
                     ? SpinKitThreeBounce(
-                        color: Theme.of(context).primaryColor,
-                      )
+                  color: Theme.of(context).primaryColor,
+                )
                     : MaterialButton(
-                        height: 30,
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(18.0)),
-                        color: kPrimaryBackgroundColor,
-                        textColor: Colors.white,
-                        onPressed: () async {
-                          _saveForm();
-                        },
-                        child: Text('Update'),
-                      ),
+                  height: 30,
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(18.0)),
+                  color: kPrimaryBackgroundColor,
+                  textColor: Colors.white,
+                  onPressed: () async {
+                    _saveForm();
+                  },
+                  child: Text('Update'),
+                ),
               ],
             ),
           ),

@@ -100,21 +100,15 @@ class _news_pageState extends State<news_page> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: <Widget>[
                                   Text(
-                                    data[index]["slug"],
+                                    data[index]["title"],
                                     style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17.0),
                                     maxLines: 1,
                                   ),
                                   const SizedBox(height: 5.0),
                                   Text(
-                                    data[index]["title"],
-                                    style: TextStyle(fontWeight: FontWeight.bold),
-                                    maxLines: 1,
-                                  ),
-                                  const SizedBox(height: 10.0),
-                                  Text(
                                     data[index]["content"],
                                     style: TextStyle(),
-                                    maxLines: 2,
+                                    maxLines: 3,
                                   ),
                                 ],
                               ),
@@ -126,14 +120,6 @@ class _news_pageState extends State<news_page> {
                   ),
                 ),
 
-                _buildItem(color: Colors.green.shade200),
-                _buildItem(color: Colors.red.shade200),
-                _buildItem(color: Colors.blue.shade200),
-                _buildItem(color: Colors.red.shade200),
-                _buildItem(color: Colors.green.shade200),
-                _buildItem(color: Colors.red.shade200),
-                _buildItem(color: Colors.blue.shade200),
-                _buildItem(color: Colors.red.shade200),
               ],
             ),
           );
