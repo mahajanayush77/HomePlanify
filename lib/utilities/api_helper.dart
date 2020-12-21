@@ -66,6 +66,45 @@ class ApiHelper {
     return token.isNotEmpty;
   }
 
+  Future<void> SignUp(Map data) async {
+    var responseBody = json.decode('{"data": "", "status": "NOK"}');
+
+    try {
+//      final url = '$_baseUrl$eLogIn';
+      final uri = Uri.https(_baseUrl, eSignUp);
+      print(uri);
+      final response = await http.post(uri, body: data);
+      print(response.statusCode);
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        print('201 ran');
+        responseBody = jsonDecode(response.body);
+        //print(responseBody);
+        await _setAuthToken(responseBody['key']);
+        await _setUID(responseBody['user'].toString());
+        //print('uID is: $_userID');
+      } else {
+        Map<String, dynamic> data = jsonDecode(response.body);
+
+        String error = 'Error occurred';
+        data.keys.forEach((String key) {
+          if (key.contains('error')) {
+            error = data[key][0];
+            print(error);
+          } else {
+            error = data[key][0];
+            print(error);
+            print(data);
+          }
+        });
+        throw HttpException(message: error);
+      }
+    } on SocketException catch (error) {
+      throw HttpException(message: 'No Internet Connection');
+    } catch (e) {
+      throw e;
+    }
+  }
+
   Future<void> logIn(Map data) async {
     var responseBody = json.decode('{"data": "", "status": "NOK"}');
 

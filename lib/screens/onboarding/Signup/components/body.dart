@@ -1,5 +1,7 @@
 import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:housing/components/Onboarding/text_field_container.dart';
 import 'package:housing/constant.dart';
 import '../../Login/login_screen.dart';
 import './background.dart';
@@ -20,15 +22,21 @@ class Body extends StatefulWidget {
 }
 
 class _BodyState extends State<Body> {
-  final TextEditingController emailCtl = TextEditingController();
-
-  final TextEditingController passwordCtl = TextEditingController();
   final _formKey = GlobalKey<FormState>();
   bool _isLoading = false;
-
   bool _isPasswordHidden = true;
   var _email;
   var _password;
+
+
+  final TextEditingController emailCtl = TextEditingController();
+  final TextEditingController passwordCtl = TextEditingController();
+
+
+
+
+
+
 
   _signUp() async {
     final isValid = _formKey.currentState.validate();
@@ -54,7 +62,7 @@ class _BodyState extends State<Body> {
     } catch (error) {
       print(error);
       Flushbar(
-        message: "Error Logging In",
+        message: "Error Signing Up",
         duration: Duration(seconds: 3),
       )..show(context);
     }
@@ -69,7 +77,6 @@ class _BodyState extends State<Body> {
     Size size = MediaQuery.of(context).size;
     return Background(
       child: SingleChildScrollView(
-
         child: Form(
           key: _formKey,
           child: Column(
@@ -90,33 +97,45 @@ class _BodyState extends State<Body> {
                 },
                 hintText: "Your Email",
               ),
-              TextField(
-                controller: passwordCtl,
-                obscureText: _isPasswordHidden,
-                cursorColor: kPrimaryColor,
-                decoration: InputDecoration(
-                  hintText: "Password",
-                  icon: Icon(
-                    Icons.lock,
-                    color: kPrimaryColor,
+              TextFieldContainer(
+                child: TextFormField(
+                  obscureText: _isPasswordHidden,
+                  cursorColor: kPrimaryColor,
+                  decoration: InputDecoration(
+                    hintText: "Password",
+                    icon: Icon(
+                      Icons.lock,
+                      color: kPrimaryColor,
+                    ),
+                    suffixIcon: IconButton(
+                      icon: Icon(_isPasswordHidden
+                          ? Icons.visibility
+                          : Icons.visibility_off),
+                      color: kPrimaryColor,
+                      onPressed: () {
+                        setState(() {
+                          _isPasswordHidden = !_isPasswordHidden;
+                        });
+                      },
+                    ),
+                    border: InputBorder.none,
                   ),
-                  suffixIcon: IconButton(
-                    icon: Icon(_isPasswordHidden
-                        ? Icons.visibility
-                        : Icons.visibility_off),
-                    color: kPrimaryColor,
-                    onPressed: () {
-                      setState(() {
-                        _isPasswordHidden = !_isPasswordHidden;
-                      });
-                    },
-                  ),
-                  border: InputBorder.none,
+                  onSaved: (value) {
+                    _password = value;
+                  },
+                  validator: (value) {
+                    if (value.length < 6) {
+                      return 'Password should contain atleast 6 characters.';
+                    }
+                    return null;
+                  },
                 ),
-
               ),
+
               (_isLoading)
-                  ? CircularProgressIndicator()
+                  ? SpinKitThreeBounce(
+                color: Theme.of(context).primaryColor,
+              )
               : RoundedButton(
                 text: "SIGNUP",
                 press: () {

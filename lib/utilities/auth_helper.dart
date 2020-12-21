@@ -12,11 +12,15 @@ Future<void> SignUp(String email, String password) async {
   print('email: $email password: $password');
   Map<String, String> data = {
     'email': email,
+    'username': email,
     'password1': password,
     'password2': password,
+    'mobile': "",
+    'first_name': "",
+    'last_name': "",
   };
   try {
-    await ApiHelper().logIn(data);
+    await ApiHelper().SignUp(data);
   } on HttpException catch (error) {
     throw HttpException(message: error.toString());
   } catch (error) {

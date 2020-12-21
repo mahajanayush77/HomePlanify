@@ -1,5 +1,6 @@
 import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:housing/components/Onboarding/text_field_container.dart';
 import 'package:housing/constant.dart';
 import 'package:housing/utilities/api_helper.dart';
@@ -118,7 +119,9 @@ class _BodyState extends State<Body> {
                 ),
               ),
               (_isLoading)
-                  ? CircularProgressIndicator()
+                  ? SpinKitThreeBounce(
+                color: Theme.of(context).primaryColor,
+              )
                   : RoundedButton(
                       text: "LOGIN",
                       press: () {
