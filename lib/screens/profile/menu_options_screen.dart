@@ -19,19 +19,19 @@ class _MenuOptionsScreenState extends State<MenuOptionsScreen> {
       appBar: AppBar(
         backgroundColor: kPrimaryBackgroundColor,
         title: Text('Profile'),
-        actions: <Widget>[
-          FlatButton(
-            textColor: Colors.white,
-            child: Text(
-              'HELP',
-              style: TextStyle(
-                fontSize: 16.0,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            onPressed: () => print('HELP'),
-          )
-        ],
+        // actions: <Widget>[
+        //   FlatButton(
+        //     textColor: Colors.white,
+        //     child: Text(
+        //       'HELP',
+        //       style: TextStyle(
+        //         fontSize: 16.0,
+        //         fontWeight: FontWeight.bold,
+        //       ),
+        //     ),
+        //     onPressed: () => print('HELP'),
+        //   )
+        // ],
       ),
       body: ListView.builder(
         itemCount: options.length + 2,

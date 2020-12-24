@@ -342,10 +342,13 @@ class _DetailState extends State<Detail> {
                                       shape: BoxShape.circle,
                                     ),
                                     child: Center(
-                                      child: Icon(
-                                        Icons.message,
+                                      child: IconButton(
+                                        icon: Icon(
+                                        Icons.message),
                                         color: Colors.yellow[700],
-                                        size: 20,
+                                        iconSize: 20,
+                                        onPressed: ()=> {
+                                          launch("whatsapp://send?phone=919999998627"),}
                                       ),
                                     ),
                                   ),

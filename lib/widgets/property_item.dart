@@ -81,33 +81,7 @@ class PropertyItem extends StatelessWidget {
                         ),
                       ),
                     ),
-                    Expanded(
-                      flex: 2,
-                      child: Column(
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: [
-                              IconButton(
-                                icon: Icon(Icons.edit),
-                                color: Colors.black,
-                                onPressed: () {
-                                  Navigator.of(context)
-                                      .pushReplacementNamed(
-                                      AddProperty.routeName,
-                                      arguments: property.id);
-                                },
-                              ),
-                              IconButton(
-                                icon: Icon(Icons.delete),
-                                color: Colors.red,
-                                onPressed: () => proper.deleteProperty(property.id),
-                              ),
-                            ],
-                          )
-                        ],
-                      ),
-                    ),
+
                     // Expanded(
                     //   flex: 1,
                     //   child: Column(
@@ -179,21 +153,7 @@ class PropertyItem extends StatelessWidget {
                             SizedBox(
                               width: 8,
                             ),
-                            Icon(
-                              Icons.zoom_out_map,
-                              color: Colors.white,
-                              size: 16,
-                            ),
-                            SizedBox(
-                              width: 4,
-                            ),
-                            Text(
-                              property.bedrooms.toString(),
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 14,
-                              ),
-                            ),
+
                           ],
                         ),
                         Row(

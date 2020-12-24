@@ -52,6 +52,7 @@ class _InvestPropertiesState extends State<InvestProperties> {
                         return InvestProp(
                           title: item['title'],
                           image: item['image'],
+                          link: item['link'],
                         );
                       },
                     );
@@ -116,20 +117,21 @@ class InvestProp extends StatelessWidget {
                 ],
               ),
             ),
-            IconButton(
-              icon: Icon(
-                Icons.arrow_forward,
-                size: 24,
+            if (link != null)
+              IconButton(
+                icon: Icon(
+                  Icons.arrow_forward,
+                  size: 24,
+                ),
+                color: Colors.white,
+                onPressed: () {
+                  Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => WebScreen(
+                      url: link,
+                    ),
+                  ));
+                },
               ),
-              color: Colors.white,
-              onPressed: () {
-                Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => WebScreen(
-                    url: link,
-                  ),
-                ));
-              },
-            ),
           ],
         ),
       ),
