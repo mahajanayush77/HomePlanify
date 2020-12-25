@@ -78,7 +78,7 @@ class _bottom_barState extends State<bottom_bar> {
             onPressed: () async {
               updateUI(1);
               var result = await AuthHelper.autoLogin();
-              if (true)
+              if (result)
                 Navigator.pushReplacementNamed(context, AddProperty.routeName);
               else
                 Navigator.pushNamed(context, '/login');

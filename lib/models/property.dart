@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 
-class Property extends ChangeNotifier{
+class Property extends ChangeNotifier {
   int id;
   String type;
   String property_name;
@@ -109,7 +109,7 @@ class Property extends ChangeNotifier{
         'verified': verified,
         'views': views,
         'label': label,
-        'description':description,
+        'description': description,
         'dateadded': dateadded,
         'main_image': main_image,
         'youtube_video': youtube_video,

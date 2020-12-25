@@ -1,5 +1,5 @@
-class Feature{
-  String id;
+class Feature {
+  int id;
   String title;
   String description;
 
