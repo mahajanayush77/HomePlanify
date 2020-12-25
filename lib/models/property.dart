@@ -26,6 +26,9 @@ class Property extends ChangeNotifier{
   bool featured;
   int owner;
   List features;
+  List photos;
+  List property_features;
+
 
   Property({
     this.id,
@@ -53,6 +56,8 @@ class Property extends ChangeNotifier{
     this.featured,
     this.owner,
     this.features,
+    this.photos,
+    this.property_features,
   });
 
   factory Property.fromJson(Map<String, dynamic> json) {
@@ -82,6 +87,8 @@ class Property extends ChangeNotifier{
       featured: json['featured'],
       owner: json['owner'],
       features: json['features'],
+      photos: json['photos'],
+      property_features: json['property_features'],
     );
   }
 
@@ -111,5 +118,8 @@ class Property extends ChangeNotifier{
         'featured': featured,
         'owner': owner,
         'features': features,
+        'photos': photos,
+        'property_features': property_features,
+
       };
 }

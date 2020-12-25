@@ -6,6 +6,10 @@ import 'package:housing/utilities/api-response.dart';
 import 'package:housing/utilities/api_endpoints.dart';
 import 'package:housing/utilities/api_helper.dart';
 import 'package:url_launcher/url_launcher.dart';
+import '../../utilities/auth_helper.dart' as AuthHelper;
+import 'package:flushbar/flushbar.dart';
+import 'package:housing/utilities/http_exception.dart';
+
 
 class Detail extends StatefulWidget {
   int id;
@@ -53,6 +57,88 @@ class _DetailState extends State<Detail> {
     ],
   );
 
+  void add_to_bookmarks() async {
+    // setState(() {
+    //   _isLoading = true;
+    // });
+    try {
+      ApiResponse response;
+      String endpointaddbookmark;
+
+      endpointaddbookmark = eProperties + id.toString() + "/add_to_bookmarks/";
+      print(endpointaddbookmark);
+      response =await ApiHelper().getRequest(
+        endpoint: endpointaddbookmark,
+      );
+      print(response.data);
+      print(response.errorMessage);
+      final Map<String, dynamic> bookmarks = response.data;
+
+      Flushbar(
+        message: 'Bookmarked',
+        duration: Duration(seconds: 3),
+      )..show(context);
+      setState(() {
+        // property2.bookmarked = true;
+      });
+    } on HttpException catch (error) {
+      Flushbar(
+        message: '${error.toString()}',
+        duration: Duration(seconds: 3),
+      )..show(context);
+    } catch (error) {
+      print(error);
+      Flushbar(
+        message: 'Failed to Bookmark.',
+        duration: Duration(seconds: 3),
+      )..show(context);
+    }
+    // setState(() {
+    //   _isLoading = false;
+    // });
+  }
+
+  void remove_from_bookmarks() async {
+    // setState(() {
+    //   _isLoading = true;
+    // });
+    try {
+      ApiResponse response;
+      String endpointaddbookmark;
+      endpointaddbookmark = eProperties + id.toString() + "/remove_from_bookmarks/";
+      print(endpointaddbookmark);
+      response =await ApiHelper().getRequest(
+        endpoint: endpointaddbookmark,
+      );
+      print(response.data);
+      print(response.errorMessage);
+      final Map<String, dynamic> bookmarks = response.data;
+
+      Flushbar(
+        message: 'Bookmarked',
+        duration: Duration(seconds: 3),
+      )..show(context);
+      setState(() {
+        // property2.bookmarked = false;
+      });
+    } on HttpException catch (error) {
+      Flushbar(
+        message: '${error.toString()}',
+        duration: Duration(seconds: 3),
+      )..show(context);
+    } catch (error) {
+      print(error);
+      Flushbar(
+        message: 'Failed to Bookmark.',
+        duration: Duration(seconds: 3),
+      )..show(context);
+    }
+    // setState(() {
+    //   _isLoading = false;
+    // });
+  }
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -65,7 +151,6 @@ class _DetailState extends State<Detail> {
         if (snapshot.hasData) {
           property2 = Property.fromJson(snapshot.data.data);
           print("Single Property");
-          print(property);
           print(snapshot.data.data);
           return Stack(
             children: [
@@ -169,6 +254,9 @@ class _DetailState extends State<Detail> {
                               fontWeight: FontWeight.bold,
                             ),
                           ),
+
+
+
                           Container(
                             height: 50,
                             width: 50,
@@ -177,10 +265,20 @@ class _DetailState extends State<Detail> {
                               shape: BoxShape.circle,
                             ),
                             child: Center(
-                              child: Icon(
-                                Icons.bookmark,
+                              child:
+                              IconButton(
+                                icon: Icon(Icons.bookmark_border),
                                 color: Colors.yellow[700],
-                                size: 20,
+                                iconSize: 20,
+                                onPressed: () async {
+                                  var result = await AuthHelper.autoLogin();
+                                  if (result){
+                                    add_to_bookmarks();
+                                  }
+                                  else {
+                                    Navigator.pushNamed(context, '/login');
+                                  }
+                                },
                               ),
                             ),
                           ),
@@ -276,7 +374,7 @@ class _DetailState extends State<Detail> {
                                     width: 65,
                                     decoration: BoxDecoration(
                                       image: DecorationImage(
-                                        image: AssetImage(property.ownerImage),
+                                        image: AssetImage("assets/images/owner.jpg"),
                                         fit: BoxFit.cover,
                                       ),
                                       shape: BoxShape.circle,
@@ -431,7 +529,7 @@ class _DetailState extends State<Detail> {
                             physics: BouncingScrollPhysics(),
                             scrollDirection: Axis.horizontal,
                             shrinkWrap: true,
-                            itemCount: property.images.length,
+                            itemCount: property2.photos.length,
                             itemBuilder: (context, index){
                               return Container(
                                 width: size.width*0.5,
@@ -468,7 +566,7 @@ class _DetailState extends State<Detail> {
                           padding: const EdgeInsets.symmetric(horizontal:16.0),
                           child: Wrap(
                             spacing: 12.0,
-                            children: featuresList.map((e) => Chip(
+                            children: property2.property_features.map((e) => Chip(
                               label: Text(e, style: TextStyle(fontSize: 16, color: Colors.black87),),
                               backgroundColor: Colors.yellow[700],
                               deleteIcon: null,
