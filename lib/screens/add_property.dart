@@ -55,9 +55,9 @@ class _AddPropertyState extends State<AddProperty> {
   int bathroom = 0;
   bool _isLoading = false;
   File _imageFile;
-  String _featuredImage ;
+  String _featuredImage;
   List<Feature> featuresList = [];
-  List<String> features = [];
+  List<int> features = [];
   List<File> _propertyImages = [];
   int propId;
   final _formKey = GlobalKey<FormState>();
@@ -77,14 +77,15 @@ class _AddPropertyState extends State<AddProperty> {
   //Map<String, dynamic> _editedData;
   Property _editedData;
   bool _initial = true;
+
   Future<File> getImage(ImageSource source) async {
     final picker = ImagePicker();
-    final  pickedFile = await picker.getImage(source: source);
-    return File(pickedFile.path);
+    final pickedFile = await picker.getImage(source: source);
     setState(() {
       _imageFile = File(pickedFile.path);
       _noImageError = false;
     });
+    return File(pickedFile.path);
 
     //cropImage();
   }
@@ -110,14 +111,13 @@ class _AddPropertyState extends State<AddProperty> {
         bathroom = _editedData.bathrooms;
         room = _editedData.rooms;
         descCtl.text = _editedData.description;
-        features = _editedData.features.map((e) => e as String).toList();
+        features = _editedData.features.map((e) => e as int).toList();
         priceCtl.text = _editedData.total_price.toString();
         _statusValue = _editedData.construction_status;
         dateCtl.text = _editedData.available_from;
-        ytVideoLink1.text = _editedData.youtube_video;
-        ytVideoLink2.text = _editedData.youtube_video_2;
+        ytVideoLink1.text = _editedData.youtube_video ??= "";
+        ytVideoLink2.text = _editedData.youtube_video_2 ??= "";
         _featuredImage = _editedData.main_image;
-
       }
     }
     _initial = false;
@@ -132,7 +132,7 @@ class _AddPropertyState extends State<AddProperty> {
       List<Feature> tempList = [];
       featureData.forEach((element) {
         final Feature feature = Feature(
-            id: element['id'].toString(),
+            id: element['id'],
             title: element['title'],
             description: element['description']);
         tempList.add(feature);
@@ -148,7 +148,7 @@ class _AddPropertyState extends State<AddProperty> {
     }
   }
 
-  void _saveForm() async {
+  _saveForm() async {
     final isValid = _formKey.currentState.validate();
     if (!isValid) return;
     _formKey.currentState.save();
@@ -218,6 +218,7 @@ class _AddPropertyState extends State<AddProperty> {
     } on HttpException catch (error) {
       throw HttpException(message: error.toString());
     } catch (error) {
+      print(error);
       Flushbar(
         message: 'Unable to add',
         duration: Duration(seconds: 3),
@@ -227,9 +228,8 @@ class _AddPropertyState extends State<AddProperty> {
       _isLoading = false;
     });
   }
-  void _updateForm() async {
-    final isValid = _formKey.currentState.validate();
-    if (!isValid) return;
+
+  _updateForm() async {
     _formKey.currentState.save();
 
     setState(() {
@@ -243,7 +243,6 @@ class _AddPropertyState extends State<AddProperty> {
         bedrooms: bedroom,
         bathrooms: bathroom,
         rooms: room,
-        description: descCtl.text,
         features: features,
         total_price: int.parse(priceCtl.text),
         construction_status: _statusValue,
@@ -264,7 +263,7 @@ class _AddPropertyState extends State<AddProperty> {
       'bedrooms': property.bedrooms,
       'bathrooms': property.bathrooms,
       'rooms': property.rooms,
-      'description':property.description,
+      'description': property.description,
       'construction_status': property.construction_status,
       'available_from': property.available_from,
       'total_price': property.total_price,
@@ -275,16 +274,14 @@ class _AddPropertyState extends State<AddProperty> {
     };
     try {
       ApiResponse response;
-      if(_imageFile!= null){
-        response = await ApiHelper().postWithFileRequest(
+      if (_imageFile != null) {
+        response = await ApiHelper().patchRequestwithFile(
             endpoint: '$eProperties$propId/',
             data: data,
             file: _imageFile,
             fileFieldName: 'main_image');
-      }else{
-         response = await ApiHelper().postWithFileRequest(
-            endpoint: '$eProperties$propId/',
-            data: data);
+      } else {
+        response = await ApiHelper().patchRequest('$eProperties$propId/', data);
       }
 
       if (!response.error)
@@ -301,6 +298,7 @@ class _AddPropertyState extends State<AddProperty> {
     } on HttpException catch (error) {
       throw HttpException(message: error.toString());
     } catch (error) {
+      print(error);
       Flushbar(
         message: 'Unable to add',
         duration: Duration(seconds: 3),
@@ -323,7 +321,7 @@ class _AddPropertyState extends State<AddProperty> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: kPrimaryBackgroundColor,
-        title: (propId != null)?Text('Edit Property'):Text('Add Property'),
+        title: (propId != null) ? Text('Edit Property') : Text('Add Property'),
       ),
       bottomNavigationBar: bottom_bar(1),
       body: SingleChildScrollView(
@@ -391,13 +389,13 @@ class _AddPropertyState extends State<AddProperty> {
                   isDense: true,
                   items: _type
                       .map((key, value) {
-                    return MapEntry(
-                        key,
-                        DropdownMenuItem<String>(
-                          value: key,
-                          child: Text(value),
-                        ));
-                  })
+                        return MapEntry(
+                            key,
+                            DropdownMenuItem<String>(
+                              value: key,
+                              child: Text(value),
+                            ));
+                      })
                       .values
                       .toList(),
                   // items: _type.map((String value) {
@@ -484,13 +482,13 @@ class _AddPropertyState extends State<AddProperty> {
 
                   items: _status
                       .map((key, value) {
-                    return MapEntry(
-                        key,
-                        DropdownMenuItem<String>(
-                          value: key,
-                          child: Text(value),
-                        ));
-                  })
+                        return MapEntry(
+                            key,
+                            DropdownMenuItem<String>(
+                              value: key,
+                              child: Text(value),
+                            ));
+                      })
                       .values
                       .toList(),
 
@@ -528,7 +526,7 @@ class _AddPropertyState extends State<AddProperty> {
                       },
                     ),
                     contentPadding:
-                    EdgeInsets.symmetric(vertical: 8.0, horizontal: 10.0),
+                        EdgeInsets.symmetric(vertical: 8.0, horizontal: 10.0),
                     border: OutlineInputBorder(
                       // width: 0.0 produces a thin "hairline" border
                       borderRadius: BorderRadius.all(Radius.circular(15.0)),
@@ -565,9 +563,9 @@ class _AddPropertyState extends State<AddProperty> {
                     SliderTheme(
                       data: SliderTheme.of(context).copyWith(
                           thumbShape:
-                          RoundSliderThumbShape(enabledThumbRadius: 15),
+                              RoundSliderThumbShape(enabledThumbRadius: 15),
                           overlayShape:
-                          RoundSliderOverlayShape(overlayRadius: 30)),
+                              RoundSliderOverlayShape(overlayRadius: 30)),
                       child: Expanded(
                         child: Slider(
                           value: room.toDouble(),
@@ -599,9 +597,9 @@ class _AddPropertyState extends State<AddProperty> {
                     SliderTheme(
                       data: SliderTheme.of(context).copyWith(
                           thumbShape:
-                          RoundSliderThumbShape(enabledThumbRadius: 15),
+                              RoundSliderThumbShape(enabledThumbRadius: 15),
                           overlayShape:
-                          RoundSliderOverlayShape(overlayRadius: 30)),
+                              RoundSliderOverlayShape(overlayRadius: 30)),
                       child: Expanded(
                         child: Slider(
                           value: bedroom.toDouble(),
@@ -633,9 +631,9 @@ class _AddPropertyState extends State<AddProperty> {
                     SliderTheme(
                       data: SliderTheme.of(context).copyWith(
                           thumbShape:
-                          RoundSliderThumbShape(enabledThumbRadius: 15),
+                              RoundSliderThumbShape(enabledThumbRadius: 15),
                           overlayShape:
-                          RoundSliderOverlayShape(overlayRadius: 30)),
+                              RoundSliderOverlayShape(overlayRadius: 30)),
                       child: Expanded(
                         child: Slider(
                           value: bathroom.toDouble(),
@@ -705,7 +703,6 @@ class _AddPropertyState extends State<AddProperty> {
                     border: OutlineInputBorder(
                         borderRadius: BorderRadius.all(Radius.circular(15.0))),
                   ),
-
                 ),
                 SizedBox(
                   height: 18.0,
@@ -731,73 +728,75 @@ class _AddPropertyState extends State<AddProperty> {
                         child: Hero(
                           tag: 'add_image',
                           child: (_imageFile == null)
-                              ? (_featuredImage!= null)?
-                          Image.network(_featuredImage)
-                              :Container(
-                            color: Colors.black.withOpacity(0.1),
-                            height: size.height * 0.3,
-                            child: Column(
-                              children: [
-                                Expanded(
-                                  child: Center(
-                                    child: Icon(
-                                      Icons.add_circle,
-                                      color: Colors.black26,
-                                      size: size.width * 0.2,
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          )
+                              ? (_featuredImage != null)
+                                  ? Image.network(_featuredImage)
+                                  : Container(
+                                      color: Colors.black.withOpacity(0.1),
+                                      height: size.height * 0.3,
+                                      child: Column(
+                                        children: [
+                                          Expanded(
+                                            child: Center(
+                                              child: Icon(
+                                                Icons.add_circle,
+                                                color: Colors.black26,
+                                                size: size.width * 0.2,
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    )
                               : Container(
-                            height: size.height * 0.3,
-                            decoration: BoxDecoration(
-                                image: DecorationImage(
-                                    image: FileImage(_imageFile),
-                                    fit: BoxFit.fitWidth)),
-                          ),
+                                  height: size.height * 0.3,
+                                  decoration: BoxDecoration(
+                                      image: DecorationImage(
+                                          image: FileImage(_imageFile),
+                                          fit: BoxFit.fitWidth)),
+                                ),
                         ),
                       ),
                       onTap: () {
                         showModalBottomSheet(
                             context: context,
                             builder: (context) => Wrap(children: [
-                              ImageBottomSheet(
-                                onTapCamera: () async {
-                                  File file = await getImage(ImageSource.camera);
-                                  setState(() {
-                                    _imageFile = file;
-                                    _noImageError = false;
-                                  });
-                                  Navigator.pop(context);
-                                },
-                                onTapGallery: () async {
-                                  File file = await getImage(ImageSource.gallery);
-                                  setState(() {
-                                    _imageFile = file;
-                                    _noImageError = false;
-                                  });
-                                  Navigator.pop(context);
-                                },
-                              )
-                            ]));
-
+                                  ImageBottomSheet(
+                                    onTapCamera: () async {
+                                      File file =
+                                          await getImage(ImageSource.camera);
+                                      setState(() {
+                                        _imageFile = file;
+                                        _noImageError = false;
+                                      });
+                                      Navigator.pop(context);
+                                    },
+                                    onTapGallery: () async {
+                                      File file =
+                                          await getImage(ImageSource.gallery);
+                                      setState(() {
+                                        _imageFile = file;
+                                        _noImageError = false;
+                                      });
+                                      Navigator.pop(context);
+                                    },
+                                  )
+                                ]));
                       },
                     ),
                   ),
                 ),
-                if(_noImageError)Container(
-                  alignment: Alignment.topLeft,
-                  child: Text(
-                    'Add a featured image',
-                    style: TextStyle(
-                      fontSize: 18.0,
-                      color: Theme.of(context).errorColor,
-                      fontWeight: FontWeight.w500,
+                if (_noImageError)
+                  Container(
+                    alignment: Alignment.topLeft,
+                    child: Text(
+                      'Add a featured image',
+                      style: TextStyle(
+                        fontSize: 18.0,
+                        color: Theme.of(context).errorColor,
+                        fontWeight: FontWeight.w500,
+                      ),
                     ),
                   ),
-                ),
                 SizedBox(
                   height: 18.0,
                 ),
@@ -816,89 +815,89 @@ class _AddPropertyState extends State<AddProperty> {
                   height: size.height * 0.2,
                   child: ListView.builder(
                     scrollDirection: Axis.horizontal,
-                    itemCount: _propertyImages.length+1,
+                    itemCount: _propertyImages.length + 1,
                     itemBuilder: (context, i) {
                       return Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 4.0, vertical: 10.0),
+                        child: (i == _propertyImages.length)
+                            ? GestureDetector(
+                                child: AspectRatio(
+                                  aspectRatio: 3 / 2,
+                                  child: Container(
+                                    // width: size.width*0.5,
 
-                        padding: const EdgeInsets.symmetric(horizontal:4.0, vertical: 10.0),
-                        child: (i == _propertyImages.length)?
-                        GestureDetector(
-                          child: AspectRatio(
-                            aspectRatio: 3/2,
-                            child: Container
-                              (
-                              // width: size.width*0.5,
-
-                              decoration: BoxDecoration(
-                                color: Colors.black.withOpacity(0.1),
-                                borderRadius: BorderRadius.all(
-                                  Radius.circular(10),
-                                ),
-                              ),
-                              // height: size.height * 0.3,
-                              child: Column(
-                                children: [
-                                  Expanded(
-                                    child: Center(
-                                      child: Icon(
-                                        Icons.add_circle,
-                                        color: Colors.black26,
-                                        size: size.width * 0.14,
+                                    decoration: BoxDecoration(
+                                      color: Colors.black.withOpacity(0.1),
+                                      borderRadius: BorderRadius.all(
+                                        Radius.circular(10),
                                       ),
                                     ),
+                                    // height: size.height * 0.3,
+                                    child: Column(
+                                      children: [
+                                        Expanded(
+                                          child: Center(
+                                            child: Icon(
+                                              Icons.add_circle,
+                                              color: Colors.black26,
+                                              size: size.width * 0.14,
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
                                   ),
-                                ],
-                              ),
-                            ),
-                          ),
-                          onTap: () {
-                            showModalBottomSheet(
-                                context: context,
-                                builder: (context) => Wrap(children: [
-                                  ImageBottomSheet(
-                                    onTapCamera: () async {
-                                      File file = await getImage(ImageSource.camera);
-                                      setState(() {
-                                        _propertyImages.add(file);
-                                      });
-                                      Navigator.pop(context);
-                                    },
-                                    onTapGallery: () async {
-                                      File file = await getImage(ImageSource.gallery);
-                                      setState(() {
-                                        _propertyImages.add(file);
-                                      });
-                                      Navigator.pop(context);
-                                    },
-                                  )
-                                ]));
+                                ),
+                                onTap: () {
+                                  showModalBottomSheet(
+                                      context: context,
+                                      builder: (context) => Wrap(children: [
+                                            ImageBottomSheet(
+                                              onTapCamera: () async {
+                                                File file = await getImage(
+                                                    ImageSource.camera);
+                                                setState(() {
+                                                  _propertyImages.add(file);
+                                                });
+                                                Navigator.pop(context);
+                                              },
+                                              onTapGallery: () async {
+                                                File file = await getImage(
+                                                    ImageSource.gallery);
+                                                setState(() {
+                                                  _propertyImages.add(file);
+                                                });
+                                                Navigator.pop(context);
+                                              },
+                                            )
+                                          ]));
+                                },
+                              )
+                            : AspectRatio(
+                                aspectRatio: 3 / 2,
+                                child: Container(
+                                  // width: size.width*0.5,
+                                  // height: size.height * 0.3,
+                                  alignment: Alignment.topRight,
 
-                          },
-                        )
-                            :AspectRatio(
-                          aspectRatio: 3/2,
-                              child: Container(
-                          // width: size.width*0.5,
-                          // height: size.height * 0.3,
-                          alignment: Alignment.topRight,
-
-                          child: IconButton(
-                              icon:Icon( Icons.cancel),
-                              onPressed: (){
-                                setState(() {
-                                  _propertyImages.removeAt(i);
-                                });
-                              },
-                          ),
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.all(
-                                Radius.circular(10),
+                                  child: IconButton(
+                                    icon: Icon(Icons.cancel),
+                                    onPressed: () {
+                                      setState(() {
+                                        _propertyImages.removeAt(i);
+                                      });
+                                    },
+                                  ),
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.all(
+                                        Radius.circular(10),
+                                      ),
+                                      image: DecorationImage(
+                                          image: FileImage(_propertyImages[i]),
+                                          fit: BoxFit.fitWidth)),
+                                ),
                               ),
-                                image: DecorationImage(
-                                    image: FileImage(_propertyImages[i]),
-                                    fit: BoxFit.fitWidth)),
-                        ),
-                            ),
                         // child: Chip(
                         //   label: Text(
                         //     _tags[i],
@@ -932,52 +931,78 @@ class _AddPropertyState extends State<AddProperty> {
                     ),
                   ),
                 ),
-                (featuresList.length>0)?ListView.builder(
-                  itemCount: featuresList.length,
-                  physics: NeverScrollableScrollPhysics(),
-                  shrinkWrap: true,
-                  itemBuilder: (context, index){
-                    return CheckboxListTile(value: features.contains(featuresList[index].id),
-                        title: Text(featuresList[index].title, style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w400
-                        ),),
-
-                        onChanged: (_){
-                          if(features.contains(featuresList[index].id)){
-                            setState(() {
-                              features.remove(featuresList[index].id);
-                            });
-
-                          }else{
-                            setState(() {
-
-                              features.add(featuresList[index].id);
-                            });
-                          }
-                        });
-                  },
-                ):
-                Text('Loading Features...'),
+                (featuresList.length > 0)
+                    ? ListView.builder(
+                        itemCount: featuresList.length,
+                        physics: NeverScrollableScrollPhysics(),
+                        shrinkWrap: true,
+                        itemBuilder: (context, index) {
+                          return CheckboxListTile(
+                              value: features.contains(featuresList[index].id),
+                              title: Text(
+                                featuresList[index].title,
+                                style: TextStyle(
+                                    fontSize: 16, fontWeight: FontWeight.w400),
+                              ),
+                              onChanged: (_) {
+                                if (features.contains(featuresList[index].id)) {
+                                  setState(() {
+                                    features.remove(featuresList[index].id);
+                                  });
+                                } else {
+                                  setState(() {
+                                    features.add(featuresList[index].id);
+                                  });
+                                }
+                              });
+                        },
+                      )
+                    : Text('Loading Features...'),
                 SizedBox(
                   height: 10.0,
                 ),
                 (_isLoading)
                     ? SpinKitThreeBounce(
-                  color: Theme.of(context).primaryColor,
-                )
+                        color: Theme.of(context).primaryColor,
+                      )
                     : MaterialButton(
-                  height: 30,
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(18.0)),
-                  color: kPrimaryBackgroundColor,
-                  textColor: Colors.white,
-                  onPressed: () async {
+                        height: 30,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(18.0)),
+                        color: kPrimaryBackgroundColor,
+                        textColor: Colors.white,
+                        onPressed: () async {
+                          if (propId != null) {
+                            await _updateForm();
+                          } else {
+                            await _saveForm();
+                            _formKey.currentState.reset();
+                            setState(() {
+                              _imageFile = null;
+                              _featuredImage = null;
+                              room = 0;
+                              bedroom = 0;
+                              bathroom = 0;
+                              features = [];
+                              _propertyImages = [];
+                              _typeValue = null;
+                              _statusValue = null;
+                            });
 
-                    (propId!= null)? _updateForm():_saveForm();
-                  },
-                  child: (propId!= null)?Text('Update'):Text('Add'),
-                ),
+                            cityCtl.clear();
+                            dateCtl.clear();
+                            fDateCtl.clear();
+                            titleCtl.clear();
+                            priceCtl.clear();
+                            areaCtl.clear();
+                            descCtl.clear();
+                            ytVideoLink1.clear();
+                            ytVideoLink2.clear();
+                            shiftTimeCtl.clear();
+                          }
+                        },
+                        child: (propId != null) ? Text('Update') : Text('Add'),
+                      ),
               ],
             ),
           ),
@@ -986,4 +1011,3 @@ class _AddPropertyState extends State<AddProperty> {
     );
   }
 }
-
