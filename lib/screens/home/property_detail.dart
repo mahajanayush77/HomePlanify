@@ -72,14 +72,13 @@ class _DetailState extends State<Detail> {
       );
       print(response.data);
       print(response.errorMessage);
-      final Map<String, dynamic> bookmarks = response.data;
 
       Flushbar(
         message: 'Bookmarked',
         duration: Duration(seconds: 3),
       )..show(context);
       setState(() {
-        // property2.bookmarked = true;
+        property2.bookmarked = true;
       });
     } on HttpException catch (error) {
       Flushbar(
@@ -110,16 +109,13 @@ class _DetailState extends State<Detail> {
       response =await ApiHelper().getRequest(
         endpoint: endpointaddbookmark,
       );
-      print(response.data);
-      print(response.errorMessage);
-      final Map<String, dynamic> bookmarks = response.data;
 
       Flushbar(
         message: 'Bookmarked',
         duration: Duration(seconds: 3),
       )..show(context);
       setState(() {
-        // property2.bookmarked = false;
+        property2.bookmarked = false;
       });
     } on HttpException catch (error) {
       Flushbar(
@@ -265,8 +261,22 @@ class _DetailState extends State<Detail> {
                               shape: BoxShape.circle,
                             ),
                             child: Center(
-                              child:
+                              child: (property2.bookmarked)?
                               IconButton(
+                                icon: Icon(Icons.bookmark),
+                                color: Colors.yellow[700],
+                                iconSize: 20,
+                                onPressed: () async {
+                                  var result = await AuthHelper.autoLogin();
+                                  if (result){
+                                    remove_from_bookmarks();
+                                  }
+                                  else {
+                                    Navigator.pushNamed(context, '/login');
+                                  }
+                                },
+                              )
+                              : IconButton(
                                 icon: Icon(Icons.bookmark_border),
                                 color: Colors.yellow[700],
                                 iconSize: 20,
@@ -279,7 +289,7 @@ class _DetailState extends State<Detail> {
                                     Navigator.pushNamed(context, '/login');
                                   }
                                 },
-                              ),
+                              )
                             ),
                           ),
                         ],
@@ -539,7 +549,7 @@ class _DetailState extends State<Detail> {
                                     Radius.circular(10),
                                   ),
                                   image: DecorationImage(
-                                    image: NetworkImage('https://images.pexels.com/photos/674800/pexels-photo-674800.jpeg'),
+                                    image: NetworkImage(property2.photos[index]),
                                     fit: BoxFit.cover,
                                   ),
                                 ),
