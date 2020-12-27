@@ -243,10 +243,9 @@ class ApiHelper {
           if (key.contains('error')) {
             error = data[key][0];
             print(error);
-          }else{
+          } else {
             error = data[key][0];
           }
-
         });
         return ApiResponse(error: true, errorMessage: error);
       }
@@ -295,7 +294,6 @@ class ApiHelper {
     }
   }
 
-
   //PATCH WITH FIILE
   Future<ApiResponse> patchRequestwithFile(
       {String endpoint, var data, File file, String fileFieldName}) async {
@@ -328,10 +326,11 @@ class ApiHelper {
       } else {
         Map<String, String> headers = {
           HttpHeaders.authorizationHeader: 'Token $_authToken',
+          HttpHeaders.contentTypeHeader: 'multipart/form-data',
         };
         response = await http.patch(uri, headers: headers, body: data);
       }
-//      print('code is ${response.statusCode}');
+      print('code is ${response.statusCode}');
       if (response.statusCode == 200) {
         print('response is: ${jsonDecode(response.body)}');
         return ApiResponse(data: jsonDecode(response.body));
@@ -414,7 +413,7 @@ class ApiHelper {
   }
 
   // DELETE
-  Future<ApiResponse> deleteRequest ({String endpoint}) async{
+  Future<ApiResponse> deleteRequest({String endpoint}) async {
     if (_authToken.isEmpty || _authToken == null) {
       print('not logged in');
       return ApiResponse(error: true, errorMessage: 'User not logged in');
@@ -453,7 +452,5 @@ class ApiHelper {
     } catch (e) {
       throw e;
     }
-}
-
-
+  }
 }
