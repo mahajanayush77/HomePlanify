@@ -309,13 +309,14 @@ class ApiHelper {
       if (file != null) {
         Map<String, String> headers = {
           HttpHeaders.authorizationHeader: 'Token $_authToken',
+          HttpHeaders.contentTypeHeader: 'multipart/form-data',
         };
         var request = new http.MultipartRequest("PATCH", uri);
         http.MultipartFile multipartFile =
-            await http.MultipartFile.fromPath('image', file.path);
+            await http.MultipartFile.fromPath(fileFieldName, file.path);
         request.files.add(multipartFile);
         request.headers.addAll(headers);
-
+//        print(file.path);
         data.forEach((key, value) {
           request.fields[key] = value;
           print(request.fields.toString());
@@ -326,11 +327,10 @@ class ApiHelper {
       } else {
         Map<String, String> headers = {
           HttpHeaders.authorizationHeader: 'Token $_authToken',
-          HttpHeaders.contentTypeHeader: 'multipart/form-data',
         };
         response = await http.patch(uri, headers: headers, body: data);
       }
-      print('code is ${response.statusCode}');
+//      print('code is ${response.statusCode}');
       if (response.statusCode == 200) {
         print('response is: ${jsonDecode(response.body)}');
         return ApiResponse(data: jsonDecode(response.body));

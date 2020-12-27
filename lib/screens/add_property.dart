@@ -272,17 +272,17 @@ class _AddPropertyState extends State<AddProperty> {
       'youtube_video_2': property.youtube_video_2 ?? "",
       'owner': ApiHelper().getUID(),
     };
-    print(data);
+//    print(data);
     try {
       ApiResponse response;
 //      if (_imageFile != null) {
-      print(_imageFile.path);
+//      print(_imageFile.path);
       response = await ApiHelper().patchRequestwithFile(
           endpoint: '$eProperties$propId/',
           data: data,
           file: _imageFile,
           fileFieldName: 'main_image');
-      print(response);
+//      print(response);
 //      } else {
 //        response = await ApiHelper().patchRequest('$eProperties$propId/', data);
 //        print(response);
