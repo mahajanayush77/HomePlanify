@@ -1,4 +1,8 @@
 import 'package:flutter/cupertino.dart';
+import 'package:housing/utilities/api-response.dart';
+import 'package:housing/utilities/api_endpoints.dart';
+import 'package:housing/utilities/api_helper.dart';
+import 'package:housing/utilities/http_exception.dart';
 
 class Property extends ChangeNotifier {
   int id;
@@ -125,4 +129,54 @@ class Property extends ChangeNotifier {
         'property_features': property_features,
         'bookmarked': bookmarked,
       };
+
+  void addtobookmarks() async {
+    //Remove from the list
+    bookmarked = true;
+    notifyListeners();
+
+    try{
+
+      String endpointaddbookmark;
+      endpointaddbookmark = eProperties + id.toString() + "/add_to_bookmarks/";
+      ApiResponse response =await ApiHelper().getRequest(
+        endpoint: endpointaddbookmark,
+      );
+
+      if(response.error){
+        bookmarked = false;
+        notifyListeners();
+      }
+
+    }catch(error){
+      bookmarked = false;
+      notifyListeners();
+      throw HttpException(message: 'Failed to Bookmark');
+    }
+    notifyListeners();
+  }
+
+  void removefrombookmarks(int id) async {
+    bookmarked = false;
+    notifyListeners();
+
+    try{
+
+      String endpointaddbookmark;
+      endpointaddbookmark = eProperties + id.toString() + "/remove_from_bookmarks/";
+      ApiResponse response =await ApiHelper().getRequest(
+        endpoint: endpointaddbookmark,
+      );
+
+      if(response.error){
+        bookmarked = true;
+        notifyListeners();
+      }
+    }catch(error){
+      bookmarked = true;
+      notifyListeners();
+      throw HttpException(message: 'Failed to remove from Bookmarks');
+    }
+    notifyListeners();
+  }
 }

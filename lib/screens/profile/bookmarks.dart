@@ -1,13 +1,16 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:housing/models/property.dart';
+import 'package:housing/provider/bookmarks.dart' as prop;
 import 'package:housing/screens/home/property_detail.dart';
+
 import 'package:housing/screens/splash_screen.dart';
 import 'package:housing/utilities/api-response.dart';
 import 'package:housing/utilities/api_endpoints.dart';
 import 'package:housing/utilities/api_helper.dart';
 import '../data.dart';
 import '../filter.dart';
-
+import 'package:provider/provider.dart';
 
 class Bookmarks extends StatefulWidget {
   @override
@@ -15,22 +18,17 @@ class Bookmarks extends StatefulWidget {
 }
 
 class _BookmarksState extends State<Bookmarks> {
-  Future<ApiResponse> _properties;
 
   void initState() {
-    // TODO: implement initState
-    _properties = ApiHelper().getRequest(
-      endpoint: eBookmarks,
-      query: {
-        'visible': 'true',
-        'verified': 'true',
-      },
-    );
+
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
+
+    final proper = Provider.of<prop.Bookmarks>(context);
+
     return Scaffold(
       appBar: AppBar(
         title: Text('Bookmarks'),
@@ -46,38 +44,24 @@ class _BookmarksState extends State<Bookmarks> {
             child: Container(
                 padding: EdgeInsets.symmetric(horizontal: 24),
                 child:FutureBuilder(
-                  future: _properties,
+                  future: proper.fetchProducts(),
                   builder: (context, snapshot){
                     if (snapshot.hasData){
                       return ListView.separated(
                         separatorBuilder: (context, index) => SizedBox(width: 15),
                         shrinkWrap: true,
-                        itemCount: snapshot.data.data.length,
+                        itemCount: proper.myProp.length,
                         itemBuilder: (context, index){
-                          final Map<String, dynamic> property = snapshot.data.data.toList()[index];
+                          final property = proper.myProp;
                           print(property);
-                          return GestureDetector(
-                              onTap: () {
-                                print(index);
-                                Navigator.push(
-                                    context, MaterialPageRoute(builder: (context) => Detail(id: property['id'])));
-                              },
-                              child: Prop(
-                            id: property['id'],
-                            type: property['type'],
-                            property_name: property['property_name'],
-                            city: property['city'].split(" ")[0],
-                            construction_status: property['construction_status'],
-                            available_from: property['available_from'],
-                            bedrooms: property['bedrooms'],
-                            total_price: property['total_price'],
-                            views: property['views'],
-                            main_image: property['main_image'],
-                          ));
+                          return ChangeNotifierProvider.value(
+                            value: property[index],
+                            child: Prop(),
+                          );
                         },
                       );
                     } else if (snapshot.hasError){
-                      return Text("${snapshot.error}");
+                      return Text("error: ${snapshot.error}");
                     }
                     return SplashScreen();
                   },
@@ -94,32 +78,23 @@ class _BookmarksState extends State<Bookmarks> {
 
 
 class Prop extends StatelessWidget {
-  int id;
-  String type;
-  String property_name;
-  String city;
-  String construction_status;
-  String available_from;
-  int bedrooms;
-  int total_price;
-  int views;
-  String main_image;
 
-  Prop({
-    this.id,
-    this.main_image,
-    this.city,
-    this.construction_status,
-    this.total_price,
-    this.property_name,
-    this.views,
-    this.type,
-    this.available_from,
-    this.bedrooms,
-  });
   @override
   Widget build(BuildContext context) {
-    return Card(
+
+    final proper = Provider.of<prop.Bookmarks>(context, listen: false);
+    final property = Provider.of<Property>(context);
+
+    return GestureDetector(
+        onTap: () {
+      // print(index);
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) =>
+                  Detail(id: property.id)));
+    },
+    child: Card(
       margin: EdgeInsets.only(bottom: 24),
       clipBehavior: Clip.antiAlias,
       shape: RoundedRectangleBorder(
@@ -132,7 +107,7 @@ class Prop extends StatelessWidget {
         decoration: BoxDecoration(
           image: DecorationImage(
             image: NetworkImage(
-              main_image,
+              property.main_image,
             ),
             fit: BoxFit.cover,
           ),
@@ -166,13 +141,31 @@ class Prop extends StatelessWidget {
                 ),
                 child: Center(
                   child: Text(
-                    type == 'S' ? "FOR SALE" : "FOR RENT",
+                    property.type == 'S' ? "FOR SALE" : "FOR RENT",
                     style: TextStyle(
                       color: Colors.white,
                       fontSize: 14,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
+                ),
+              ),
+              Expanded(
+                flex: 2,
+                child: Column(
+                  children: [
+                    Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+
+                      IconButton(
+                        icon: Icon(Icons.delete),
+                        color: Colors.red,
+                        onPressed: () => proper.removefrombookmarks(property.id),
+                      ),
+                      ],
+                    )
+                  ],
                 ),
               ),
               Expanded(
@@ -184,7 +177,7 @@ class Prop extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        property_name,
+                        property.property_name,
                         style: TextStyle(
                           color: Colors.white,
                           fontSize: 18,
@@ -192,7 +185,7 @@ class Prop extends StatelessWidget {
                         ),
                       ),
                       Text(
-                        " Rs " + total_price.toString(),
+                        " Rs " + property.total_price.toString(),
                         style: TextStyle(
                           color: Colors.white,
                           fontSize: 18,
@@ -218,7 +211,7 @@ class Prop extends StatelessWidget {
                             width: 4,
                           ),
                           Text(
-                            city.substring(0),
+                            property.city.substring(0),
                             style: TextStyle(
                               color: Colors.white,
                               fontSize: 14,
@@ -236,7 +229,7 @@ class Prop extends StatelessWidget {
                             width: 4,
                           ),
                           Text(
-                            bedrooms.toString(),
+                            property.bedrooms.toString(),
                             style: TextStyle(
                               color: Colors.white,
                               fontSize: 14,
@@ -255,7 +248,7 @@ class Prop extends StatelessWidget {
                             width: 4,
                           ),
                           Text(
-                            views.toString() + " Views",
+                            property.views.toString() + " Views",
                             style: TextStyle(
                               color: Colors.white,
                               fontSize: 14,
@@ -271,6 +264,7 @@ class Prop extends StatelessWidget {
           ),
         ),
       ),
+    ),
     );
   }
 }

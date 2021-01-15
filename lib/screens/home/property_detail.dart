@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import '../data.dart';
 import 'package:housing/models/property.dart';
 import 'package:housing/screens/splash_screen.dart';
@@ -27,6 +28,8 @@ class _DetailState extends State<Detail> {
   Property property2;
   String endpointsingle;
 
+
+
   @override
   void initState() {
     // TODO: implement initState
@@ -38,24 +41,24 @@ class _DetailState extends State<Detail> {
   }
 
   List<String> featuresList = ['Parking', 'Free ka Wifi', 'Garden', 'Swimming Pool'];
-  Property2 property = Property2(
-    "RENT",
-    "Salu House",
-    "3,500.00",
-    "Miami",
-    "3,300",
-    "4.6",
-    "The living is easy in this impressive, generously proportioned contemporary residence with lake and ocean views, located within a level stroll to the sand and surf.",
-    "assets/images/house_04.jpg",
-    "assets/images/owner.jpg",
-    [
-      "assets/images/kitchen.jpg",
-      "assets/images/bath_room.jpg",
-      "assets/images/swimming_pool.jpg",
-      "assets/images/bed_room.jpg",
-      "assets/images/living_room.jpg",
-    ],
-  );
+  // Property2 property = Property2(
+  //   "RENT",
+  //   "Salu House",
+  //   "3,500.00",
+  //   "Miami",
+  //   "3,300",
+  //   "4.6",
+  //   "The living is easy in this impressive, generously proportioned contemporary residence with lake and ocean views, located within a level stroll to the sand and surf.",
+  //   "assets/images/house_04.jpg",
+  //   "assets/images/owner.jpg",
+  //   [
+  //     "assets/images/kitchen.jpg",
+  //     "assets/images/bath_room.jpg",
+  //     "assets/images/swimming_pool.jpg",
+  //     "assets/images/bed_room.jpg",
+  //     "assets/images/living_room.jpg",
+  //   ],
+  // );
 
   void add_to_bookmarks() async {
     // setState(() {
@@ -140,11 +143,14 @@ class _DetailState extends State<Detail> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
 
+    // final property = Provider.of<Property>(context);
+
     return Scaffold(
         body: FutureBuilder(
       future: response,
       builder: (context, snapshot) {
         if (snapshot.hasData) {
+
           property2 = Property.fromJson(snapshot.data.data);
           print("Single Property");
           print(snapshot.data.data);

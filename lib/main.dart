@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:housing/constant.dart';
 import 'package:housing/provider/my_properties.dart' as my_prop;
+import 'package:housing/provider/bookmarks.dart' as bookmarks;
 import 'package:housing/provider/properties.dart';
 import 'package:housing/screens/add_property.dart';
 import 'package:housing/screens/contact_us/contact.dart';
@@ -34,6 +35,8 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (ctx) => my_prop.MyProperties()),
+        ChangeNotifierProvider(create: (ctx) => my_prop.MyProperties()),
+        ChangeNotifierProvider(create: (ctx) => bookmarks.Bookmarks()),
         ChangeNotifierProvider(create: (ctx) => Properties())
       ],
       child: MaterialApp(

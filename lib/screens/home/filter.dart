@@ -1,0 +1,322 @@
+import 'package:flutter/material.dart';
+import 'package:housing/constant.dart';
+import 'package:intl/intl.dart';
+
+class Filter extends StatefulWidget {
+  @override
+  _FilterState createState() => _FilterState();
+}
+
+class _FilterState extends State<Filter> {
+
+  var selectedRange = RangeValues(20000, 9000000);
+  var format = NumberFormat.compactCurrency(locale: 'en_IN', symbol: "₹", decimalDigits: 0);
+
+  String type = "";
+  int bedrooms = null;
+  int bathrooms = 0;
+  int rooms = 0;
+  String construction_status = "";
+  int price_start = 0;
+  int price_end = 9000000;
+  bool featured = false;
+  List features = null;
+
+
+  Widget _buildTypeChips() {
+    List<List> _options = [
+      ["Buy", "B"],
+      ["Sell", "S"],
+      ["Rent", "R"],
+    ];
+
+    return Wrap(
+      spacing: 10,
+      children: List<Widget>.generate(
+        _options.length, (int index) {
+        return ChoiceChip(
+          label: Text(_options[index][0]),
+          selected: type == _options[index][1],
+          backgroundColor: Colors.grey[200],
+          selectedColor: kPrimaryColor,
+          onSelected: (bool selected) {
+            setState(() {
+              type = selected ? _options[index][1] : null;
+            });
+          },
+        );
+      },
+      ).toList(),
+    );
+  }
+  Widget _buildBedroomChips() {
+    List<List> _options = [
+      ["Any", 0],
+      ["1", 1],
+      ["2", 2],
+      ["3", 3],
+      ["4", 4],
+      ["4+", 5],
+    ];
+
+    return Wrap(
+      spacing: 10,
+      children: List<Widget>.generate(
+        _options.length, (int index) {
+        return ChoiceChip(
+          label: Text(_options[index][0]),
+          selected: bedrooms == _options[index][1],
+          backgroundColor: Colors.grey[200],
+          selectedColor: kPrimaryColor,
+          onSelected: (bool selected) {
+            setState(() {
+              bedrooms = selected ? _options[index][1] : null;
+            });
+          },
+        );
+      },
+      ).toList(),
+    );
+  }
+  Widget _buildRoomChips() {
+    List<List> _options = [
+      ["Any", 0],
+      ["1", 1],
+      ["2", 2],
+      ["3", 3],
+      ["4", 4],
+      ["4+", 5],
+    ];
+
+    return Wrap(
+      spacing: 10,
+      children: List<Widget>.generate(
+        _options.length, (int index) {
+        return ChoiceChip(
+          label: Text(_options[index][0]),
+          selected: rooms == _options[index][1],
+          backgroundColor: Colors.grey[200],
+          selectedColor: kPrimaryColor,
+          onSelected: (bool selected) {
+            setState(() {
+              rooms = selected ? _options[index][1] : null;
+            });
+          },
+        );
+      },
+      ).toList(),
+    );
+  }
+  Widget _buildBathroomChips() {
+    List<List> _options = [
+      ["Any", 0],
+      ["1", 1],
+      ["2", 2],
+      ["3", 3],
+      ["3+", 4],
+    ];
+
+    return Wrap(
+      spacing: 10,
+      children: List<Widget>.generate(
+        _options.length, (int index) {
+          return ChoiceChip(
+            label: Text(_options[index][0]),
+            selected: bathrooms == _options[index][1],
+            backgroundColor: Colors.grey[200],
+            selectedColor: kPrimaryColor,
+            onSelected: (bool selected) {
+              setState(() {
+                bathrooms = selected ? _options[index][1] : null;
+              });
+            },
+          );
+        },
+      ).toList(),
+    );
+  }
+  Widget _buildConstructionChips() {
+    List<List> _options = [
+      ['Ready to Move', "RM"],
+      ['Under Construction', "UC"],
+    ];
+
+    return Wrap(
+      spacing: 10,
+      children: List<Widget>.generate(
+        _options.length, (int index) {
+        return ChoiceChip(
+          label: Text(_options[index][0]),
+          selected: construction_status == _options[index][1],
+          backgroundColor: Colors.grey[200],
+          selectedColor: kPrimaryColor,
+          onSelected: (bool selected) {
+            setState(() {
+              construction_status = selected ? _options[index][1] : null;
+            });
+          },
+        );
+      },
+      ).toList(),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: EdgeInsets.only(right: 24, left: 24, top: 24, bottom: 24),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+
+          Row(
+            children: [
+              Expanded(
+                child: Center(
+                  child: Text(
+                    "Filter Your Search",
+                    style: TextStyle(
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+              ),
+              FlatButton(
+                color: kPrimaryColor,
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(new Radius.circular(20.0))),
+                child: Text('Apply'),
+                onPressed: (){
+                  print('You tapped on FlatButton');
+                },
+              ),
+            ],
+          ),
+          SizedBox(
+            height: 8,
+          ),
+          Text(
+            "Type",
+            style: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+
+          SizedBox(
+            height: 8,
+          ),
+          _buildTypeChips(),
+          Row(
+            children: [
+              Text(
+                "Price Range",
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              SizedBox(width: 20,),
+              Text(
+                  format.format(selectedRange.start) + " - " + format.format(selectedRange.end).toString(),
+              ),
+            ],
+          ),
+
+          RangeSlider(
+            values: selectedRange,
+            onChanged: (RangeValues newRange) {
+              setState(() {
+                selectedRange = newRange;
+              });
+            },
+            min: 10000,
+            max: 10000000,
+            activeColor: kPrimaryColor,
+            inactiveColor: Colors.grey[300],
+          ),
+
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+
+              Text(
+                r"₹ 10k",
+                style: TextStyle(
+                  fontSize: 14,
+                ),
+              ),
+
+              Text(
+                r"₹ 1 cr",
+                style: TextStyle(
+                  fontSize: 14,
+                ),
+              ),
+
+            ],
+          ),
+
+          SizedBox(
+            height: 16,
+          ),
+
+
+          Text(
+            "Bedrooms",
+            style: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+
+          SizedBox(
+            height: 8,
+          ),
+          _buildBedroomChips(),
+          Text(
+            "Rooms",
+            style: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+
+          SizedBox(
+            height: 8,
+          ),
+          _buildRoomChips(),
+
+          SizedBox(
+            height: 8,
+          ),
+
+          Text(
+            "Bathrooms",
+            style: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          SizedBox(
+            height: 8,
+          ),
+          _buildBathroomChips(),
+          Text(
+            "Construction Status",
+            style: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          SizedBox(
+            height: 8,
+          ),
+          _buildConstructionChips(),
+
+
+        ],
+      ),
+    );
+  }
+}

@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:housing/screens/home/projects_list.dart';
+import 'package:housing/screens/home/property_detail.dart';
 import 'package:housing/screens/splash_screen.dart';
 import 'package:housing/utilities/api-response.dart';
 import 'package:housing/utilities/api_endpoints.dart';
 import 'package:housing/utilities/api_helper.dart';
 import '../data.dart';
-import '../filter.dart';
+import './filter.dart';
 
 class Search extends StatefulWidget {
   @override
@@ -13,6 +14,7 @@ class Search extends StatefulWidget {
 }
 
 class _SearchState extends State<Search> {
+  
   List<Property2> properties = getPropertyList();
   Future<ApiResponse> _properties;
   @override
@@ -31,119 +33,73 @@ class _SearchState extends State<Search> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Properties'),
-      ),
+      // appBar: AppBar(
+      //   title: Text('Properties'),
+      // ),
       backgroundColor: Colors.white,
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-//          Padding(
-//            padding: EdgeInsets.only(top: 48, left: 24, right: 24, bottom: 16),
-//            child: TextField(
-//              style: TextStyle(
-//                fontSize: 28,
-//                height: 1,
-//                color: Colors.black,
-//                fontWeight: FontWeight.bold,
-//              ),
-//              decoration: InputDecoration(
-//                hintText: 'Search',
-//                hintStyle: TextStyle(
-//                  fontSize: 28,
-//                  color: Colors.grey[400],
-//                ),
-//                enabledBorder: UnderlineInputBorder(
-//                  borderSide: BorderSide(color: Colors.grey[400]),
-//                ),
-//                focusedBorder: UnderlineInputBorder(
-//                  borderSide: BorderSide(color: Colors.grey[400]),
-//                ),
-//                border: UnderlineInputBorder(
-//                  borderSide: BorderSide(color: Colors.grey[400]),
-//                ),
-//                suffixIcon: Padding(
-//                  padding: EdgeInsets.only(left: 16),
-//                  child: Icon(
-//                    Icons.search,
-//                    color: Colors.grey[400],
-//                    size: 28,
-//                  ),
-//                ),
-//              ),
-//            ),
-//          ),
-//          Padding(
-//            padding: EdgeInsets.only(top: 16),
-//            child: Row(
-//              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-//              children: [
-//                Expanded(
-//                  child: Container(
-//                    height: 32,
-//                    child: Stack(
-//                      children: [
-//                        ListView(
-//                          physics: BouncingScrollPhysics(),
-//                          scrollDirection: Axis.horizontal,
-//                          children: [
-//                            SizedBox(
-//                              width: 24,
-//                            ),
-//                            buildFilter("House"),
-//                            buildFilter("Price"),
-//                            buildFilter("Security"),
-//                            buildFilter("Bedrooms"),
-//                            buildFilter("Garage"),
-//                            buildFilter("Swimming Pool"),
-//                            SizedBox(
-//                              width: 8,
-//                            ),
-//                          ],
-//                        ),
-//                        Align(
-//                          alignment: Alignment.centerRight,
-//                          child: Container(
-//                            width: 28,
-//                            decoration: BoxDecoration(
-//                              gradient: LinearGradient(
-//                                begin: Alignment.centerRight,
-//                                end: Alignment.centerLeft,
-//                                stops: [0.0, 1.0],
-//                                colors: [
-//                                  Theme.of(context).scaffoldBackgroundColor,
-//                                  Theme.of(context)
-//                                      .scaffoldBackgroundColor
-//                                      .withOpacity(0.0),
-//                                ],
-//                              ),
-//                            ),
-//                          ),
-//                        ),
-//                      ],
-//                    ),
-//                  ),
-//                ),
-//                GestureDetector(
-//                  onTap: () {
-//                    _showBottomSheet();
-//                  },
-//                  child: Padding(
-//                    padding: EdgeInsets.only(left: 16, right: 24),
-//                    child: Text(
-//                      "Filters",
-//                      style: TextStyle(
-//                        fontSize: 18,
-//                        fontWeight: FontWeight.bold,
-//                      ),
-//                    ),
-//                  ),
-//                ),
-//              ],
-//            ),
-//          ),
+         Padding(
+           padding: EdgeInsets.only(top: 38, left: 24, right: 2, bottom: 6),
+           child: Row(
+             children: [
+               Expanded(
+                 child: TextField(
+                   style: TextStyle(
+                     fontSize: 20,
+                     height: 1,
+                     color: Colors.black,
+                     fontWeight: FontWeight.bold,
+                   ),
+                   decoration: InputDecoration(
+                     hintText: 'Search',
+                     hintStyle: TextStyle(
+                       fontSize: 20,
+                       color: Colors.grey[400],
+                     ),
+                     enabledBorder: UnderlineInputBorder(
+                       borderSide: BorderSide(color: Colors.grey[600]),
+                     ),
+                     focusedBorder: UnderlineInputBorder(
+                       borderSide: BorderSide(color: Colors.grey[600]),
+                     ),
+                     border: UnderlineInputBorder(
+                       borderSide: BorderSide(color: Colors.grey[600]),
+                     ),
+                     suffixIcon: Padding(
+                       padding: EdgeInsets.only(left: 16),
+                       child: Icon(
+                         Icons.search,
+                         color: Colors.grey[600],
+                         size: 25,
+                       ),
+                     ),
+                   ),
+                 ),
+               ),
+               GestureDetector(
+                 onTap: () {
+                   _showBottomSheet();
+                 },
+                 child: Padding(
+                   padding: EdgeInsets.only(left: 16, right: 16),
+                   child: Text(
+                     "Filters",
+                     style: TextStyle(
+                       fontSize: 18,
+                       fontWeight: FontWeight.bold,
+                       color: Colors.grey[600],
+                     ),
+                   ),
+                 ),
+               ),
+             ],
+           ),
+         ),
+
           SizedBox(
-            height: 20.0,
+            height: 0.0,
           ),
           Expanded(
             child: Container(
@@ -162,7 +118,13 @@ class _SearchState extends State<Search> {
                         final Map<String, dynamic> property =
                             snapshot.data.data.toList()[index];
                         print(property);
-                        return Prop(
+                        return GestureDetector(
+                          onTap: () {
+                            print(index);
+                            Navigator.push(
+                                context, MaterialPageRoute(builder: (context) => Detail(id: property['id'])));
+                          },
+                          child: Prop(
                           id: property['id'],
                           type: property['type'],
                           property_name: property['property_name'],
@@ -173,6 +135,7 @@ class _SearchState extends State<Search> {
                           total_price: property['total_price'],
                           views: property['views'],
                           main_image: property['main_image'],
+                        ),
                         );
                       },
                     );
