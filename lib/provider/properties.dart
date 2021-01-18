@@ -12,8 +12,8 @@ class Properties with ChangeNotifier {
     return [..._properties];
   }
 
-  Future<void> fetchAllProperties() async {
-    final response = await ApiHelper().getWithoutAuthRequest(
+  Future<ApiResponse> fetchAllProperties() async {
+    ApiResponse response = await ApiHelper().getWithoutAuthRequest(
       endpoint: eProperties,
       query: {
         'visible': 'true',
@@ -21,12 +21,11 @@ class Properties with ChangeNotifier {
       },
     );
     if(!response.error){
-      //_properties = response.data;
       _properties.clear();
       List<Property> list = response.data.map<Property>((e) => Property.fromJson(e)).toList();
       _properties.addAll(list);
-      print(response.data);
     }
+    return response;
   }
 
   Future<void> fetchProperties(Map<String, dynamic> query) async {
@@ -40,10 +39,12 @@ class Properties with ChangeNotifier {
         _properties.clear();
         List<Property> list = response.data.map<Property>((e) => Property.fromJson(e)).toList();
         _properties.addAll(list);
-        print(response.data);
+        notifyListeners();
       }
+
     } catch(error){
-      notifyListeners();
+      print(error);
+
       throw HttpException(message: 'Failed to fetch properties');
     }
 

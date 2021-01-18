@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:housing/constant.dart';
+import 'package:housing/provider/filter.dart';
 import 'package:housing/provider/my_properties.dart' as my_prop;
 import 'package:housing/provider/bookmarks.dart' as bookmarks;
 import 'package:housing/provider/properties.dart';
@@ -37,7 +38,8 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (ctx) => my_prop.MyProperties()),
         ChangeNotifierProvider(create: (ctx) => my_prop.MyProperties()),
         ChangeNotifierProvider(create: (ctx) => bookmarks.Bookmarks()),
-        ChangeNotifierProvider(create: (ctx) => Properties())
+        ChangeNotifierProvider(create: (ctx) => Properties()),
+        ChangeNotifierProvider(create: (ctx)=>Filter()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

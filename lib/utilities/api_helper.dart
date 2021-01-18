@@ -76,7 +76,7 @@ class ApiHelper {
       final response = await http.post(uri, body: data);
       print(response.statusCode);
       if (response.statusCode == 200 || response.statusCode == 201) {
-        print('201 ran');
+        // print('201 ran');
         responseBody = jsonDecode(response.body);
         //print(responseBody);
         await _setAuthToken(responseBody['key']);
@@ -89,11 +89,11 @@ class ApiHelper {
         data.keys.forEach((String key) {
           if (key.contains('error')) {
             error = data[key][0];
-            print(error);
+            // print(error);
           } else {
             error = data[key][0];
-            print(error);
-            print(data);
+            // print(error);
+            // print(data);
           }
         });
         throw HttpException(message: error);
@@ -111,11 +111,11 @@ class ApiHelper {
     try {
 //      final url = '$_baseUrl$eLogIn';
       final uri = Uri.https(_baseUrl, eLogIn);
-      print(uri);
+      // print(uri);
       final response = await http.post(uri, body: data);
-      print(response.statusCode);
+      // print(response.statusCode);
       if (response.statusCode == 200) {
-        print('200 ran');
+        // print('200 ran');
         responseBody = jsonDecode(response.body);
         //print(responseBody);
         await _setAuthToken(responseBody['key']);
@@ -191,7 +191,7 @@ class ApiHelper {
     try {
       //final url = '$_baseUrl$endpoint';
       final uri = Uri.https(_baseUrl, endpoint, query);
-      print(uri);
+      // print(uri);
       final response = await http.get(
         uri,
       );
@@ -275,8 +275,8 @@ class ApiHelper {
       if (response.statusCode == 200 || response.statusCode == 201) {
         return ApiResponse(data: jsonDecode(response.body));
       } else {
-        print(response.body);
-        print(response.statusCode);
+        // print(response.body);
+        // print(response.statusCode);
         Map<String, dynamic> data = jsonDecode(response.body);
         String error = 'Error occurred';
         data.keys.forEach((String key) {

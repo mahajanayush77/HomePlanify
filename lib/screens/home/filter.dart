@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:housing/constant.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
+import 'package:housing/provider/filter.dart' as filter;
+import 'package:housing/provider/properties.dart' as prop;
 
 class Filter extends StatefulWidget {
   @override
@@ -8,19 +11,32 @@ class Filter extends StatefulWidget {
 }
 
 class _FilterState extends State<Filter> {
-
+  bool _initial=false;
   var selectedRange = RangeValues(20000, 9000000);
   var format = NumberFormat.compactCurrency(locale: 'en_IN', symbol: "₹", decimalDigits: 0);
 
-  String type = "";
-  int bedrooms = null;
-  int bathrooms = 0;
-  int rooms = 0;
-  String construction_status = "";
-  int price_start = 0;
-  int price_end = 9000000;
-  bool featured = false;
-  List features = null;
+  String type;
+  int bedrooms;
+  int bathrooms;
+  int rooms;
+  String construction_status;
+  bool featured;
+  List features;
+
+  @override
+  void didChangeDependencies() {
+    if(!_initial){
+      final filterQ=Provider.of<filter.Filter>(context,listen: false);
+      type = filterQ.type;
+      bedrooms = filterQ.bedrooms;
+      bathrooms = filterQ.bathrooms;
+      rooms = filterQ.rooms;
+      construction_status = filterQ.construction_status;
+      featured = filterQ.featured;
+      features = filterQ.features;
+    }
+    _initial=true;
+  }
 
 
   Widget _buildTypeChips() {
@@ -160,6 +176,33 @@ class _FilterState extends State<Filter> {
       ).toList(),
     );
   }
+  Widget _buildOrderByChips() {
+    List<List> _options = [
+      ['Price', "price"],
+      ['Bedrooms', "bhk"],
+      ['Views', "views"],
+      ['Date', "date"],
+    ];
+
+    return Wrap(
+      spacing: 10,
+      children: List<Widget>.generate(
+        _options.length, (int index) {
+        return ChoiceChip(
+          label: Text(_options[index][0]),
+          selected: construction_status == _options[index][1],
+          backgroundColor: Colors.grey[200],
+          selectedColor: kPrimaryColor,
+          onSelected: (bool selected) {
+            setState(() {
+              construction_status = selected ? _options[index][1] : null;
+            });
+          },
+        );
+      },
+      ).toList(),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -187,7 +230,15 @@ class _FilterState extends State<Filter> {
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(new Radius.circular(20.0))),
                 child: Text('Apply'),
                 onPressed: (){
+                  final query=Provider.of<filter.Filter>(context, listen: false);
+                  final proper = Provider.of<prop.Properties>(context, listen: false);
+
+                  query.saveFilters(type, bedrooms, bathrooms, rooms, construction_status, selectedRange.start, selectedRange.end, featured, features);
+                  Map<String, dynamic> query1 = query.toQuery();
+                  proper.fetchProperties(query1);
                   print('You tapped on FlatButton');
+                  print(query1);
+                  Navigator.of(context).pop();
                 },
               ),
             ],
@@ -313,6 +364,19 @@ class _FilterState extends State<Filter> {
             height: 8,
           ),
           _buildConstructionChips(),
+
+
+          Text(
+            "Order By",
+            style: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          SizedBox(
+            height: 8,
+          ),
+          _buildOrderByChips(),
 
 
         ],

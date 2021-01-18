@@ -23,12 +23,7 @@ class Bookmarks with ChangeNotifier {
     if(!response.error){
       List<Property> list = response.data.map<Property>((e)=> Property.fromJson(e)).toList();
       _myProp.addAll(list);
-
-
-
     }
-
-
     return response;
   }
 

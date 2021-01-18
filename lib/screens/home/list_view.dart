@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:housing/screens/home/projects_list.dart';
+import 'package:housing/models/property.dart';
 import 'package:housing/screens/home/property_detail.dart';
 import 'package:housing/screens/splash_screen.dart';
-import 'package:housing/utilities/api-response.dart';
-import 'package:housing/utilities/api_endpoints.dart';
-import 'package:housing/utilities/api_helper.dart';
-import '../data.dart';
+
 import './filter.dart';
+import 'package:provider/provider.dart';
+import 'package:housing/provider/properties.dart' as prop;
+import 'package:housing/provider/filter.dart' as filter;
 
 class Search extends StatefulWidget {
   @override
@@ -14,28 +14,53 @@ class Search extends StatefulWidget {
 }
 
 class _SearchState extends State<Search> {
-  
-  List<Property2> properties = getPropertyList();
-  Future<ApiResponse> _properties;
+
+  String search = null;
+  String type = "R";
+  int bedrooms = 2;
+  int bathrooms = null;
+  int rooms = null;
+  String construction_status = null;
+  int price_start = null;
+  int price_end = null;
+  bool featured = false;
+  List features = null;
+  String orderby = null;
+
+
   @override
   void initState() {
-    // TODO: implement initState
-    _properties = ApiHelper().getWithoutAuthRequest(
-      endpoint: eProperties,
-      query: {
-        'visible': 'true',
-        'verified': 'true',
-      },
-    );
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
+
+    final proper = Provider.of<prop.Properties>(context);
+    final filterquery=Provider.of<filter.Filter>(context);
+
+    void filterProperties(String value){
+      filterquery.updateSearch(value);
+      Map<String, dynamic> query = filterquery.toQuery();
+      // Map<String, dynamic> query = {
+      //   'visible': 'true',
+      //   'verified': 'true',
+      //   search != null ? "search": search : null,
+      //   type != null ? "search": type : null,
+      //   bedrooms != null ? "bedrooms": bedrooms : null,
+      //   rooms != null ? "rooms": rooms : null,
+      //   bathrooms != null ? "bathrooms": bathrooms : null,
+      //   construction_status != null ? "construction_status": construction_status : null,
+      //   price_start != null ? "minprice": price_start : null,
+      //   price_end != null ? "maxprice": price_end : null,
+      //   featured != null ? "featured": featured : null,
+      //   orderby != null ? "orderby": orderby : null,
+      // };
+      print(query);
+      proper.fetchProperties(query);
+    }
+
     return Scaffold(
-      // appBar: AppBar(
-      //   title: Text('Properties'),
-      // ),
       backgroundColor: Colors.white,
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -46,6 +71,9 @@ class _SearchState extends State<Search> {
              children: [
                Expanded(
                  child: TextField(
+                   onSubmitted: (value)  {
+                     filterProperties(value);
+                   },
                    style: TextStyle(
                      fontSize: 20,
                      height: 1,
@@ -53,7 +81,7 @@ class _SearchState extends State<Search> {
                      fontWeight: FontWeight.bold,
                    ),
                    decoration: InputDecoration(
-                     hintText: 'Search',
+                     hintText: 'Search Name, City, Area',
                      hintStyle: TextStyle(
                        fontSize: 20,
                        color: Colors.grey[400],
@@ -97,45 +125,22 @@ class _SearchState extends State<Search> {
              ],
            ),
          ),
-
-          SizedBox(
-            height: 0.0,
-          ),
           Expanded(
             child: Container(
               padding: EdgeInsets.symmetric(horizontal: 24),
               child: FutureBuilder(
-                future: _properties,
+                future: proper.fetchAllProperties(),
                 builder: (context, snapshot) {
                   if (snapshot.hasData) {
                     return ListView.separated(
                       separatorBuilder: (context, index) => SizedBox(width: 15),
                       shrinkWrap: true,
-                      itemCount: snapshot.data.data.length < 4
-                          ? snapshot.data.data.length
-                          : 4,
+                      itemCount: proper.properties.length,
                       itemBuilder: (context, index) {
-                        final Map<String, dynamic> property =
-                            snapshot.data.data.toList()[index];
-                        print(property);
-                        return GestureDetector(
-                          onTap: () {
-                            print(index);
-                            Navigator.push(
-                                context, MaterialPageRoute(builder: (context) => Detail(id: property['id'])));
-                          },
-                          child: Prop(
-                          id: property['id'],
-                          type: property['type'],
-                          property_name: property['property_name'],
-                          city: property['city'].split(" ")[0],
-                          construction_status: property['construction_status'],
-                          available_from: property['available_from'],
-                          bedrooms: property['bedrooms'],
-                          total_price: property['total_price'],
-                          views: property['views'],
-                          main_image: property['main_image'],
-                        ),
+                        final property = proper.properties;
+                        return ChangeNotifierProvider.value(
+                          value: property[index],
+                          child: Prop(),
                         );
                       },
                     );
@@ -149,30 +154,6 @@ class _SearchState extends State<Search> {
             ),
           ),
         ],
-      ),
-    );
-  }
-
-  Widget buildFilter(String filterName) {
-    return Container(
-      padding: EdgeInsets.symmetric(horizontal: 12),
-      margin: EdgeInsets.only(right: 12),
-      decoration: BoxDecoration(
-          borderRadius: BorderRadius.all(
-            Radius.circular(5),
-          ),
-          border: Border.all(
-            color: Colors.grey[300],
-            width: 1,
-          )),
-      child: Center(
-        child: Text(
-          filterName,
-          style: TextStyle(
-            fontSize: 16,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
       ),
     );
   }
@@ -193,6 +174,185 @@ class _SearchState extends State<Search> {
               Filter(),
             ],
           );
-        });
+        }).then((value) {
+
+          setState(() {
+          });
+    });
+  }
+}
+
+
+class Prop extends StatelessWidget {
+
+  @override
+  Widget build(BuildContext context) {
+
+    final proper = Provider.of<prop.Properties>(context, listen: false);
+    final property = Provider.of<Property>(context);
+
+    return GestureDetector(
+      onTap: () {
+        // print(index);
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) =>
+                    Detail(id: property.id)));
+      },
+      child: Card(
+        margin: EdgeInsets.only(bottom: 16),
+        clipBehavior: Clip.antiAlias,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(
+            Radius.circular(15),
+          ),
+        ),
+        child: Container(
+          height: 200,
+          decoration: BoxDecoration(
+            image: DecorationImage(
+              image: NetworkImage(
+                property.main_image,
+              ),
+              fit: BoxFit.cover,
+            ),
+          ),
+          child: Container(
+            padding: EdgeInsets.all(20),
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                stops: [0.5, 1.0],
+                colors: [
+                  Colors.transparent,
+                  Colors.black.withOpacity(0.7),
+                ],
+              ),
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                  decoration: BoxDecoration(
+                    color: Colors.yellow[700],
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(5),
+                    ),
+                  ),
+                  width: 80,
+                  padding: EdgeInsets.symmetric(
+                    vertical: 4,
+                  ),
+                  child: Center(
+                    child: Text(
+                      property.type == 'S' ? "FOR SALE" : "FOR RENT",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 14,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                ),
+                Expanded(
+                  child: Container(),
+                ),
+                Column(
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          property.property_name,
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        Text(
+                          " Rs " + property.total_price.toString(),
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(
+                      height: 4,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Row(
+                          children: [
+                            Icon(
+                              Icons.location_on,
+                              color: Colors.white,
+                              size: 14,
+                            ),
+                            SizedBox(
+                              width: 4,
+                            ),
+                            Text(
+                              property.city.substring(0),
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 14,
+                              ),
+                            ),
+                            SizedBox(
+                              width: 8,
+                            ),
+                            Icon(
+                              Icons.zoom_out_map,
+                              color: Colors.white,
+                              size: 16,
+                            ),
+                            SizedBox(
+                              width: 4,
+                            ),
+                            Text(
+                              property.bedrooms.toString(),
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 14,
+                              ),
+                            ),
+                          ],
+                        ),
+                        Row(
+                          children: [
+                            Icon(
+                              Icons.remove_red_eye,
+                              color: Colors.yellow[700],
+                              size: 14,
+                            ),
+                            SizedBox(
+                              width: 4,
+                            ),
+                            Text(
+                              property.views.toString() + " Views",
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 14,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
   }
 }

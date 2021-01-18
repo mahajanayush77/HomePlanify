@@ -5,11 +5,6 @@ import 'package:housing/provider/bookmarks.dart' as prop;
 import 'package:housing/screens/home/property_detail.dart';
 
 import 'package:housing/screens/splash_screen.dart';
-import 'package:housing/utilities/api-response.dart';
-import 'package:housing/utilities/api_endpoints.dart';
-import 'package:housing/utilities/api_helper.dart';
-import '../data.dart';
-import '../filter.dart';
 import 'package:provider/provider.dart';
 
 class Bookmarks extends StatefulWidget {
