@@ -12,10 +12,11 @@ class Properties with ChangeNotifier {
     return [..._properties];
   }
 
-  Future<ApiResponse> fetchAllProperties() async {
+  Future<ApiResponse> fetchAllProperties([Map<String, dynamic> query]) async {
     ApiResponse response = await ApiHelper().getWithoutAuthRequest(
       endpoint: eProperties,
-      query: {
+      query: query!=null?query:
+      {
         'visible': 'true',
         'verified': 'true',
       },
@@ -28,32 +29,24 @@ class Properties with ChangeNotifier {
     return response;
   }
 
-  Future<void> fetchProperties(Map<String, dynamic> query) async {
-    try{
-      final response = await ApiHelper().getWithoutAuthRequest(
-        endpoint: eProperties,
-        query: query,
-      );
-      if(!response.error){
-        //_properties = response.data;
-        _properties.clear();
-        List<Property> list = response.data.map<Property>((e) => Property.fromJson(e)).toList();
-        _properties.addAll(list);
-        notifyListeners();
-      }
-
-    } catch(error){
-      print(error);
-
-      throw HttpException(message: 'Failed to fetch properties');
-    }
-
-
-
-
-
-    notifyListeners();
-  }
+  // Future<void> fetchProperties(Map<String, dynamic> query) async {
+  //   try{
+  //     final response = await ApiHelper().getWithoutAuthRequest(
+  //       endpoint: eProperties,
+  //       query: query,
+  //     );
+  //     if(!response.error){
+  //       //_properties = response.data;
+  //       _properties.clear();
+  //       List<Property> list = response.data.map<Property>((e) => Property.fromJson(e)).toList();
+  //       _properties.addAll(list);
+  //       notifyListeners();
+  //     }
+  //   } catch(error){
+  //     print(error);
+  //     throw HttpException(message: 'Failed to fetch properties');
+  //   }
+  // }
 
   Property findById(int id) {
     return _properties.firstWhere((element) {

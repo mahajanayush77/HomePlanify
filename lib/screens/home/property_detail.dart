@@ -32,33 +32,23 @@ class _DetailState extends State<Detail> {
 
   @override
   void initState() {
-    // TODO: implement initState
-    endpointsingle = eProperties + id.toString() + "/";
-    response = ApiHelper().getWithoutAuthRequest(
-      endpoint: endpointsingle,
-    );
     super.initState();
   }
 
-  List<String> featuresList = ['Parking', 'Free ka Wifi', 'Garden', 'Swimming Pool'];
-  // Property2 property = Property2(
-  //   "RENT",
-  //   "Salu House",
-  //   "3,500.00",
-  //   "Miami",
-  //   "3,300",
-  //   "4.6",
-  //   "The living is easy in this impressive, generously proportioned contemporary residence with lake and ocean views, located within a level stroll to the sand and surf.",
-  //   "assets/images/house_04.jpg",
-  //   "assets/images/owner.jpg",
-  //   [
-  //     "assets/images/kitchen.jpg",
-  //     "assets/images/bath_room.jpg",
-  //     "assets/images/swimming_pool.jpg",
-  //     "assets/images/bed_room.jpg",
-  //     "assets/images/living_room.jpg",
-  //   ],
-  // );
+  Future<ApiResponse> getProperty() async {
+    endpointsingle = eProperties + id.toString() + "/";
+      var result = await AuthHelper.autoLogin();
+      if (result)
+        response = ApiHelper().getRequest(
+          endpoint: endpointsingle,
+        );
+      else
+        response = ApiHelper().getWithoutAuthRequest(
+          endpoint: endpointsingle,
+        );
+
+      return response;
+  }
 
   void add_to_bookmarks() async {
     // setState(() {
@@ -80,6 +70,7 @@ class _DetailState extends State<Detail> {
         message: 'Bookmarked',
         duration: Duration(seconds: 3),
       )..show(context);
+      property2.addtobookmarks();
       setState(() {
         property2.bookmarked = true;
       });
@@ -114,7 +105,7 @@ class _DetailState extends State<Detail> {
       );
 
       Flushbar(
-        message: 'Bookmarked',
+        message: 'Removed from Bookmarks',
         duration: Duration(seconds: 3),
       )..show(context);
       setState(() {
@@ -128,7 +119,7 @@ class _DetailState extends State<Detail> {
     } catch (error) {
       print(error);
       Flushbar(
-        message: 'Failed to Bookmark.',
+        message: 'Failed to Remove from Bookmarks',
         duration: Duration(seconds: 3),
       )..show(context);
     }
@@ -147,7 +138,7 @@ class _DetailState extends State<Detail> {
 
     return Scaffold(
         body: FutureBuilder(
-      future: response,
+      future: getProperty(),
       builder: (context, snapshot) {
         if (snapshot.hasData) {
 

@@ -12,15 +12,17 @@ class Filter extends StatefulWidget {
 
 class _FilterState extends State<Filter> {
   bool _initial=false;
-  var selectedRange = RangeValues(20000, 9000000);
+
   var format = NumberFormat.compactCurrency(locale: 'en_IN', symbol: "₹", decimalDigits: 0);
 
   String type;
+  var selectedRange = RangeValues(20000, 9000000);
   int bedrooms;
   int bathrooms;
   int rooms;
   String construction_status;
   bool featured;
+  String orderby;
   List features;
 
   @override
@@ -33,7 +35,10 @@ class _FilterState extends State<Filter> {
       rooms = filterQ.rooms;
       construction_status = filterQ.construction_status;
       featured = filterQ.featured;
-      features = filterQ.features;
+      orderby = filterQ.orderby;
+      // selectedRange.start = filterQ.price_start;
+      // selectedRange.end = filterQ.price_end;
+
     }
     _initial=true;
   }
@@ -190,12 +195,12 @@ class _FilterState extends State<Filter> {
         _options.length, (int index) {
         return ChoiceChip(
           label: Text(_options[index][0]),
-          selected: construction_status == _options[index][1],
+          selected: orderby == _options[index][1],
           backgroundColor: Colors.grey[200],
           selectedColor: kPrimaryColor,
           onSelected: (bool selected) {
             setState(() {
-              construction_status = selected ? _options[index][1] : null;
+              orderby = selected ? _options[index][1] : null;
             });
           },
         );
@@ -232,12 +237,12 @@ class _FilterState extends State<Filter> {
                 onPressed: (){
                   final query=Provider.of<filter.Filter>(context, listen: false);
                   final proper = Provider.of<prop.Properties>(context, listen: false);
-
-                  query.saveFilters(type, bedrooms, bathrooms, rooms, construction_status, selectedRange.start, selectedRange.end, featured, features);
-                  Map<String, dynamic> query1 = query.toQuery();
-                  proper.fetchProperties(query1);
+                  query.saveFilters(type, bedrooms, bathrooms, rooms, construction_status, selectedRange.start.toInt(), selectedRange.end.toInt(), featured, orderby);
+                  print("Filters saved");
+                  Map<String, String> query1 = query.toQuery();
                   print('You tapped on FlatButton');
                   print(query1);
+                  // proper.fetchProperties(query1);
                   Navigator.of(context).pop();
                 },
               ),

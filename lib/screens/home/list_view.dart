@@ -26,12 +26,15 @@ class _SearchState extends State<Search> {
   bool featured = false;
   List features = null;
   String orderby = null;
-
+  Map<String, String> query;
 
   @override
   void initState() {
+
     super.initState();
   }
+
+  // void updateproperties()
 
   @override
   Widget build(BuildContext context) {
@@ -41,23 +44,12 @@ class _SearchState extends State<Search> {
 
     void filterProperties(String value){
       filterquery.updateSearch(value);
-      Map<String, dynamic> query = filterquery.toQuery();
-      // Map<String, dynamic> query = {
-      //   'visible': 'true',
-      //   'verified': 'true',
-      //   search != null ? "search": search : null,
-      //   type != null ? "search": type : null,
-      //   bedrooms != null ? "bedrooms": bedrooms : null,
-      //   rooms != null ? "rooms": rooms : null,
-      //   bathrooms != null ? "bathrooms": bathrooms : null,
-      //   construction_status != null ? "construction_status": construction_status : null,
-      //   price_start != null ? "minprice": price_start : null,
-      //   price_end != null ? "maxprice": price_end : null,
-      //   featured != null ? "featured": featured : null,
-      //   orderby != null ? "orderby": orderby : null,
-      // };
+      query = filterquery.toQuery();
       print(query);
-      proper.fetchProperties(query);
+      setState(() {
+
+      });
+      // proper.fetchProperties(query);
     }
 
     return Scaffold(
@@ -129,7 +121,7 @@ class _SearchState extends State<Search> {
             child: Container(
               padding: EdgeInsets.symmetric(horizontal: 24),
               child: FutureBuilder(
-                future: proper.fetchAllProperties(),
+                future: proper.fetchAllProperties(query).whenComplete(() => print('hello')),
                 builder: (context, snapshot) {
                   if (snapshot.hasData) {
                     return ListView.separated(
@@ -175,9 +167,11 @@ class _SearchState extends State<Search> {
             ],
           );
         }).then((value) {
+      final filterquery=Provider.of<filter.Filter>(context, listen: false);
 
-          setState(() {
-          });
+      setState(() {
+        query=filterquery.toQuery();
+      });
     });
   }
 }

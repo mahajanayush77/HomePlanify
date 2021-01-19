@@ -67,6 +67,7 @@ class Property extends ChangeNotifier {
   });
 
   factory Property.fromJson(Map<String, dynamic> json) {
+    print(json["bookmarked"]);
     return Property(
       id: json['id'],
       type: json['type'],
