@@ -50,7 +50,7 @@ class _AddPropertyState extends State<AddProperty> {
   //   'youtube_video_2': ' ',
   //   'owner': ' ',
   // };
-  int room = 0;
+  int room = 1;
   int bedroom = 0;
   int bathroom = 0;
   bool _isLoading = false;

@@ -18,7 +18,6 @@ const List<String> images = [
 ];
 
 class ArticleOnePage extends StatefulWidget {
-
   final int index;
 
   ArticleOnePage({this.index});
@@ -30,33 +29,34 @@ class ArticleOnePage extends StatefulWidget {
 }
 
 class _ArticleOnePageState extends State<ArticleOnePage> {
-
   final String url = "https://www.homeplanify.com/api/blog-posts/";
   List data;
 
   @override
-  void initState(){
+  void initState() {
     super.initState();
     this.getJsonData();
   }
 
-  Future<void> getJsonData() async{
+  Future<void> getJsonData() async {
     var response = await http.get(
       Uri.encodeFull(url),
     );
 
     print(response.body);
 
-    setState((){
-      var convertDataToJson = json.decode(response.body);
-      data = convertDataToJson;
-    },);
+    setState(
+      () {
+        var convertDataToJson = json.decode(response.body);
+        data = convertDataToJson;
+      },
+    );
   }
 
   final int index;
   _ArticleOnePageState({this.index});
 
-  Widget _slideImage(){
+  Widget _slideImage() {
     return RoundedContainer(
       height: 270,
       borderRadius: BorderRadius.circular(0),
@@ -81,7 +81,6 @@ class _ArticleOnePageState extends State<ArticleOnePage> {
                     margin: const EdgeInsets.only(bottom: 20),
                     child: Row(
                       children: <Widget>[
-
                         const SizedBox(width: 10.0),
                         Expanded(
                           flex: 2,
@@ -89,10 +88,11 @@ class _ArticleOnePageState extends State<ArticleOnePage> {
                             color: Colors.red,
                             child: ListView.builder(
                               itemCount: data == null ? 0 : 1,
-                              itemBuilder: (BuildContext context, index){
+                              itemBuilder: (BuildContext context, idx) {
                                 return Image(
-                                  image: NetworkImage(data[index]['image1']),
-                                  fit: BoxFit.fill,
+                                  image: NetworkImage(
+                                      data[idx]['image${index + 1}']),
+                                  fit: BoxFit.contain,
                                 );
                               },
                             ),
@@ -119,7 +119,7 @@ class _ArticleOnePageState extends State<ArticleOnePage> {
         ),
         body: ListView.builder(
             itemCount: data == null ? 0 : 1,
-            itemBuilder: (BuildContext context, int index){
+            itemBuilder: (BuildContext context, int index) {
               return Column(
                 children: <Widget>[
                   Stack(
@@ -128,8 +128,8 @@ class _ArticleOnePageState extends State<ArticleOnePage> {
                     ],
                   ),
                   Padding(
-                    padding:
-                    const EdgeInsets.only(left: 16.0, right: 16.0, bottom: 16.0),
+                    padding: const EdgeInsets.only(
+                        left: 16.0, right: 16.0, bottom: 16.0),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
@@ -191,9 +191,6 @@ class _ArticleOnePageState extends State<ArticleOnePage> {
                   ),
                 ],
               );
-            })
-    );
+            }));
   }
 }
-
-

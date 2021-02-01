@@ -19,35 +19,34 @@ const List<String> images = [
   'https://firebasestorage.googleapis.com/v0/b/dl-flutter-ui-challenges.appspot.com/o/img%2F7.jpg?alt=media',
 ];
 
-
-
 class news_page extends StatefulWidget {
   @override
   _news_pageState createState() => _news_pageState();
 }
 
 class _news_pageState extends State<news_page> {
-
   final String url = "https://www.homeplanify.com/api/blog-posts/";
   List data;
 
   @override
-  void initState(){
+  void initState() {
     super.initState();
     this.getJsonData();
   }
 
-  Future<void> getJsonData() async{
+  Future<void> getJsonData() async {
     var response = await http.get(
       Uri.encodeFull(url),
     );
 
     print(response.body);
 
-    setState((){
-      var convertDataToJson = json.decode(response.body);
-      data = convertDataToJson;
-    },);
+    setState(
+      () {
+        var convertDataToJson = json.decode(response.body);
+        data = convertDataToJson;
+      },
+    );
   }
 
   @override
@@ -65,8 +64,8 @@ class _news_pageState extends State<news_page> {
         centerTitle: true,
       ),
       body: ListView.builder(
-        itemCount: data == null? 0 : data.length,
-        itemBuilder: (BuildContext context, int index){
+        itemCount: data == null ? 0 : data.length,
+        itemBuilder: (BuildContext context, int index) {
           return Container(
             child: Column(
               children: [
@@ -79,10 +78,14 @@ class _news_pageState extends State<news_page> {
                     onTap: () {
                       print(index);
                       Navigator.push(
-                          context, MaterialPageRoute(builder: (context) => ArticleOnePage(index: index)));
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  ArticleOnePage(index: index)));
                     },
                     child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 8.0, vertical: 4.0),
                       child: Row(
                         children: <Widget>[
                           Container(
@@ -91,7 +94,11 @@ class _news_pageState extends State<news_page> {
                             margin: const EdgeInsets.only(right: 10.0),
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(10),
-                              color: Colors.green,
+                              // color: Colors.green,
+                            ),
+                            child: Image.network(
+                              data[index]['main_image'],
+                              fit: BoxFit.fill,
                             ),
                           ),
                           Expanded(
@@ -101,7 +108,9 @@ class _news_pageState extends State<news_page> {
                                 children: <Widget>[
                                   Text(
                                     data[index]["title"],
-                                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17.0),
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 17.0),
                                     maxLines: 1,
                                   ),
                                   const SizedBox(height: 5.0),
@@ -119,14 +128,11 @@ class _news_pageState extends State<news_page> {
                     ),
                   ),
                 ),
-
               ],
             ),
           );
         },
       ),
-
-
       bottomNavigationBar: bottom_bar(2),
     );
   }
@@ -140,8 +146,9 @@ class _news_pageState extends State<news_page> {
             child: Text(
               title,
               style: TextStyle(
-                  fontSize: 22.0, fontWeight: FontWeight.bold, color: Colors.grey.shade600
-              ),
+                  fontSize: 22.0,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.grey.shade600),
             ),
           ),
           MaterialButton(

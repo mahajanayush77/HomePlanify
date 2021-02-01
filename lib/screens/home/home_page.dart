@@ -18,8 +18,10 @@ class _HomePageState extends State<HomePage> {
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
+      print(_selectedIndex);
     });
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -29,6 +31,4 @@ class _HomePageState extends State<HomePage> {
       bottomNavigationBar: bottom_bar(0),
     );
   }
-
-
 }

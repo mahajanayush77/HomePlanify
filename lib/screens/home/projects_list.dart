@@ -34,13 +34,12 @@ class _Hotels_ListState extends State<Hotels_List> {
       endpoint: eFeaturedProperties,
     );
 
-
-
     investProperties = ApiHelper().getWithoutAuthRequest(
       endpoint: eInvestProperties,
     );
     super.initState();
   }
+
   @override
   void didChangeDependencies() {
     final proper = Provider.of<Properties>(context);
@@ -69,10 +68,15 @@ class _Hotels_ListState extends State<Hotels_List> {
                       borderRadius: BorderRadius.circular(25),
                       elevation: 7,
                       child: TextField(
-                        onTap: (){
-                          showSearch(context: context, delegate: SearchProperties());
+                        onTap: () {
+                          showSearch(
+                            context: context,
+                            delegate: SearchProperties(),
+                          );
                         },
-                        onChanged: (text) {},
+                        onChanged: (text) {
+                          print(text);
+                        },
                         decoration: InputDecoration(
                           prefixIcon: Icon(Icons.search),
                           hintText: "Search",
@@ -133,25 +137,27 @@ class _Hotels_ListState extends State<Hotels_List> {
                               snapshot.data.data.toList()[index];
                           print(property);
                           return GestureDetector(
-                            onTap: () {
-                              print(index);
-                              Navigator.push(
-                                  context, MaterialPageRoute(builder: (context) => Detail(id: property['id'])));
-                            },
-                          child: Prop(
-                            id: property['id'],
-                            type: property['type'],
-                            property_name: property['property_name'],
-                            city: property['city'].split(" ")[0],
-                            construction_status:
-                                property['construction_status'],
-                            available_from: property['available_from'],
-                            bedrooms: property['bedrooms'],
-                            total_price: property['total_price'],
-                            views: property['views'],
-                            main_image: property['main_image'],
-                          )
-                          );
+                              onTap: () {
+                                print(index);
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            Detail(id: property['id'])));
+                              },
+                              child: Prop(
+                                id: property['id'],
+                                type: property['type'],
+                                property_name: property['property_name'],
+                                city: property['city'].split(" ")[0],
+                                construction_status:
+                                    property['construction_status'],
+                                available_from: property['available_from'],
+                                bedrooms: property['bedrooms'],
+                                total_price: property['total_price'],
+                                views: property['views'],
+                                main_image: property['main_image'],
+                              ));
                         },
                       );
                     } else if (snapshot.hasError) {
@@ -205,7 +211,6 @@ class _Hotels_ListState extends State<Hotels_List> {
                         style: TextStyle(
                             color: Colors.pink, fontWeight: FontWeight.w700)),
                   ),
-
                 ],
               ),
             ),
@@ -253,7 +258,8 @@ class _Hotels_ListState extends State<Hotels_List> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
-                  Text("Invest with HomePlanify", style: TextStyle(fontWeight: FontWeight.w900)),
+                  Text("Invest with HomePlanify",
+                      style: TextStyle(fontWeight: FontWeight.w900)),
                   GestureDetector(
                     onTap: () {
                       Navigator.pushNamed(context, '/invest_properties');
@@ -349,20 +355,29 @@ class _Hotels_ListState extends State<Hotels_List> {
         color: colors[index],
         borderRadius: BorderRadius.circular(10),
       ),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          SizedBox(width: 7),
-          Text(
-            cities[index],
-            style: TextStyle(
-                fontSize: 20,
-                letterSpacing: 1.5,
-                color: Colors.white,
-                fontWeight: FontWeight.w500),
-          ),
-        ],
+      child: FlatButton(
+        onPressed: () {
+          showSearch(
+            context: context,
+            delegate: SearchProperties(),
+            query: cities[index],
+          );
+        },
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            SizedBox(width: 7),
+            Text(
+              cities[index],
+              style: TextStyle(
+                  fontSize: 20,
+                  letterSpacing: 1.5,
+                  color: Colors.white,
+                  fontWeight: FontWeight.w500),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -409,7 +424,6 @@ class InvestProp extends StatelessWidget {
                 ],
               ),
             ),
-
             if (link != null)
               IconButton(
                 icon: Icon(
@@ -419,15 +433,12 @@ class InvestProp extends StatelessWidget {
                 color: Colors.white,
                 onPressed: () {
                   Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) =>
-                        WebScreen(
-                          url: link,
-                        ),
+                    builder: (context) => WebScreen(
+                      url: link,
+                    ),
                   ));
                 },
               ),
-
-
           ],
         ),
       ),
