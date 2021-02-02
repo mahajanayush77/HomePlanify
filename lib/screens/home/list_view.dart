@@ -47,7 +47,7 @@ class _SearchState extends State<Search> {
       setState(() {});
       // proper.fetchProperties(query);
     }
-
+    filterProperties(search);
     return Scaffold(
       backgroundColor: Colors.white,
       body: Column(
