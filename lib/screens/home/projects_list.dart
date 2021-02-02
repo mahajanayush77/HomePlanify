@@ -9,6 +9,7 @@ import 'package:housing/utilities/api_helper.dart';
 import 'package:housing/widgets/hot_deal_card.dart';
 import 'package:housing/widgets/search_widget.dart';
 import 'package:provider/provider.dart';
+import 'list_view.dart';
 
 class Hotels_List extends StatefulWidget {
   @override
@@ -357,11 +358,7 @@ class _Hotels_ListState extends State<Hotels_List> {
       ),
       child: FlatButton(
         onPressed: () {
-          showSearch(
-            context: context,
-            delegate: SearchProperties(),
-            query: cities[index],
-          );
+          Navigator.pushNamed(context, '/properties', arguments: cities[index]);
         },
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,

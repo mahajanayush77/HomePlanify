@@ -14,8 +14,7 @@ class Search extends StatefulWidget {
 }
 
 class _SearchState extends State<Search> {
-
-  String search = null;
+  String search = '';
   String type = "R";
   int bedrooms = 2;
   int bathrooms = null;
@@ -30,7 +29,6 @@ class _SearchState extends State<Search> {
 
   @override
   void initState() {
-
     super.initState();
   }
 
@@ -38,17 +36,15 @@ class _SearchState extends State<Search> {
 
   @override
   Widget build(BuildContext context) {
-
+    search = ModalRoute.of(context).settings.arguments;
     final proper = Provider.of<prop.Properties>(context);
-    final filterquery=Provider.of<filter.Filter>(context);
+    final filterquery = Provider.of<filter.Filter>(context);
 
-    void filterProperties(String value){
+    void filterProperties(String value) {
       filterquery.updateSearch(value);
       query = filterquery.toQuery();
       print(query);
-      setState(() {
-
-      });
+      setState(() {});
       // proper.fetchProperties(query);
     }
 
@@ -57,71 +53,77 @@ class _SearchState extends State<Search> {
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-         Padding(
-           padding: EdgeInsets.only(top: 38, left: 24, right: 2, bottom: 6),
-           child: Row(
-             children: [
-               Expanded(
-                 child: TextField(
-                   onSubmitted: (value)  {
-                     filterProperties(value);
-                   },
-                   style: TextStyle(
-                     fontSize: 20,
-                     height: 1,
-                     color: Colors.black,
-                     fontWeight: FontWeight.bold,
-                   ),
-                   decoration: InputDecoration(
-                     hintText: 'Search Name, City, Area',
-                     hintStyle: TextStyle(
-                       fontSize: 20,
-                       color: Colors.grey[400],
-                     ),
-                     enabledBorder: UnderlineInputBorder(
-                       borderSide: BorderSide(color: Colors.grey[600]),
-                     ),
-                     focusedBorder: UnderlineInputBorder(
-                       borderSide: BorderSide(color: Colors.grey[600]),
-                     ),
-                     border: UnderlineInputBorder(
-                       borderSide: BorderSide(color: Colors.grey[600]),
-                     ),
-                     suffixIcon: Padding(
-                       padding: EdgeInsets.only(left: 16),
-                       child: Icon(
-                         Icons.search,
-                         color: Colors.grey[600],
-                         size: 25,
-                       ),
-                     ),
-                   ),
-                 ),
-               ),
-               GestureDetector(
-                 onTap: () {
-                   _showBottomSheet();
-                 },
-                 child: Padding(
-                   padding: EdgeInsets.only(left: 16, right: 16),
-                   child: Text(
-                     "Filters",
-                     style: TextStyle(
-                       fontSize: 18,
-                       fontWeight: FontWeight.bold,
-                       color: Colors.grey[600],
-                     ),
-                   ),
-                 ),
-               ),
-             ],
-           ),
-         ),
+          Padding(
+            padding: EdgeInsets.only(top: 38, left: 24, right: 2, bottom: 6),
+            child: Row(
+              children: [
+                Expanded(
+                  child: TextFormField(
+                    initialValue: search,
+                    onEditingComplete: () {
+                      filterProperties(search);
+                    },
+                    onChanged: (value) {
+                      filterProperties(value);
+                    },
+                    style: TextStyle(
+                      fontSize: 20,
+                      height: 1,
+                      color: Colors.black,
+                      fontWeight: FontWeight.bold,
+                    ),
+                    decoration: InputDecoration(
+                      hintText: 'Search Name, City, Area',
+                      hintStyle: TextStyle(
+                        fontSize: 20,
+                        color: Colors.grey[400],
+                      ),
+                      enabledBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(color: Colors.grey[600]),
+                      ),
+                      focusedBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(color: Colors.grey[600]),
+                      ),
+                      border: UnderlineInputBorder(
+                        borderSide: BorderSide(color: Colors.grey[600]),
+                      ),
+                      suffixIcon: Padding(
+                        padding: EdgeInsets.only(left: 16),
+                        child: Icon(
+                          Icons.search,
+                          color: Colors.grey[600],
+                          size: 25,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                GestureDetector(
+                  onTap: () {
+                    _showBottomSheet();
+                  },
+                  child: Padding(
+                    padding: EdgeInsets.only(left: 16, right: 16),
+                    child: Text(
+                      "Filters",
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.grey[600],
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
           Expanded(
             child: Container(
               padding: EdgeInsets.symmetric(horizontal: 24),
               child: FutureBuilder(
-                future: proper.fetchAllProperties(query).whenComplete(() => print('hello')),
+                future: proper
+                    .fetchAllProperties(query)
+                    .whenComplete(() => print('hello')),
                 builder: (context, snapshot) {
                   if (snapshot.hasData) {
                     return ListView.separated(
@@ -167,32 +169,26 @@ class _SearchState extends State<Search> {
             ],
           );
         }).then((value) {
-      final filterquery=Provider.of<filter.Filter>(context, listen: false);
+      final filterquery = Provider.of<filter.Filter>(context, listen: false);
 
       setState(() {
-        query=filterquery.toQuery();
+        query = filterquery.toQuery();
       });
     });
   }
 }
 
-
 class Prop extends StatelessWidget {
-
   @override
   Widget build(BuildContext context) {
-
     final proper = Provider.of<prop.Properties>(context, listen: false);
     final property = Provider.of<Property>(context);
 
     return GestureDetector(
       onTap: () {
         // print(index);
-        Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) =>
-                    Detail(id: property.id)));
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => Detail(id: property.id)));
       },
       child: Card(
         margin: EdgeInsets.only(bottom: 16),

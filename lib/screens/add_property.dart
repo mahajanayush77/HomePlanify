@@ -50,7 +50,7 @@ class _AddPropertyState extends State<AddProperty> {
   //   'youtube_video_2': ' ',
   //   'owner': ' ',
   // };
-  int room = 1;
+  int room = 0;
   int bedroom = 0;
   int bathroom = 0;
   bool _isLoading = false;
@@ -204,12 +204,27 @@ class _AddPropertyState extends State<AddProperty> {
           data: data,
           file: _imageFile,
           fileFieldName: 'main_image');
-      if (!response.error)
+      if (!response.error) {
+        var id = response.data['id'];
+        Map<String, dynamic> data2 = {
+          'property': id,
+        };
+        if (_propertyImages.length > 0) {
+          for (var img in _propertyImages) {
+            final ApiResponse response2 = await ApiHelper().postWithFileRequest(
+              endpoint: '$eImages',
+              data: data2,
+              file: img,
+              fileFieldName: 'image',
+            );
+          }
+        }
+        ;
         Flushbar(
-          message: 'Property added successfully!',
+          message: 'Property Added Successfully',
           duration: Duration(seconds: 3),
         )..show(context);
-      else {
+      } else {
         Flushbar(
           message: response.errorMessage ?? 'Unable to add',
           duration: Duration(seconds: 3),
@@ -754,9 +769,10 @@ class _AddPropertyState extends State<AddProperty> {
                               : Container(
                                   height: size.height * 0.3,
                                   decoration: BoxDecoration(
-                                      image: DecorationImage(
-                                          image: FileImage(_imageFile),
-                                          fit: BoxFit.fitWidth)),
+                                    image: DecorationImage(
+                                        image: FileImage(_imageFile),
+                                        fit: BoxFit.fitWidth),
+                                  ),
                                 ),
                         ),
                       ),
