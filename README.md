@@ -152,7 +152,7 @@ At HomePlanify, we believe that when it comes to finding a home what's outside t
 ## Screenshots
 
 <img src="Screenshots/login.jpeg" width="230" height="550" />         <img src="Screenshots/home.jpeg" width="230" height="550" />
-<img src="Screenshots/filters.jpeg" width="230" height="550" />      <img src="Screenshots/search.jpeg" width="470" height="550" />
+<img src="Screenshots/filters.jpeg" width="230" height="550" />      <img src="Screenshots/search.jpeg" width="230" height="550" />
 
 
 
