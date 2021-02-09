@@ -1,5 +1,5 @@
 
-# [Housing](https://www.homeplanify.com/)
+# [HomePlanify](https://www.homeplanify.com/)
 [![forthebadge](https://forthebadge.com/images/badges/built-with-love.svg)](https://forthebadge.com) [![forthebadge](https://forthebadge.com/images/badges/built-by-developers.svg)](https://forthebadge.com) [![forthebadge](https://forthebadge.com/images/badges/built-for-android.svg)](https://forthebadge.com) [![forthebadge](https://forthebadge.com/images/badges/made-with-python.svg)](https://forthebadge.com)
 
 
@@ -21,7 +21,7 @@
 * [License](#license)
 
 ## About the Project 🚀
-[Housing](https://www.homeplanify.com/) is a fully-functional Housing Property Plarform, integrated with :
+[HomePlanify](https://www.homeplanify.com/) is a fully-functional Housing Property Plarform, integrated with :
 
 1. Django, for Back-End prgramming
 3. Dart/Flutter, for cross-platform native mobile application. 
