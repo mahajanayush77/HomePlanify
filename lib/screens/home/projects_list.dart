@@ -1,29 +1,35 @@
 import 'package:flutter/material.dart';
-import 'package:housing/provider/properties.dart';
-import 'package:housing/screens/home/property_detail.dart';
-import 'package:housing/screens/splash_screen.dart';
-import 'package:housing/screens/webview.dart';
-import 'package:housing/utilities/api-response.dart';
-import 'package:housing/utilities/api_endpoints.dart';
-import 'package:housing/utilities/api_helper.dart';
-import 'package:housing/widgets/hot_deal_card.dart';
-import 'package:housing/widgets/search_widget.dart';
 import 'package:provider/provider.dart';
-import 'list_view.dart';
+// Provider
+import '../../provider/properties.dart';
+// Routes
+import '../../screens/home/property_detail.dart';
+import '../../screens/splash_screen.dart';
+import '../../screens/webview.dart';
+// Utilities
+import '../../utilities/api-response.dart';
+import '../../utilities/api_endpoints.dart';
+import '../../utilities/api_helper.dart';
+// Widgets
+import '../../widgets/hot_deal_card.dart';
+import '../../widgets/search_widget.dart';
 
-class Hotels_List extends StatefulWidget {
+class HotelsList extends StatefulWidget {
   @override
-  _Hotels_ListState createState() => _Hotels_ListState();
+  _HotelsListState createState() => _HotelsListState();
 }
 
-class _Hotels_ListState extends State<Hotels_List> {
+class _HotelsListState extends State<HotelsList> {
+  // Initialise Api Response object for GET
   Future<ApiResponse> _properties;
   Future<ApiResponse> featuredProperties;
   Future<ApiResponse> investProperties;
 
   @override
+  // Init State of the Widget
+  // Executes before the whole Widget is built
   void initState() {
-    // TODO: implement initState
+    // calling various GET requests
     _properties = ApiHelper().getWithoutAuthRequest(
       endpoint: eProperties,
       query: {
@@ -34,7 +40,6 @@ class _Hotels_ListState extends State<Hotels_List> {
     featuredProperties = ApiHelper().getWithoutAuthRequest(
       endpoint: eFeaturedProperties,
     );
-
     investProperties = ApiHelper().getWithoutAuthRequest(
       endpoint: eInvestProperties,
     );
@@ -43,6 +48,7 @@ class _Hotels_ListState extends State<Hotels_List> {
 
   @override
   void didChangeDependencies() {
+    // Called to monitor change in provider of Properties
     final proper = Provider.of<Properties>(context);
     proper.fetchAllProperties();
     super.didChangeDependencies();
