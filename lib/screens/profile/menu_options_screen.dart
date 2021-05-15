@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:housing/utilities/api_helper.dart';
+import '../../utilities/api_helper.dart';
 import './option_model.dart';
 import '../../constant.dart';
-import 'package:housing/widgets/bottom_bar.dart';
+import '../../widgets/bottom_bar.dart';
 
+// Drawer menu in profile screen
 class MenuOptionsScreen extends StatefulWidget {
   @override
   _MenuOptionsScreenState createState() => _MenuOptionsScreenState();
@@ -19,19 +20,6 @@ class _MenuOptionsScreenState extends State<MenuOptionsScreen> {
       appBar: AppBar(
         backgroundColor: kPrimaryBackgroundColor,
         title: Text('Profile'),
-        // actions: <Widget>[
-        //   FlatButton(
-        //     textColor: Colors.white,
-        //     child: Text(
-        //       'HELP',
-        //       style: TextStyle(
-        //         fontSize: 16.0,
-        //         fontWeight: FontWeight.bold,
-        //       ),
-        //     ),
-        //     onPressed: () => print('HELP'),
-        //   )
-        // ],
       ),
       body: ListView.builder(
         itemCount: options.length + 2,
@@ -97,19 +85,12 @@ class _MenuOptionsScreenState extends State<MenuOptionsScreen> {
                       : Colors.grey[600],
                 ),
               ),
-              // subtitle: Text(
-              //   options[index - 1].subtitle,
-              //   style: TextStyle(
-              //     color:
-              //         _selectedOption == index - 1 ? Colors.black : Colors.grey,
-              //   ),
-              // ),
               selected: _selectedOption == index - 1,
               onTap: () {
                 setState(() {
                   _selectedOption = index - 1;
                 });
-                Navigator.pushNamed(context, options[index-1].gesturelink);
+                Navigator.pushNamed(context, options[index-1].gestureLink);
               },
             ),
           );

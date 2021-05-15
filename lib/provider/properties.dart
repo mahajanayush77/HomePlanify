@@ -1,10 +1,10 @@
-
 import 'package:flutter/cupertino.dart';
-import 'package:housing/models/property.dart';
-import 'package:housing/utilities/api-response.dart';
-import 'package:housing/utilities/api_endpoints.dart';
-import 'package:housing/utilities/api_helper.dart';
-import 'package:housing/utilities/http_exception.dart';
+import '../models/property.dart';
+import '../utilities/api-response.dart';
+import '../utilities/api_endpoints.dart';
+import '../utilities/api_helper.dart';
+
+// Properties provider
 
 class Properties with ChangeNotifier {
   List<Property> _properties = [];
@@ -12,6 +12,7 @@ class Properties with ChangeNotifier {
     return [..._properties];
   }
 
+  // fetch all listed properties which are also verified and visible
   Future<ApiResponse> fetchAllProperties([Map<String, dynamic> query]) async {
     ApiResponse response = await ApiHelper().getWithoutAuthRequest(
       endpoint: eProperties,
@@ -28,25 +29,6 @@ class Properties with ChangeNotifier {
     }
     return response;
   }
-
-  // Future<void> fetchProperties(Map<String, dynamic> query) async {
-  //   try{
-  //     final response = await ApiHelper().getWithoutAuthRequest(
-  //       endpoint: eProperties,
-  //       query: query,
-  //     );
-  //     if(!response.error){
-  //       //_properties = response.data;
-  //       _properties.clear();
-  //       List<Property> list = response.data.map<Property>((e) => Property.fromJson(e)).toList();
-  //       _properties.addAll(list);
-  //       notifyListeners();
-  //     }
-  //   } catch(error){
-  //     print(error);
-  //     throw HttpException(message: 'Failed to fetch properties');
-  //   }
-  // }
 
   Property findById(int id) {
     return _properties.firstWhere((element) {

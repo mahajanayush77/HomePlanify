@@ -1,21 +1,10 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
-import 'package:housing/widgets/rounded_container.dart';
-import 'network_image.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
+import '../../widgets/rounded_container.dart';
 
-const List<String> images = [
-  'https://firebasestorage.googleapis.com/v0/b/dl-flutter-ui-challenges.appspot.com/o/img%2F1.jpg?alt=media',
-  'https://firebasestorage.googleapis.com/v0/b/dl-flutter-ui-challenges.appspot.com/o/img%2F2.jpg?alt=media',
-  'https://firebasestorage.googleapis.com/v0/b/dl-flutter-ui-challenges.appspot.com/o/img%2F3.jpg?alt=media',
-  'https://firebasestorage.googleapis.com/v0/b/dl-flutter-ui-challenges.appspot.com/o/img%2F4.jpg?alt=media',
-  'https://firebasestorage.googleapis.com/v0/b/dl-flutter-ui-challenges.appspot.com/o/img%2F5.jpg?alt=media',
-  'https://firebasestorage.googleapis.com/v0/b/dl-flutter-ui-challenges.appspot.com/o/img%2F6.jpg?alt=media',
-  'https://firebasestorage.googleapis.com/v0/b/dl-flutter-ui-challenges.appspot.com/o/img%2F7.jpg?alt=media',
-];
 
 class ArticleOnePage extends StatefulWidget {
   final int index;
@@ -42,9 +31,7 @@ class _ArticleOnePageState extends State<ArticleOnePage> {
     var response = await http.get(
       Uri.encodeFull(url),
     );
-
     print(response.body);
-
     setState(
       () {
         var convertDataToJson = json.decode(response.body);
@@ -56,6 +43,7 @@ class _ArticleOnePageState extends State<ArticleOnePage> {
   final int index;
   _ArticleOnePageState({this.index});
 
+  // image carousel
   Widget _slideImage() {
     return RoundedContainer(
       height: 270,
@@ -112,7 +100,6 @@ class _ArticleOnePageState extends State<ArticleOnePage> {
 
   @override
   Widget build(BuildContext context) {
-    String image = images[1];
     return Scaffold(
         appBar: AppBar(
           title: Text(data[index]['title']),
@@ -141,10 +128,6 @@ class _ArticleOnePageState extends State<ArticleOnePage> {
                             Expanded(
                               child: Text(data[index]['date']),
                             ),
-                            // IconButton(
-                            //   icon: Icon(Icons.share),
-                            //   onPressed: () {},
-                            // )
                           ],
                         ),
                         Text(
@@ -156,23 +139,6 @@ class _ArticleOnePageState extends State<ArticleOnePage> {
                         SizedBox(
                           height: 10.0,
                         ),
-                        // Row(
-                        //   children: <Widget>[
-                        //     Icon(Icons.favorite_border),
-                        //     SizedBox(
-                        //       width: 5.0,
-                        //     ),
-                        //     Text("20.2k"),
-                        //     SizedBox(
-                        //       width: 16.0,
-                        //     ),
-                        //     Icon(Icons.comment),
-                        //     SizedBox(
-                        //       width: 5.0,
-                        //     ),
-                        //     Text("2.2k"),
-                        //   ],
-                        // ),
                         SizedBox(
                           height: 10.0,
                         ),

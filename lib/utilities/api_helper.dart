@@ -6,20 +6,22 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
-class ApiHelper {
-  final String _userIDStorageKey = 'USER_ID';
-  final String _authTokenStorageKey = 'AUTH_TOKEN';
-  final String _baseUrl = 'www.homeplanify.com'; //'36eb00ef8692.ngrok.io'
+// API Helper class to help in various REST requests to the backend
 
+class ApiHelper {
+  final String _userIDStorageKey = 'USER_ID'; // UID Key
+  final String _authTokenStorageKey = 'AUTH_TOKEN'; // AUTH_TOKEN Key
+  final String _baseUrl = 'www.homeplanify.com'; // Base URL
   static String _authToken;
   static String _userID;
 
-  Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+  Future<SharedPreferences> _prefs = SharedPreferences.getInstance(); // Shared Preferences Object
 
   static ApiHelper _instance;
   factory ApiHelper() => _instance ?? ApiHelper._internal();
   ApiHelper._internal();
 
+  // to get auth Token
   Future<String> _getAuthToken() async {
     if (_authToken != null) return _authToken;
 
@@ -28,24 +30,29 @@ class ApiHelper {
     return _authToken;
   }
 
+  // to set auth token locally for avoiding frequent login
   Future<void> _setAuthToken(String token) async {
     final SharedPreferences prefs = await _prefs;
     _authToken = token;
     prefs.setString(_authTokenStorageKey, token);
   }
 
+  // returns Auth Token
   String getAuth() {
     return _authToken;
   }
 
+  // returns base URL
   String getURL() {
     return _baseUrl;
   }
 
+  // returns UID
   String getUID() {
     return _userID;
   }
 
+  // set UID in shared preferences (locally)
   Future<void> _setUID(String uID) async {
     final SharedPreferences prefs = await _prefs;
     _userID = uID;
@@ -53,8 +60,9 @@ class ApiHelper {
     prefs.setString(_userIDStorageKey, uID);
   }
 
-  //Authentication
 
+
+  //Authentication
   Future<bool> isLoggedIn() async {
     final SharedPreferences prefs = await _prefs;
     final token = prefs.getString(_authTokenStorageKey) ?? '';
@@ -66,6 +74,7 @@ class ApiHelper {
     return token.isNotEmpty;
   }
 
+  // SignUp
   Future<void> SignUp(Map data) async {
     var responseBody = json.decode('{"data": "", "status": "NOK"}');
 
@@ -105,6 +114,7 @@ class ApiHelper {
     }
   }
 
+  // LogIn
   Future<void> logIn(Map data) async {
     var responseBody = json.decode('{"data": "", "status": "NOK"}');
 
@@ -140,6 +150,7 @@ class ApiHelper {
     }
   }
 
+  // LogOut
   Future<void> logOut() async {
     final SharedPreferences prefs = await _prefs;
     prefs.clear();
@@ -147,7 +158,7 @@ class ApiHelper {
     _authToken = null;
   }
 
-  //GET
+  // GET
   Future<ApiResponse> getRequest(
       {String endpoint, Map<String, String> query}) async {
     if (_authToken.isEmpty || _authToken == null) {
@@ -185,7 +196,7 @@ class ApiHelper {
     }
   }
 
-  //GET Without Auth
+  // GET Without Auth
   Future<ApiResponse> getWithoutAuthRequest(
       {String endpoint, Map<String, String> query}) async {
     try {
@@ -216,7 +227,7 @@ class ApiHelper {
     }
   }
 
-  //POST
+  // POST
   Future<ApiResponse> postRequest(
       String endpoint, Map<String, dynamic> data) async {
     if (_authToken.isEmpty || _authToken == null) {
@@ -294,7 +305,7 @@ class ApiHelper {
     }
   }
 
-  //PATCH WITH FIILE
+  // PATCH WITH FILE
   Future<ApiResponse> patchRequestwithFile(
       {String endpoint, var data, File file, String fileFieldName}) async {
     if (_authToken.isEmpty || _authToken == null) {
@@ -353,7 +364,7 @@ class ApiHelper {
     }
   }
 
-  //POST WITH FILE
+  // POST WITH FILE
   Future<ApiResponse> postWithFileRequest(
       {String endpoint, var data, File file, String fileFieldName}) async {
     if (_authToken.isEmpty || _authToken == null) {

@@ -1,7 +1,5 @@
-
 import 'package:flutter/material.dart';
 import 'package:housing/models/property.dart';
-import 'package:housing/screens/add_property.dart';
 import 'package:housing/screens/home/property_detail.dart';
 import 'package:provider/provider.dart';
 import 'package:housing/provider/my_properties.dart' as prop;

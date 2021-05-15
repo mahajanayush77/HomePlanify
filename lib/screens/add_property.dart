@@ -1,23 +1,27 @@
+// necessary imports
 import 'dart:io';
-
-import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:housing/constant.dart';
-import 'package:housing/models/feature.dart';
-import 'package:housing/models/property.dart';
-import 'package:housing/provider/my_properties.dart';
-import 'package:housing/provider/properties.dart' as newprop;
-import 'package:housing/utilities/api-response.dart';
-import 'package:housing/utilities/api_endpoints.dart';
-import 'package:housing/utilities/api_helper.dart';
-import 'package:housing/widgets/bottom_bar.dart';
-import 'package:housing/widgets/image_bottom_sheet.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
-import 'package:housing/utilities/http_exception.dart';
 import 'package:provider/provider.dart';
+// packages
+import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:flushbar/flushbar.dart';
+import 'package:image_picker/image_picker.dart';
 
+// packages
+import '../constant.dart';
+import '../models/feature.dart';
+import '../models/property.dart';
+import '../provider/my_properties.dart';
+import '../provider/properties.dart' as newprop;
+import '../utilities/api-response.dart';
+import '../utilities/api_endpoints.dart';
+import '../utilities/api_helper.dart';
+import '../widgets/bottom_bar.dart';
+import '../widgets/image_bottom_sheet.dart';
+import '../utilities/http_exception.dart';
+
+// Add property form
 class AddProperty extends StatefulWidget {
   static const routeName = '/addProperty';
 
@@ -26,30 +30,18 @@ class AddProperty extends StatefulWidget {
 }
 
 class _AddPropertyState extends State<AddProperty> {
+  // type of property
   var _type = {
     'B': "Buy",
     'S': "Sell",
     'R': "Rent",
   };
+  // status of the property
   var _status = {
     'RM': "Ready to Move",
     'UC': "Under Construction",
   };
-  // Map<String, dynamic> _initProduct = {
-  //   'type': ' ',
-  //   'property_name': ' ',
-  //   'city': ' ',
-  //   'bedrooms': ' ',
-  //   'bathrooms': ' ',
-  //   'rooms': ' ',
-  //   'construction_status': ' ',
-  //   'available_from': ' ',
-  //   'total_price': ' ',
-  //   'features': ' ',
-  //   'youtube_video': ' ',
-  //   'youtube_video_2': ' ',
-  //   'owner': ' ',
-  // };
+  // required for POST
   int room = 0;
   int bedroom = 0;
   int bathroom = 0;
@@ -60,7 +52,16 @@ class _AddPropertyState extends State<AddProperty> {
   List<int> features = [];
   List<File> _propertyImages = [];
   int propId;
+  String _typeValue;
+  String _statusValue;
+  bool _noImageError = false;
+  Property _editedData;
+  bool _initial = true;
+
+  // Form Key
   final _formKey = GlobalKey<FormState>();
+
+  // Text box controller
   final TextEditingController cityCtl = TextEditingController();
   final TextEditingController dateCtl = TextEditingController();
   final TextEditingController fDateCtl = TextEditingController();
@@ -71,13 +72,8 @@ class _AddPropertyState extends State<AddProperty> {
   final TextEditingController ytVideoLink1 = TextEditingController();
   final TextEditingController ytVideoLink2 = TextEditingController();
   final TextEditingController shiftTimeCtl = TextEditingController();
-  String _typeValue;
-  String _statusValue;
-  bool _noImageError = false;
-  //Map<String, dynamic> _editedData;
-  Property _editedData;
-  bool _initial = true;
 
+  // for picking images from gallery/camera
   Future<File> getImage(ImageSource source) async {
     final picker = ImagePicker();
     final pickedFile = await picker.getImage(source: source);
@@ -86,18 +82,17 @@ class _AddPropertyState extends State<AddProperty> {
       _noImageError = false;
     });
     return File(pickedFile.path);
-
-    //cropImage();
   }
 
   @override
   void initState() {
-    _fetchFeatures();
+    _fetchFeatures(); // fetch the list of available features
     super.initState();
   }
 
   @override
   void didChangeDependencies() {
+    // editing a listed property
     if (_initial) {
       final id = ModalRoute.of(context).settings.arguments as int;
       print(id);
@@ -124,6 +119,7 @@ class _AddPropertyState extends State<AddProperty> {
     super.didChangeDependencies();
   }
 
+  // fetch features
   void _fetchFeatures() async {
     ApiResponse response =
         await ApiHelper().getWithoutAuthRequest(endpoint: eFeatures);
@@ -148,6 +144,7 @@ class _AddPropertyState extends State<AddProperty> {
     }
   }
 
+  // saving the form and making a POST request
   _saveForm() async {
     final isValid = _formKey.currentState.validate();
     if (!isValid) return;
@@ -244,6 +241,7 @@ class _AddPropertyState extends State<AddProperty> {
     });
   }
 
+  // saving form and making a Patch request on existing property
   _updateForm() async {
     _formKey.currentState.save();
 
@@ -290,18 +288,12 @@ class _AddPropertyState extends State<AddProperty> {
 //    print(data);
     try {
       ApiResponse response;
-//      if (_imageFile != null) {
-//      print(_imageFile.path);
+
       response = await ApiHelper().patchRequestwithFile(
           endpoint: '$eProperties$propId/',
           data: data,
           file: _imageFile,
           fileFieldName: 'main_image');
-//      print(response);
-//      } else {
-//        response = await ApiHelper().patchRequest('$eProperties$propId/', data);
-//        print(response);
-//      }
 
       if (!response.error)
         Flushbar(
@@ -328,14 +320,12 @@ class _AddPropertyState extends State<AddProperty> {
     });
   }
 
+
   @override
   Widget build(BuildContext context) {
-    final prop = Provider.of<newprop.Properties>(context, listen: false);
-    final id = ModalRoute.of(context).settings.arguments as int;
     final size = DeviceSize(context: context);
     var myFormat = DateFormat('yyyy-MM-dd');
-    final MaterialLocalizations localizations =
-        MaterialLocalizations.of(context);
+
 
     return Scaffold(
       appBar: AppBar(
@@ -417,12 +407,7 @@ class _AddPropertyState extends State<AddProperty> {
                       })
                       .values
                       .toList(),
-                  // items: _type.map((String value) {
-                  //   return DropdownMenuItem<String>(
-                  //     value: value,
-                  //     child: Text(value),
-                  //   );
-                  // }).toList(),
+
                   onChanged: (String newValue) {
                     setState(() {
                       _typeValue = newValue;
@@ -492,12 +477,6 @@ class _AddPropertyState extends State<AddProperty> {
                           borderRadius: BorderRadius.circular(15.0))),
                   value: _statusValue,
                   isDense: true,
-                  // items: _status.map((String value) {
-                  //   return DropdownMenuItem<String>(
-                  //     value: value,
-                  //     child: Text(value),
-                  //   );
-                  // }).toList(),
 
                   items: _status
                       .map((key, value) {
@@ -918,22 +897,6 @@ class _AddPropertyState extends State<AddProperty> {
                                           fit: BoxFit.fitWidth)),
                                 ),
                               ),
-                        // child: Chip(
-                        //   label: Text(
-                        //     _tags[i],
-                        //     textScaleFactor: 1.0,
-                        //   ),
-                        //   labelStyle: TextStyle(
-                        //     color: Colors.white,
-                        //   ),
-                        //   backgroundColor: Colors.black54,
-                        //   deleteIcon: Icon(Icons.cancel),
-                        //   onDeleted: () {
-                        //     setState(() {
-                        //       _tags.removeAt(i);
-                        //     });
-                        //   },
-                        // ),
                       );
                     },
                   ),

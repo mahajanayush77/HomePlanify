@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:housing/constant.dart';
-import 'package:housing/screens/add_property.dart';
-import 'package:housing/screens/onboarding/Login/login_screen.dart';
-import 'package:housing/screens/splash_screen.dart';
+import '../constant.dart';
+import '../screens/add_property.dart';
 import '../utilities/auth_helper.dart' as AuthHelper;
+
+// bottom navigation bar
 
 class bottom_bar extends StatefulWidget {
   final current_index;
@@ -120,20 +120,6 @@ class _bottom_barState extends State<bottom_bar> {
                 Navigator.pushReplacementNamed(context, '/profile');
               else
                 Navigator.pushNamed(context, '/login');
-//              FutureBuilder(
-//                future: AuthHelper.autoLogin(),
-//                builder: (context, authResultSnapshot) {
-//                  if (authResultSnapshot.connectionState ==
-//                      ConnectionState.waiting) return SplashScreen();
-//                  if (authResultSnapshot.hasData) {
-//                    if (authResultSnapshot.data) {
-//                      print('prefs exist');
-//                      return profile_page();
-//                    }
-//                  }
-//                  return LoginScreen();
-//                },
-//              );
             },
             child: Column(
               children: <Widget>[

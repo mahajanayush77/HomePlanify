@@ -1,6 +1,7 @@
 import 'http_exception.dart';
 import 'api_helper.dart';
 
+// To auto login if auth token is present in shared preferences
 Future<bool> autoLogin() async {
   final status = await ApiHelper().isLoggedIn();
   //print(status);
@@ -8,6 +9,7 @@ Future<bool> autoLogin() async {
   return status;
 }
 
+// SignUp
 Future<void> SignUp(String email, String password) async {
   print('email: $email password: $password');
   Map<String, String> data = {

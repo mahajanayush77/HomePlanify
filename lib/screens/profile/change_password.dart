@@ -1,17 +1,17 @@
 import 'dart:io';
-
 import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:housing/constant.dart';
-import 'package:housing/utilities/api-response.dart';
-import 'package:housing/utilities/api_endpoints.dart';
-import 'package:housing/utilities/api_helper.dart';
-import 'package:housing/widgets/bottom_bar.dart';
-import 'package:housing/utilities/http_exception.dart';
+import '../../constant.dart';
+import '../../utilities/api-response.dart';
+import '../../utilities/api_endpoints.dart';
+import '../../utilities/api_helper.dart';
+import '../../widgets/bottom_bar.dart';
+import '../../utilities/http_exception.dart';
+
+// change password form
 
 class ChangePassword extends StatefulWidget {
-  // static const routeName = '/ContactUs';
 
   @override
   _ChangePasswordState createState() => _ChangePasswordState();
@@ -23,19 +23,14 @@ class _ChangePasswordState extends State<ChangePassword> {
   bool _isNewPasswordHidden = true;
   bool _isConfirmPasswordHidden = true;
 
+  // form key
   final _formKey = GlobalKey<FormState>();
+  // text box controllers in form
   final TextEditingController oldPasswordCtl = TextEditingController();
   final TextEditingController newPasswordCtl = TextEditingController();
   final TextEditingController confirmPasswordCtl = TextEditingController();
 
-  Future<ApiResponse> _response;
-
-  @override
-  void initState() {
-
-    super.initState();
-  }
-
+  // save form and initiate POST request
   void _saveForm() async {
     final isValid = _formKey.currentState.validate();
     if (!isValid) return;
@@ -84,10 +79,6 @@ class _ChangePasswordState extends State<ChangePassword> {
 
   @override
   Widget build(BuildContext context) {
-    final size = DeviceSize(context: context);
-
-    final MaterialLocalizations localizations =
-    MaterialLocalizations.of(context);
 
     return Scaffold(
       appBar: AppBar(

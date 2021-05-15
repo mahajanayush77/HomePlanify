@@ -1,3 +1,4 @@
+// class to catch any http exceptions
 class HttpException implements Exception{
   final String message;
 

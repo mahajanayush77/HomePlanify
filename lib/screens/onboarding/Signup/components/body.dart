@@ -1,20 +1,17 @@
 import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:housing/components/Onboarding/text_field_container.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:housing/constant.dart';
 import '../../Login/login_screen.dart';
 import './background.dart';
-import './or_divider.dart';
-import './social_icon.dart';
-import '../../../../components/Onboarding/already_have_an_account_acheck.dart';
-import '../../../../components/Onboarding/rounded_button.dart';
-import '../../../../components/Onboarding/rounded_input_field.dart';
-import '../../../../components/Onboarding/rounded_password_field.dart';
-import 'package:flutter_svg/svg.dart';
+import '../../../../widgets/textFieldContainer.dart';
+import '../../../../widgets/alreadyHaveAccount.dart';
+import '../../../../widgets/roundedButton.dart';
+import '../../../../widgets/rounded_input_field.dart';
 import '../../../../utilities/auth_helper.dart' as authHelper;
-import 'package:housing/utilities/api_helper.dart';
-import 'package:housing/utilities/http_exception.dart';
+import '../../../../utilities/api_helper.dart';
+import '../../../../utilities/http_exception.dart';
 
 class Body extends StatefulWidget {
   @override
@@ -33,11 +30,7 @@ class _BodyState extends State<Body> {
   final TextEditingController passwordCtl = TextEditingController();
 
 
-
-
-
-
-
+  // signUp POST request
   _signUp() async {
     final isValid = _formKey.currentState.validate();
     if (!isValid) return;
@@ -70,7 +63,6 @@ class _BodyState extends State<Body> {
       _isLoading = false;
     });
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -156,24 +148,6 @@ class _BodyState extends State<Body> {
                   );
                 },
               ),
-              // OrDivider(),
-              // Row(
-              //   mainAxisAlignment: MainAxisAlignment.center,
-              //   children: <Widget>[
-              //     SocalIcon(
-              //       iconSrc: "assets/icons/facebook.svg",
-              //       press: () {},
-              //     ),
-              //     SocalIcon(
-              //       iconSrc: "assets/icons/twitter.svg",
-              //       press: () {},
-              //     ),
-              //     SocalIcon(
-              //       iconSrc: "assets/icons/google-plus.svg",
-              //       press: () {},
-              //     ),
-              //   ],
-              // )
             ],
           ),
         ),

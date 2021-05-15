@@ -5,7 +5,6 @@ import '../../provider/properties.dart';
 // Routes
 import '../../screens/home/property_detail.dart';
 import '../../screens/splash_screen.dart';
-import '../../screens/webview.dart';
 // Utilities
 import '../../utilities/api-response.dart';
 import '../../utilities/api_endpoints.dart';
@@ -13,6 +12,8 @@ import '../../utilities/api_helper.dart';
 // Widgets
 import '../../widgets/hot_deal_card.dart';
 import '../../widgets/search_widget.dart';
+import '../../widgets/property.dart';
+import '../../widgets/investmentProp.dart';
 
 class HotelsList extends StatefulWidget {
   @override
@@ -123,6 +124,7 @@ class _HotelsListState extends State<HotelsList> {
               ),
             ),
             SizedBox(height: 15),
+            // property details
             Padding(
               padding: const EdgeInsets.only(left: 20),
               child: SizedBox(
@@ -131,6 +133,7 @@ class _HotelsListState extends State<HotelsList> {
                   future: _properties,
                   builder: (context, snapshot) {
                     if (snapshot.hasData) {
+                      // list view builder
                       return ListView.separated(
                         separatorBuilder: (context, index) =>
                             SizedBox(width: 15),
@@ -208,6 +211,7 @@ class _HotelsListState extends State<HotelsList> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
+                  // featured projects
                   Text("Featured Projects",
                       style: TextStyle(fontWeight: FontWeight.w900)),
                   GestureDetector(
@@ -226,6 +230,7 @@ class _HotelsListState extends State<HotelsList> {
               padding: const EdgeInsets.only(left: 20),
               child: SizedBox(
                 height: MediaQuery.of(context).size.height / 4.25,
+                // list view of featured properties
                 child: FutureBuilder(
                   future: featuredProperties,
                   builder: (context, snapshot) {
@@ -265,6 +270,7 @@ class _HotelsListState extends State<HotelsList> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
+                  // investment properties
                   Text("Invest with HomePlanify",
                       style: TextStyle(fontWeight: FontWeight.w900)),
                   GestureDetector(
@@ -320,7 +326,7 @@ class _HotelsListState extends State<HotelsList> {
       ),
     );
   }
-
+// header widget
   headerWidget() {
     return Container(
       width: MediaQuery.of(context).size.width,
@@ -346,6 +352,7 @@ class _HotelsListState extends State<HotelsList> {
     );
   }
 
+  // constants
   List<Color> colors = [
     Color(0xFF7FBC6E),
     Color(0xFFC1E7E8),
@@ -354,6 +361,7 @@ class _HotelsListState extends State<HotelsList> {
   ];
   List<String> cities = ["Gurgaon", "Faridabad", "Sonipat", "Karnal"];
 
+  // custom list view widget for cities
   listViewItemCities(int index) {
     return Container(
       width: MediaQuery.of(context).size.width / 2.25,
@@ -386,247 +394,3 @@ class _HotelsListState extends State<HotelsList> {
   }
 }
 
-class InvestProp extends StatelessWidget {
-  String title;
-  String image;
-  String link;
-  InvestProp({this.title, this.image, this.link});
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: MediaQuery.of(context).size.width / 1.65,
-      height: MediaQuery.of(context).size.height / 6,
-      decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(15),
-          image: DecorationImage(
-              image: NetworkImage(
-                image,
-              ),
-              fit: BoxFit.fill)),
-      child: Padding(
-        padding: const EdgeInsets.fromLTRB(20, 0, 20, 15),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          crossAxisAlignment: CrossAxisAlignment.end,
-          children: <Widget>[
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: <Widget>[
-                  Text(
-                    title,
-                    softWrap: true,
-                    overflow: TextOverflow.fade,
-                    style: TextStyle(
-                        letterSpacing: 2.0,
-                        fontSize: 18,
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold),
-                  ),
-                ],
-              ),
-            ),
-            if (link != null)
-              IconButton(
-                icon: Icon(
-                  Icons.arrow_forward,
-                  size: 24,
-                ),
-                color: Colors.white,
-                onPressed: () {
-                  Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => WebScreen(
-                      url: link,
-                    ),
-                  ));
-                },
-              ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class Prop extends StatelessWidget {
-  int id;
-  String type;
-  String property_name;
-  String city;
-  String construction_status;
-  String available_from;
-  int bedrooms;
-  int total_price;
-  int views;
-  String main_image;
-
-  Prop({
-    this.id,
-    this.main_image,
-    this.city,
-    this.construction_status,
-    this.total_price,
-    this.property_name,
-    this.views,
-    this.type,
-    this.available_from,
-    this.bedrooms,
-  });
-  @override
-  Widget build(BuildContext context) {
-    return Card(
-      margin: EdgeInsets.only(bottom: 24),
-      clipBehavior: Clip.antiAlias,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.all(
-          Radius.circular(15),
-        ),
-      ),
-      child: Container(
-        height: 210,
-        decoration: BoxDecoration(
-          image: DecorationImage(
-            image: NetworkImage(
-              main_image,
-            ),
-            fit: BoxFit.cover,
-          ),
-        ),
-        child: Container(
-          padding: EdgeInsets.all(20),
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-              stops: [0.5, 1.0],
-              colors: [
-                Colors.transparent,
-                Colors.black.withOpacity(0.7),
-              ],
-            ),
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Container(
-                decoration: BoxDecoration(
-                  color: Colors.yellow[700],
-                  borderRadius: BorderRadius.all(
-                    Radius.circular(5),
-                  ),
-                ),
-                width: 80,
-                padding: EdgeInsets.symmetric(
-                  vertical: 4,
-                ),
-                child: Center(
-                  child: Text(
-                    type == 'S' ? "FOR SALE" : "FOR RENT",
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 14,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
-              ),
-              Expanded(
-                child: Container(),
-              ),
-              Column(
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        property_name,
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      Text(
-                        " Rs " + total_price.toString(),
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ],
-                  ),
-                  SizedBox(
-                    height: 4,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Row(
-                        children: [
-                          Icon(
-                            Icons.location_on,
-                            color: Colors.white,
-                            size: 14,
-                          ),
-                          SizedBox(
-                            width: 4,
-                          ),
-                          Text(
-                            city.substring(0),
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 14,
-                            ),
-                          ),
-                          SizedBox(
-                            width: 8,
-                          ),
-                          Icon(
-                            Icons.hotel,
-                            color: Colors.white,
-                            size: 16,
-                          ),
-                          SizedBox(
-                            width: 4,
-                          ),
-                          Text(
-                            bedrooms.toString(),
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 14,
-                            ),
-                          ),
-                        ],
-                      ),
-                      Row(
-                        children: [
-                          Icon(
-                            Icons.remove_red_eye,
-                            color: Colors.yellow[700],
-                            size: 14,
-                          ),
-                          SizedBox(
-                            width: 4,
-                          ),
-                          Text(
-                            views.toString() + " Views",
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 14,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-}

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:housing/screens/home/projects_list.dart';
-import 'package:housing/screens/splash_screen.dart';
+import '../splash_screen.dart';
 import 'package:housing/utilities/api-response.dart';
 import 'package:housing/utilities/api_endpoints.dart';
 import 'package:housing/utilities/api_helper.dart';

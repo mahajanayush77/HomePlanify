@@ -1,3 +1,4 @@
+//  class to store an API Response
 class ApiResponse {
   final data;
   final bool error;

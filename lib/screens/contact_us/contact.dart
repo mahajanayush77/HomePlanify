@@ -1,18 +1,16 @@
 import 'dart:io';
-
 import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:housing/constant.dart';
-import 'package:housing/utilities/api-response.dart';
-import 'package:housing/utilities/api_endpoints.dart';
-import 'package:housing/utilities/api_helper.dart';
-import 'package:housing/widgets/bottom_bar.dart';
-import 'package:housing/utilities/http_exception.dart';
+import '../../constant.dart';
+import '../../utilities/api-response.dart';
+import '../../utilities/api_endpoints.dart';
+import '../../utilities/api_helper.dart';
+import '../../widgets/bottom_bar.dart';
+import '../../utilities/http_exception.dart';
 
 class ContactUs extends StatefulWidget {
   static const routeName = '/ContactUs';
-
   @override
   _ContactUsState createState() => _ContactUsState();
 }
@@ -20,17 +18,15 @@ class ContactUs extends StatefulWidget {
 class _ContactUsState extends State<ContactUs> {
   bool _isLoading = false;
 
+  // form key
   final _formKey = GlobalKey<FormState>();
+  // text box controllers
   final TextEditingController nameCtl = TextEditingController();
   final TextEditingController emailCtl = TextEditingController();
   final TextEditingController mobileCtl = TextEditingController();
   final TextEditingController messageCtl = TextEditingController();
 
-  @override
-  void initState() {
-    super.initState();
-  }
-
+  // save form and initiate a POST request
   void _saveForm() async {
     final isValid = _formKey.currentState.validate();
     if (!isValid) return;
@@ -39,7 +35,6 @@ class _ContactUsState extends State<ContactUs> {
     setState(() {
       _isLoading = true;
     });
-
     Map<String, dynamic> data = {
       'name': nameCtl.text,
       'email': emailCtl.text,
@@ -84,11 +79,6 @@ class _ContactUsState extends State<ContactUs> {
 
   @override
   Widget build(BuildContext context) {
-    final size = DeviceSize(context: context);
-
-    final MaterialLocalizations localizations =
-        MaterialLocalizations.of(context);
-
     return Scaffold(
       appBar: AppBar(
         backgroundColor: kPrimaryBackgroundColor,

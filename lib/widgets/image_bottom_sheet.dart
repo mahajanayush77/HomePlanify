@@ -1,6 +1,6 @@
-import '../constant.dart';
 import 'package:flutter/material.dart';
 
+// Bottom sheet to select image from gallery or camera
 class ImageBottomSheet extends StatelessWidget {
   final Function onTapCamera;
   final Function onTapGallery;

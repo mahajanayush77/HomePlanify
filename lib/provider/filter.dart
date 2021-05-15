@@ -1,8 +1,4 @@
 import 'package:flutter/cupertino.dart';
-import 'package:housing/utilities/api-response.dart';
-import 'package:housing/utilities/api_endpoints.dart';
-import 'package:housing/utilities/api_helper.dart';
-import 'package:housing/utilities/http_exception.dart';
 
 class Filter extends ChangeNotifier {
   String search;
@@ -15,19 +11,6 @@ class Filter extends ChangeNotifier {
   int price_end;
   bool featured;
   String orderby;
-
-  // Filter({
-  //   this.search,
-  //   this.type,
-  //   this.bedrooms,
-  //   this.bathrooms,
-  //   this.rooms,
-  //   this.construction_status,
-  //   this.price_start,
-  //   this.price_end,
-  //   this.featured,
-  //   this.features,
-  // });
 
   Map<String, String> toQuery(){
     Map<String, String> query = {
@@ -50,32 +33,6 @@ class Filter extends ChangeNotifier {
 
   }
 
-  // Map<String, dynamic> toJson() => {
-  //
-  //     'visible': 'true',
-  //     'verified': 'true',
-  //     search != null ? "search": search : null,
-  //     type != null ? "search": type : null,
-  //     bedrooms != null ? "bedrooms": bedrooms : null,
-  //     rooms != null ? "rooms": rooms : null,
-  //     bathrooms != null ? "bathrooms": bathrooms : null,
-  //     construction_status != null ? "construction_status": construction_status : null,
-  //     price_start != null ? "minprice": price_start : null,
-  //     price_end != null ? "maxprice": price_end : null,
-  //     featured != null ? "featured": featured : null,
-  //   //   orderby != null ? "orderby": orderby : null,
-  //   //
-  //   // "search": search,
-  //   // "type": type,
-  //   // "bedrooms": bedrooms,
-  //   // "bathrooms": bathrooms,
-  //   // "rooms": rooms,
-  //   // "construction_status": construction_status,
-  //   // "price_start": price_start,
-  //   // "price_end": price_end,
-  //   // "featured": featured,
-  //   // "features": features,
-  // };
 
   void saveFilters( type, bedrooms, bathrooms, rooms, construction_status, price_start, price_end, featured, orderby){
     this.type = type;

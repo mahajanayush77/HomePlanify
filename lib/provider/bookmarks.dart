@@ -1,12 +1,11 @@
 import 'package:flutter/cupertino.dart';
-import 'package:housing/models/property.dart';
-import 'package:housing/screens/profile/my_properties.dart';
+import '../models/property.dart';
+import '../utilities/api-response.dart';
+import '../utilities/api_endpoints.dart';
+import '../utilities/api_helper.dart';
+import '../utilities/http_exception.dart';
 
-import 'package:housing/utilities/api-response.dart';
-import 'package:housing/utilities/api_endpoints.dart';
-import 'package:housing/utilities/api_helper.dart';
-import 'package:housing/utilities/http_exception.dart';
-
+// Bookmarked properties Provider
 class Bookmarks with ChangeNotifier {
   List<Property> _myProp = [];
   List<Property> get myProp {
@@ -27,19 +26,13 @@ class Bookmarks with ChangeNotifier {
     return response;
   }
 
-  // void properties(List<Map<String, dynamic>> value) {
-  //   _myProp = value;
-  // }
-
   void addtobookmarks(int id) async {
-    //Remove from the list
     final existingIndex = _myProp.indexWhere((prod) => prod.id == id);
     var existingProp = _myProp[existingIndex];
     _myProp.removeWhere((prod) => prod.id == id);
     notifyListeners();
 
     try{
-
       String endpointaddbookmark;
       endpointaddbookmark = eProperties + id.toString() + "/add_to_bookmarks/";
       ApiResponse response =await ApiHelper().getRequest(
@@ -53,7 +46,7 @@ class Bookmarks with ChangeNotifier {
     }catch(error){
       _myProp.insert(existingIndex, existingProp);
       notifyListeners();
-      throw HttpException(message: 'Failed to remove from Bookmarks');
+      throw HttpException(message: 'Failed to add to Bookmarks');
     }
     notifyListeners();
   }
@@ -84,9 +77,6 @@ class Bookmarks with ChangeNotifier {
     }
     notifyListeners();
   }
-
-
-
 
   Property findById(int id) {
     return _myProp.firstWhere((element) {

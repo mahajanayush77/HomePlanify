@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:housing/constant.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
-import 'package:housing/provider/filter.dart' as filter;
-import 'package:housing/provider/properties.dart' as prop;
+import '../../provider/filter.dart' as filter;
+import '../../provider/properties.dart' as prop;
 
 class Filter extends StatefulWidget {
   @override
@@ -12,7 +12,6 @@ class Filter extends StatefulWidget {
 
 class _FilterState extends State<Filter> {
   bool _initial=false;
-
   var format = NumberFormat.compactCurrency(locale: 'en_IN', symbol: "₹", decimalDigits: 0);
 
   String type;
@@ -36,8 +35,6 @@ class _FilterState extends State<Filter> {
       construction_status = filterQ.construction_status;
       featured = filterQ.featured;
       orderby = filterQ.orderby;
-      // selectedRange.start = filterQ.price_start;
-      // selectedRange.end = filterQ.price_end;
 
     }
     _initial=true;

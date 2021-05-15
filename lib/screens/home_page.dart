@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:housing/constant.dart';
 import 'package:housing/utilities/api-response.dart';
-import 'package:housing/widgets/Project_card.dart';
+import 'package:housing/widgets/TrendingProjectCard.dart';
 import 'package:housing/widgets/bottom_bar.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:housing/widgets/hot_deal_card.dart';

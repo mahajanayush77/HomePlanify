@@ -1,18 +1,16 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:housing/models/property.dart';
-import 'package:housing/provider/my_properties.dart' as prop;
-import 'package:housing/provider/properties.dart';
-import 'package:housing/screens/add_property.dart';
-import 'package:housing/screens/home/property_detail.dart';
-import 'package:housing/screens/splash_screen.dart';
-import 'package:housing/utilities/api-response.dart';
-import 'package:housing/utilities/api_endpoints.dart';
-import 'package:housing/utilities/api_helper.dart';
 import 'package:provider/provider.dart';
-import '../data.dart';
-import '../filter.dart';
 
+import '../../models/property.dart';
+import '../../provider/my_properties.dart' as prop;
+import '../../screens/add_property.dart';
+import '../../screens/home/property_detail.dart';
+import '../../screens/splash_screen.dart';
+import '../../utilities/api-response.dart';
+
+
+// List of all the properties added by a user
 class MyProperties extends StatefulWidget {
   @override
   _MyPropertiesState createState() => _MyPropertiesState();
@@ -23,8 +21,6 @@ class _MyPropertiesState extends State<MyProperties> {
 
   void initState() {
     // TODO: implement initState
-
-
     super.initState();
   }
 
@@ -82,9 +78,6 @@ class _MyPropertiesState extends State<MyProperties> {
 }
 
 class Prop extends StatelessWidget {
-
-
-
   @override
   Widget build(BuildContext context) {
     final proper = Provider.of<prop.MyProperties>(context, listen: false);
@@ -183,23 +176,6 @@ class Prop extends StatelessWidget {
                         ],
                       ),
                     ),
-                    // Expanded(
-                    //   flex: 1,
-                    //   child: Column(
-                    //     children: [
-                    //       IconButton(
-                    //         icon: Icon(Icons.delete),
-                    //         color: Colors.black,
-                    //         onPressed: (){},
-                    //       )
-                    //     ],
-                    //   ),
-                    // ),
-                    // IconButton(
-                    //   icon: Icon(Icons.delete),
-                    //   color: Colors.red,
-                    //   onPressed: (){},
-                    // ),
                   ],
                 ),
                 Expanded(

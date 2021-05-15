@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:housing/provider/properties.dart';
-import 'package:housing/widgets/property_item.dart';
 import 'package:provider/provider.dart';
-
+import '../provider/properties.dart';
+import '../widgets/property_item.dart';
 import '../constant.dart';
 
+// Search widget
 class SearchProperties extends SearchDelegate<PropertyItem> {
   @override
   List<Widget> buildActions(BuildContext context) {

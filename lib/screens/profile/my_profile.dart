@@ -1,17 +1,17 @@
 import 'dart:io';
-
 import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:housing/constant.dart';
-import 'package:housing/utilities/api-response.dart';
-import 'package:housing/utilities/api_endpoints.dart';
-import 'package:housing/utilities/api_helper.dart';
-import 'package:housing/widgets/bottom_bar.dart';
-import 'package:housing/utilities/http_exception.dart';
 
+import '../../constant.dart';
+import '../../utilities/api-response.dart';
+import '../../utilities/api_endpoints.dart';
+import '../../utilities/api_helper.dart';
+import '../../widgets/bottom_bar.dart';
+import '../../utilities/http_exception.dart';
+
+// My profile class
 class MyProfile extends StatefulWidget {
-  // static const routeName = '/ContactUs';
 
   @override
   _MyProfileState createState() => _MyProfileState();
@@ -27,13 +27,9 @@ class _MyProfileState extends State<MyProfile> {
   final TextEditingController mobileCtl = TextEditingController();
 
 
-  Future<ApiResponse> _response;
-
   @override
   void initState() {
-    // profile = EmployeeProfile();
-
-    _fetchData();
+    _fetchData(); // fetch user profile
     super.initState();
   }
 
@@ -73,6 +69,7 @@ class _MyProfileState extends State<MyProfile> {
     });
   }
 
+  // save form and edit profile
   void _saveForm() async {
     final isValid = _formKey.currentState.validate();
     if (!isValid) return;
@@ -121,10 +118,6 @@ class _MyProfileState extends State<MyProfile> {
 
   @override
   Widget build(BuildContext context) {
-    final size = DeviceSize(context: context);
-
-    final MaterialLocalizations localizations =
-        MaterialLocalizations.of(context);
 
     return Scaffold(
       appBar: AppBar(

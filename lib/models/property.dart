@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
-import 'package:housing/utilities/api-response.dart';
-import 'package:housing/utilities/api_endpoints.dart';
-import 'package:housing/utilities/api_helper.dart';
-import 'package:housing/utilities/http_exception.dart';
+import '../utilities/api-response.dart';
+import '../utilities/api_endpoints.dart';
+import '../utilities/api_helper.dart';
+import '../utilities/http_exception.dart';
 
 class Property extends ChangeNotifier {
   int id;

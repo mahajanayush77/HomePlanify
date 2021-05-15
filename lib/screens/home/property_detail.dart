@@ -1,17 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import '../data.dart';
-import 'package:housing/models/property.dart';
-import 'package:housing/screens/splash_screen.dart';
-import 'package:housing/utilities/api-response.dart';
-import 'package:housing/utilities/api_endpoints.dart';
-import 'package:housing/utilities/api_helper.dart';
-import 'package:url_launcher/url_launcher.dart';
-import '../../utilities/auth_helper.dart' as AuthHelper;
 import 'package:flushbar/flushbar.dart';
-import 'package:housing/utilities/http_exception.dart';
+import 'package:url_launcher/url_launcher.dart';
+import '../../models/property.dart';
+import '../splash_screen.dart';
+import '../../utilities/api-response.dart';
+import '../../utilities/api_endpoints.dart';
+import '../../utilities/api_helper.dart';
+import '../../utilities/auth_helper.dart' as AuthHelper;
+import '../../utilities/http_exception.dart';
 
-
+// Property Detail
 class Detail extends StatefulWidget {
   int id;
   Detail({this.id});
@@ -21,14 +19,12 @@ class Detail extends StatefulWidget {
 }
 
 class _DetailState extends State<Detail> {
-  int id;
+  int id; // id of the property
   _DetailState({this.id});
 
   Future<ApiResponse> response;
   Property property2;
   String endpointsingle;
-
-
 
   @override
   void initState() {
@@ -51,13 +47,9 @@ class _DetailState extends State<Detail> {
   }
 
   void add_to_bookmarks() async {
-    // setState(() {
-    //   _isLoading = true;
-    // });
     try {
       ApiResponse response;
       String endpointaddbookmark;
-
       endpointaddbookmark = eProperties + id.toString() + "/add_to_bookmarks/";
       print(endpointaddbookmark);
       response =await ApiHelper().getRequest(
@@ -92,9 +84,6 @@ class _DetailState extends State<Detail> {
   }
 
   void remove_from_bookmarks() async {
-    // setState(() {
-    //   _isLoading = true;
-    // });
     try {
       ApiResponse response;
       String endpointaddbookmark;
@@ -123,9 +112,6 @@ class _DetailState extends State<Detail> {
         duration: Duration(seconds: 3),
       )..show(context);
     }
-    // setState(() {
-    //   _isLoading = false;
-    // });
   }
 
 
@@ -133,8 +119,6 @@ class _DetailState extends State<Detail> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-
-    // final property = Provider.of<Property>(context);
 
     return Scaffold(
         body: FutureBuilder(
@@ -157,22 +141,6 @@ class _DetailState extends State<Detail> {
                       fit: BoxFit.cover,
                     ),
                   ),
-                  // child: Container(
-                  //   decoration: BoxDecoration(
-                  //     gradient: LinearGradient(
-                  //       begin: Alignment.topCenter,
-                  //       end: Alignment.bottomCenter,
-                  //       colors: [
-                  //         const Color(0xffee0000),
-                  //         const Color(0xffeeee00)
-                  //       ], // red to yellow
-                  //       // List: [
-                  //       //   Colors.transparent,
-                  //       //   Colors.black.withOpacity(0.7),
-                  //       // ],
-                  //     ),
-                  //   ),
-                  // ),
                 ),
               ),
               Container(
@@ -196,12 +164,6 @@ class _DetailState extends State<Detail> {
                               size: 16,
                             ),
                           ),
-
-                          // Icon(
-                          //   Icons.notifications_none,
-                          //   color: Colors.white,
-                          //   size: 28,
-                          // ),
                         ],
                       ),
                     ),

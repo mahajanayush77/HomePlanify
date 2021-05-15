@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:housing/screens/webview.dart';
+import '../screens/webview.dart';
 
 class deal_card extends StatelessWidget {
   final String propertyTitle;
