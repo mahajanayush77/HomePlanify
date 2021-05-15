@@ -1,12 +1,6 @@
 name: HomePlanify
 
-on:
-  push:
-    branches:
-      - main
-  pull_request:
-    branches:
-      - main
+on: [push, pull_request]
 
 jobs:
   version:
@@ -16,7 +10,7 @@ jobs:
     - uses: actions/checkout@v1
     - name: Fetch all history for all tags and branches
       run: |
-          git fetch --prune --depth=10000
+        git fetch --prune --depth=10000
     - name: Install GitVersion
       uses: gittools/actions/gitversion/setup@v0.9.2
       with:
