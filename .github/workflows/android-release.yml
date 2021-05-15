@@ -58,10 +58,10 @@ jobs:
     - run: flutter build apk --release --split-per-abi
     - run: flutter build appbundle
     - name: Bump version and push tag
-        id: tag_version
-        uses: mathieudutour/github-tag-action@v5.5
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+      id: tag_version
+      uses: mathieudutour/github-tag-action@v5.5
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
     - name: Create a Release in GitHub
       uses: actions/create-release@v1
         env:
