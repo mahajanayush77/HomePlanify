@@ -71,7 +71,6 @@ class MyApp extends StatelessWidget {
           '/bookmarks': (context) => Bookmarks(),
           '/my_properties': (context) => MyProperties(),
           '/contactUs': (context) => ContactUs(),
-          '/faq': (context) => MyProperties(),
           '/change_password': (context) => ChangePassword(),
           '/logout': (context) => MyProperties(),
         },
