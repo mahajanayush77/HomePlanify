@@ -20,18 +20,20 @@ class ArticleOnePage extends StatefulWidget {
 class _ArticleOnePageState extends State<ArticleOnePage> {
   final String url = "https://www.homeplanify.com/api/blog-posts/";
   List data;
+  var blogUrl;
+
 
   @override
   void initState() {
     super.initState();
+    blogUrl = Uri.encodeFull(url);
     this.getJsonData();
   }
 
   Future<void> getJsonData() async {
     var response = await http.get(
-      Uri.encodeFull(url),
+        blogUrl
     );
-    print(response.body);
     setState(
       () {
         var convertDataToJson = json.decode(response.body);

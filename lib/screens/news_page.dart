@@ -1,5 +1,8 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:housing/utilities/api-response.dart';
+import 'package:housing/utilities/api_endpoints.dart';
+import 'package:housing/utilities/api_helper.dart';
 import 'package:http/http.dart' as http;
 import '../screens/news/article.dart';
 import '../constant.dart';
@@ -15,19 +18,22 @@ class _news_pageState extends State<news_page> {
   // endpoint for blog posts
   final String url = "https://www.homeplanify.com/api/blog-posts/";
   List data;
+  Future<ApiResponse> _response;
+  var blogUrl;
 
   @override
   void initState() {
     super.initState();
+    blogUrl = Uri.encodeFull(url);
     this.getJsonData();
   }
 
   Future<void> getJsonData() async {
     // GET request
+
     var response = await http.get(
-      Uri.encodeFull(url),
+        blogUrl
     );
-    print(response.body);
     setState(
       () {
         var convertDataToJson = json.decode(response.body);
