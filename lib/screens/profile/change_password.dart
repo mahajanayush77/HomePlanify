@@ -12,7 +12,6 @@ import '../../utilities/http_exception.dart';
 // change password form
 
 class ChangePassword extends StatefulWidget {
-
   @override
   _ChangePasswordState createState() => _ChangePasswordState();
 }
@@ -55,9 +54,9 @@ class _ChangePasswordState extends State<ChangePassword> {
           message: 'Password Updated Successfully!',
           duration: Duration(seconds: 3),
         )..show(context);
-      newPasswordCtl.clear();
-      oldPasswordCtl.clear();
-      confirmPasswordCtl.clear();
+        newPasswordCtl.clear();
+        oldPasswordCtl.clear();
+        confirmPasswordCtl.clear();
       } else {
         Flushbar(
           message: response.errorMessage ?? 'Unable to Update',
@@ -79,7 +78,6 @@ class _ChangePasswordState extends State<ChangePassword> {
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       appBar: AppBar(
         backgroundColor: kPrimaryBackgroundColor,
@@ -97,26 +95,26 @@ class _ChangePasswordState extends State<ChangePassword> {
               children: [
                 Container(
                     child: Center(
-                      child: Text(
-                        "HomePlanify",
-                        style: TextStyle(
-                          color: kPrimaryBackgroundColor,
-                          fontSize: 30,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    )),
+                  child: Text(
+                    "HomePlanify",
+                    style: TextStyle(
+                      color: kPrimaryBackgroundColor,
+                      fontSize: 30,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                )),
                 Container(
                     child: Center(
-                      child: Text(
-                        "Your data is safe with us!",
-                        style: TextStyle(
-                          color: Colors.black54,
-                          fontSize: 25,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    )),
+                  child: Text(
+                    "Your data is safe with us!",
+                    style: TextStyle(
+                      color: Colors.black54,
+                      fontSize: 25,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                )),
                 SizedBox(
                   height: 20.0,
                 ),
@@ -146,7 +144,6 @@ class _ChangePasswordState extends State<ChangePassword> {
                     ),
                     border: OutlineInputBorder(
                         borderRadius: BorderRadius.all(Radius.circular(15.0))),
-
                   ),
                   validator: (value) {
                     if (value.isEmpty) {
@@ -184,7 +181,6 @@ class _ChangePasswordState extends State<ChangePassword> {
                     ),
                     border: OutlineInputBorder(
                         borderRadius: BorderRadius.all(Radius.circular(15.0))),
-
                   ),
                   validator: (value) {
                     if (value.length < 6) {
@@ -222,7 +218,6 @@ class _ChangePasswordState extends State<ChangePassword> {
                     ),
                     border: OutlineInputBorder(
                         borderRadius: BorderRadius.all(Radius.circular(15.0))),
-
                   ),
                   validator: (value) {
                     if (value != newPasswordCtl.text) {
@@ -234,25 +229,24 @@ class _ChangePasswordState extends State<ChangePassword> {
                 SizedBox(
                   height: 18.0,
                 ),
-
                 SizedBox(
                   height: 10.0,
                 ),
                 (_isLoading)
                     ? SpinKitThreeBounce(
-                  color: Theme.of(context).primaryColor,
-                )
+                        color: Theme.of(context).primaryColor,
+                      )
                     : MaterialButton(
-                  height: 30,
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(18.0)),
-                  color: kPrimaryBackgroundColor,
-                  textColor: Colors.white,
-                  onPressed: () async {
-                    _saveForm();
-                  },
-                  child: Text('Update'),
-                ),
+                        height: 30,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(18.0)),
+                        color: kPrimaryBackgroundColor,
+                        textColor: Colors.white,
+                        onPressed: () async {
+                          _saveForm();
+                        },
+                        child: Text('Update'),
+                      ),
               ],
             ),
           ),

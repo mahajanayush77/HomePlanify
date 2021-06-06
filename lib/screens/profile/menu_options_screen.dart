@@ -40,25 +40,22 @@ class _MenuOptionsScreenState extends State<MenuOptionsScreen> {
                     : null,
               ),
               child: ListTile(
-
-                leading: Icon(Icons.logout, size: 40.0),
-                title: Text(
-                  "Logout",
-                  style: TextStyle(
-                    color: _selectedOption == index - 1
-                        ? Colors.black
-                        : Colors.grey[600],
+                  leading: Icon(Icons.logout, size: 40.0),
+                  title: Text(
+                    "Logout",
+                    style: TextStyle(
+                      color: _selectedOption == index - 1
+                          ? Colors.black
+                          : Colors.grey[600],
+                    ),
                   ),
-                ),
-
-                selected: _selectedOption == index - 1,
-                onTap: () async {
-                  await ApiHelper().logOut().then((_) {
-                    Navigator.of(context).pushNamedAndRemoveUntil(
-                        '/login', (Route<dynamic> route) => false);
-                  });
-                }
-              ),
+                  selected: _selectedOption == index - 1,
+                  onTap: () async {
+                    await ApiHelper().logOut().then((_) {
+                      Navigator.of(context).pushNamedAndRemoveUntil(
+                          '/login', (Route<dynamic> route) => false);
+                    });
+                  }),
             );
             return SizedBox(height: 50.0);
           }
@@ -75,7 +72,6 @@ class _MenuOptionsScreenState extends State<MenuOptionsScreen> {
                   : null,
             ),
             child: ListTile(
-
               leading: options[index - 1].icon,
               title: Text(
                 options[index - 1].title,
@@ -90,7 +86,7 @@ class _MenuOptionsScreenState extends State<MenuOptionsScreen> {
                 setState(() {
                   _selectedOption = index - 1;
                 });
-                Navigator.pushNamed(context, options[index-1].gestureLink);
+                Navigator.pushNamed(context, options[index - 1].gestureLink);
               },
             ),
           );

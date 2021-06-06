@@ -66,103 +66,103 @@ class _BodyState extends State<Body> {
     return Background(
       child: SingleChildScrollView(
         child: _forgotpass
-        ? ForgotPassword(() {
-          setState(() {
-            _forgotpass = !_forgotpass;
-          });
-        })
-        : Form(
-          key: _formKey,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Text(
-                "LOGIN",
-                style: TextStyle(fontWeight: FontWeight.bold),
-              ),
-              SizedBox(height: size.height * 0.03),
-              SvgPicture.asset(
-                "assets/icons/login.svg",
-                height: size.height * 0.35,
-              ),
-              SizedBox(height: size.height * 0.03),
-              RoundedInputField(
-                onSaved: (value) {
-                  _email = value;
-                },
-                hintText: "Your Email",
-              ),
-              TextFieldContainer(
-                child: TextFormField(
-                  obscureText: _isPasswordHidden,
-                  cursorColor: kPrimaryColor,
-                  decoration: InputDecoration(
-                    hintText: "Password",
-                    icon: Icon(
-                      Icons.lock,
-                      color: kPrimaryColor,
+            ? ForgotPassword(() {
+                setState(() {
+                  _forgotpass = !_forgotpass;
+                });
+              })
+            : Form(
+                key: _formKey,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Text(
+                      "LOGIN",
+                      style: TextStyle(fontWeight: FontWeight.bold),
                     ),
-                    suffixIcon: IconButton(
-                      icon: Icon(_isPasswordHidden
-                          ? Icons.visibility
-                          : Icons.visibility_off),
-                      color: kPrimaryColor,
-                      onPressed: () {
-                        setState(() {
-                          _isPasswordHidden = !_isPasswordHidden;
-                        });
+                    SizedBox(height: size.height * 0.03),
+                    SvgPicture.asset(
+                      "assets/icons/login.svg",
+                      height: size.height * 0.35,
+                    ),
+                    SizedBox(height: size.height * 0.03),
+                    RoundedInputField(
+                      onSaved: (value) {
+                        _email = value;
+                      },
+                      hintText: "Your Email",
+                    ),
+                    TextFieldContainer(
+                      child: TextFormField(
+                        obscureText: _isPasswordHidden,
+                        cursorColor: kPrimaryColor,
+                        decoration: InputDecoration(
+                          hintText: "Password",
+                          icon: Icon(
+                            Icons.lock,
+                            color: kPrimaryColor,
+                          ),
+                          suffixIcon: IconButton(
+                            icon: Icon(_isPasswordHidden
+                                ? Icons.visibility
+                                : Icons.visibility_off),
+                            color: kPrimaryColor,
+                            onPressed: () {
+                              setState(() {
+                                _isPasswordHidden = !_isPasswordHidden;
+                              });
+                            },
+                          ),
+                          border: InputBorder.none,
+                        ),
+                        onSaved: (value) {
+                          _password = value;
+                        },
+                        validator: (value) {
+                          if (value.isEmpty) {
+                            return 'Password can\'t be empty';
+                          }
+                          return null;
+                        },
+                      ),
+                    ),
+                    (_isLoading)
+                        ? SpinKitThreeBounce(
+                            color: Theme.of(context).primaryColor,
+                          )
+                        : RoundedButton(
+                            text: "LOGIN",
+                            press: () {
+                              _signIn();
+                            },
+                          ),
+                    SizedBox(height: size.height * 0.03),
+                    TextButton(
+                        onPressed: () {
+                          setState(() {
+                            _forgotpass = !_forgotpass;
+                          });
+                        },
+                        child: Text(
+                          'Forgot Password?',
+                          style: TextStyle(color: kPrimaryColor),
+                        )),
+                    SizedBox(height: size.height * 0.03),
+                    AlreadyHaveAnAccountCheck(
+                      press: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) {
+                              return SignUpScreen();
+                            },
+                          ),
+                        );
                       },
                     ),
-                    border: InputBorder.none,
-                  ),
-                  onSaved: (value) {
-                    _password = value;
-                  },
-                  validator: (value) {
-                    if (value.isEmpty) {
-                      return 'Password can\'t be empty';
-                    }
-                    return null;
-                  },
+                  ],
                 ),
               ),
-              (_isLoading)
-                  ? SpinKitThreeBounce(
-                color: Theme.of(context).primaryColor,
-              )
-                  : RoundedButton(
-                      text: "LOGIN",
-                      press: () {
-                        _signIn();
-                      },
-                    ),
-              SizedBox(height: size.height * 0.03),
-              TextButton(
-                  onPressed: () {
-                    setState(() {
-                      _forgotpass = !_forgotpass;
-                    });
-                  },
-                  child: Text(
-                    'Forgot Password?',
-                    style: TextStyle(color: kPrimaryColor
-                    ),)),
-              SizedBox(height: size.height * 0.03),
-              AlreadyHaveAnAccountCheck(
-                press: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) {
-                        return SignUpScreen();
-                      },
-                    ),
-                  );
-                },
-              ),
-            ],
-          ),
-        ),
       ),
     );
   }

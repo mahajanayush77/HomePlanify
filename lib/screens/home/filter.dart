@@ -11,8 +11,9 @@ class Filter extends StatefulWidget {
 }
 
 class _FilterState extends State<Filter> {
-  bool _initial=false;
-  var format = NumberFormat.compactCurrency(locale: 'en_IN', symbol: "₹", decimalDigits: 0);
+  bool _initial = false;
+  var format = NumberFormat.compactCurrency(
+      locale: 'en_IN', symbol: "₹", decimalDigits: 0);
 
   String type;
   var selectedRange = RangeValues(20000, 9000000);
@@ -26,8 +27,8 @@ class _FilterState extends State<Filter> {
 
   @override
   void didChangeDependencies() {
-    if(!_initial){
-      final filterQ=Provider.of<filter.Filter>(context,listen: false);
+    if (!_initial) {
+      final filterQ = Provider.of<filter.Filter>(context, listen: false);
       type = filterQ.type;
       bedrooms = filterQ.bedrooms;
       bathrooms = filterQ.bathrooms;
@@ -35,11 +36,9 @@ class _FilterState extends State<Filter> {
       construction_status = filterQ.construction_status;
       featured = filterQ.featured;
       orderby = filterQ.orderby;
-
     }
-    _initial=true;
+    _initial = true;
   }
-
 
   Widget _buildTypeChips() {
     List<List> _options = [
@@ -51,22 +50,24 @@ class _FilterState extends State<Filter> {
     return Wrap(
       spacing: 10,
       children: List<Widget>.generate(
-        _options.length, (int index) {
-        return ChoiceChip(
-          label: Text(_options[index][0]),
-          selected: type == _options[index][1],
-          backgroundColor: Colors.grey[200],
-          selectedColor: kPrimaryColor,
-          onSelected: (bool selected) {
-            setState(() {
-              type = selected ? _options[index][1] : null;
-            });
-          },
-        );
-      },
+        _options.length,
+        (int index) {
+          return ChoiceChip(
+            label: Text(_options[index][0]),
+            selected: type == _options[index][1],
+            backgroundColor: Colors.grey[200],
+            selectedColor: kPrimaryColor,
+            onSelected: (bool selected) {
+              setState(() {
+                type = selected ? _options[index][1] : null;
+              });
+            },
+          );
+        },
       ).toList(),
     );
   }
+
   Widget _buildBedroomChips() {
     List<List> _options = [
       ["Any", 0],
@@ -80,22 +81,24 @@ class _FilterState extends State<Filter> {
     return Wrap(
       spacing: 10,
       children: List<Widget>.generate(
-        _options.length, (int index) {
-        return ChoiceChip(
-          label: Text(_options[index][0]),
-          selected: bedrooms == _options[index][1],
-          backgroundColor: Colors.grey[200],
-          selectedColor: kPrimaryColor,
-          onSelected: (bool selected) {
-            setState(() {
-              bedrooms = selected ? _options[index][1] : null;
-            });
-          },
-        );
-      },
+        _options.length,
+        (int index) {
+          return ChoiceChip(
+            label: Text(_options[index][0]),
+            selected: bedrooms == _options[index][1],
+            backgroundColor: Colors.grey[200],
+            selectedColor: kPrimaryColor,
+            onSelected: (bool selected) {
+              setState(() {
+                bedrooms = selected ? _options[index][1] : null;
+              });
+            },
+          );
+        },
       ).toList(),
     );
   }
+
   Widget _buildRoomChips() {
     List<List> _options = [
       ["Any", 0],
@@ -109,22 +112,24 @@ class _FilterState extends State<Filter> {
     return Wrap(
       spacing: 10,
       children: List<Widget>.generate(
-        _options.length, (int index) {
-        return ChoiceChip(
-          label: Text(_options[index][0]),
-          selected: rooms == _options[index][1],
-          backgroundColor: Colors.grey[200],
-          selectedColor: kPrimaryColor,
-          onSelected: (bool selected) {
-            setState(() {
-              rooms = selected ? _options[index][1] : null;
-            });
-          },
-        );
-      },
+        _options.length,
+        (int index) {
+          return ChoiceChip(
+            label: Text(_options[index][0]),
+            selected: rooms == _options[index][1],
+            backgroundColor: Colors.grey[200],
+            selectedColor: kPrimaryColor,
+            onSelected: (bool selected) {
+              setState(() {
+                rooms = selected ? _options[index][1] : null;
+              });
+            },
+          );
+        },
       ).toList(),
     );
   }
+
   Widget _buildBathroomChips() {
     List<List> _options = [
       ["Any", 0],
@@ -137,7 +142,8 @@ class _FilterState extends State<Filter> {
     return Wrap(
       spacing: 10,
       children: List<Widget>.generate(
-        _options.length, (int index) {
+        _options.length,
+        (int index) {
           return ChoiceChip(
             label: Text(_options[index][0]),
             selected: bathrooms == _options[index][1],
@@ -153,6 +159,7 @@ class _FilterState extends State<Filter> {
       ).toList(),
     );
   }
+
   Widget _buildConstructionChips() {
     List<List> _options = [
       ['Ready to Move', "RM"],
@@ -162,22 +169,24 @@ class _FilterState extends State<Filter> {
     return Wrap(
       spacing: 10,
       children: List<Widget>.generate(
-        _options.length, (int index) {
-        return ChoiceChip(
-          label: Text(_options[index][0]),
-          selected: construction_status == _options[index][1],
-          backgroundColor: Colors.grey[200],
-          selectedColor: kPrimaryColor,
-          onSelected: (bool selected) {
-            setState(() {
-              construction_status = selected ? _options[index][1] : null;
-            });
-          },
-        );
-      },
+        _options.length,
+        (int index) {
+          return ChoiceChip(
+            label: Text(_options[index][0]),
+            selected: construction_status == _options[index][1],
+            backgroundColor: Colors.grey[200],
+            selectedColor: kPrimaryColor,
+            onSelected: (bool selected) {
+              setState(() {
+                construction_status = selected ? _options[index][1] : null;
+              });
+            },
+          );
+        },
       ).toList(),
     );
   }
+
   Widget _buildOrderByChips() {
     List<List> _options = [
       ['Price', "price"],
@@ -189,19 +198,20 @@ class _FilterState extends State<Filter> {
     return Wrap(
       spacing: 10,
       children: List<Widget>.generate(
-        _options.length, (int index) {
-        return ChoiceChip(
-          label: Text(_options[index][0]),
-          selected: orderby == _options[index][1],
-          backgroundColor: Colors.grey[200],
-          selectedColor: kPrimaryColor,
-          onSelected: (bool selected) {
-            setState(() {
-              orderby = selected ? _options[index][1] : null;
-            });
-          },
-        );
-      },
+        _options.length,
+        (int index) {
+          return ChoiceChip(
+            label: Text(_options[index][0]),
+            selected: orderby == _options[index][1],
+            backgroundColor: Colors.grey[200],
+            selectedColor: kPrimaryColor,
+            onSelected: (bool selected) {
+              setState(() {
+                orderby = selected ? _options[index][1] : null;
+              });
+            },
+          );
+        },
       ).toList(),
     );
   }
@@ -213,7 +223,6 @@ class _FilterState extends State<Filter> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-
           Row(
             children: [
               Expanded(
@@ -229,12 +238,24 @@ class _FilterState extends State<Filter> {
               ),
               FlatButton(
                 color: kPrimaryColor,
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(new Radius.circular(20.0))),
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(new Radius.circular(20.0))),
                 child: Text('Apply'),
-                onPressed: (){
-                  final query=Provider.of<filter.Filter>(context, listen: false);
-                  final proper = Provider.of<prop.Properties>(context, listen: false);
-                  query.saveFilters(type, bedrooms, bathrooms, rooms, construction_status, selectedRange.start.toInt(), selectedRange.end.toInt(), featured, orderby);
+                onPressed: () {
+                  final query =
+                      Provider.of<filter.Filter>(context, listen: false);
+                  final proper =
+                      Provider.of<prop.Properties>(context, listen: false);
+                  query.saveFilters(
+                      type,
+                      bedrooms,
+                      bathrooms,
+                      rooms,
+                      construction_status,
+                      selectedRange.start.toInt(),
+                      selectedRange.end.toInt(),
+                      featured,
+                      orderby);
                   print("Filters saved");
                   Map<String, String> query1 = query.toQuery();
                   print('You tapped on FlatButton');
@@ -255,7 +276,6 @@ class _FilterState extends State<Filter> {
               fontWeight: FontWeight.bold,
             ),
           ),
-
           SizedBox(
             height: 8,
           ),
@@ -269,13 +289,16 @@ class _FilterState extends State<Filter> {
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              SizedBox(width: 20,),
+              SizedBox(
+                width: 20,
+              ),
               Text(
-                  format.format(selectedRange.start) + " - " + format.format(selectedRange.end).toString(),
+                format.format(selectedRange.start) +
+                    " - " +
+                    format.format(selectedRange.end).toString(),
               ),
             ],
           ),
-
           RangeSlider(
             values: selectedRange,
             onChanged: (RangeValues newRange) {
@@ -288,33 +311,26 @@ class _FilterState extends State<Filter> {
             activeColor: kPrimaryColor,
             inactiveColor: Colors.grey[300],
           ),
-
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-
               Text(
                 r"₹ 10k",
                 style: TextStyle(
                   fontSize: 14,
                 ),
               ),
-
               Text(
                 r"₹ 1 cr",
                 style: TextStyle(
                   fontSize: 14,
                 ),
               ),
-
             ],
           ),
-
           SizedBox(
             height: 16,
           ),
-
-
           Text(
             "Bedrooms",
             style: TextStyle(
@@ -322,7 +338,6 @@ class _FilterState extends State<Filter> {
               fontWeight: FontWeight.bold,
             ),
           ),
-
           SizedBox(
             height: 8,
           ),
@@ -334,16 +349,13 @@ class _FilterState extends State<Filter> {
               fontWeight: FontWeight.bold,
             ),
           ),
-
           SizedBox(
             height: 8,
           ),
           _buildRoomChips(),
-
           SizedBox(
             height: 8,
           ),
-
           Text(
             "Bathrooms",
             style: TextStyle(
@@ -366,8 +378,6 @@ class _FilterState extends State<Filter> {
             height: 8,
           ),
           _buildConstructionChips(),
-
-
           Text(
             "Order By",
             style: TextStyle(
@@ -379,8 +389,6 @@ class _FilterState extends State<Filter> {
             height: 8,
           ),
           _buildOrderByChips(),
-
-
         ],
       ),
     );

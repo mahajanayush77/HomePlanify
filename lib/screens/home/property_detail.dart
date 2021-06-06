@@ -33,17 +33,17 @@ class _DetailState extends State<Detail> {
 
   Future<ApiResponse> getProperty() async {
     endpointsingle = eProperties + id.toString() + "/";
-      var result = await AuthHelper.autoLogin();
-      if (result)
-        response = ApiHelper().getRequest(
-          endpoint: endpointsingle,
-        );
-      else
-        response = ApiHelper().getWithoutAuthRequest(
-          endpoint: endpointsingle,
-        );
+    var result = await AuthHelper.autoLogin();
+    if (result)
+      response = ApiHelper().getRequest(
+        endpoint: endpointsingle,
+      );
+    else
+      response = ApiHelper().getWithoutAuthRequest(
+        endpoint: endpointsingle,
+      );
 
-      return response;
+    return response;
   }
 
   void add_to_bookmarks() async {
@@ -52,7 +52,7 @@ class _DetailState extends State<Detail> {
       String endpointaddbookmark;
       endpointaddbookmark = eProperties + id.toString() + "/add_to_bookmarks/";
       print(endpointaddbookmark);
-      response =await ApiHelper().getRequest(
+      response = await ApiHelper().getRequest(
         endpoint: endpointaddbookmark,
       );
       print(response.data);
@@ -87,9 +87,10 @@ class _DetailState extends State<Detail> {
     try {
       ApiResponse response;
       String endpointaddbookmark;
-      endpointaddbookmark = eProperties + id.toString() + "/remove_from_bookmarks/";
+      endpointaddbookmark =
+          eProperties + id.toString() + "/remove_from_bookmarks/";
       print(endpointaddbookmark);
-      response =await ApiHelper().getRequest(
+      response = await ApiHelper().getRequest(
         endpoint: endpointaddbookmark,
       );
 
@@ -114,8 +115,6 @@ class _DetailState extends State<Detail> {
     }
   }
 
-
-
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -125,7 +124,6 @@ class _DetailState extends State<Detail> {
       future: getProperty(),
       builder: (context, snapshot) {
         if (snapshot.hasData) {
-
           property2 = Property.fromJson(snapshot.data.data);
           print("Single Property");
           print(snapshot.data.data);
@@ -186,7 +184,7 @@ class _DetailState extends State<Detail> {
                         ),
                         child: Center(
                           child: Text(
-                            "FOR " + property2.type == 'S' ? "FOR SALE" : "FOR RENT",
+                            property2.type == 'S' ? "FOR SALE" : "FOR RENT",
                             style: TextStyle(
                               color: Colors.white,
                               fontSize: 14,
@@ -209,9 +207,6 @@ class _DetailState extends State<Detail> {
                               fontWeight: FontWeight.bold,
                             ),
                           ),
-
-
-
                           Container(
                             height: 50,
                             width: 50,
@@ -220,36 +215,37 @@ class _DetailState extends State<Detail> {
                               shape: BoxShape.circle,
                             ),
                             child: Center(
-                              child: (property2.bookmarked)?
-                              IconButton(
-                                icon: Icon(Icons.bookmark),
-                                color: Colors.yellow[700],
-                                iconSize: 20,
-                                onPressed: () async {
-                                  var result = await AuthHelper.autoLogin();
-                                  if (result){
-                                    remove_from_bookmarks();
-                                  }
-                                  else {
-                                    Navigator.pushNamed(context, '/login');
-                                  }
-                                },
-                              )
-                              : IconButton(
-                                icon: Icon(Icons.bookmark_border),
-                                color: Colors.yellow[700],
-                                iconSize: 20,
-                                onPressed: () async {
-                                  var result = await AuthHelper.autoLogin();
-                                  if (result){
-                                    add_to_bookmarks();
-                                  }
-                                  else {
-                                    Navigator.pushNamed(context, '/login');
-                                  }
-                                },
-                              )
-                            ),
+                                child: (property2.bookmarked)
+                                    ? IconButton(
+                                        icon: Icon(Icons.bookmark),
+                                        color: Colors.yellow[700],
+                                        iconSize: 20,
+                                        onPressed: () async {
+                                          var result =
+                                              await AuthHelper.autoLogin();
+                                          if (result) {
+                                            remove_from_bookmarks();
+                                          } else {
+                                            Navigator.pushNamed(
+                                                context, '/login');
+                                          }
+                                        },
+                                      )
+                                    : IconButton(
+                                        icon: Icon(Icons.bookmark_border),
+                                        color: Colors.yellow[700],
+                                        iconSize: 20,
+                                        onPressed: () async {
+                                          var result =
+                                              await AuthHelper.autoLogin();
+                                          if (result) {
+                                            add_to_bookmarks();
+                                          } else {
+                                            Navigator.pushNamed(
+                                                context, '/login');
+                                          }
+                                        },
+                                      )),
                           ),
                         ],
                       ),
@@ -310,12 +306,11 @@ class _DetailState extends State<Detail> {
                   ],
                 ),
               ),
-
               DraggableScrollableSheet(
                 initialChildSize: 0.65,
-                minChildSize:0.65,
+                minChildSize: 0.65,
                 maxChildSize: 0.95,
-                builder: (context, scrollController){
+                builder: (context, scrollController) {
                   return Container(
                     // height: size.height,
                     decoration: BoxDecoration(
@@ -343,7 +338,8 @@ class _DetailState extends State<Detail> {
                                     width: 65,
                                     decoration: BoxDecoration(
                                       image: DecorationImage(
-                                        image: AssetImage("assets/images/owner.jpg"),
+                                        image: AssetImage(
+                                            "assets/images/owner.jpg"),
                                         fit: BoxFit.cover,
                                       ),
                                       shape: BoxShape.circle,
@@ -354,7 +350,7 @@ class _DetailState extends State<Detail> {
                                   ),
                                   Column(
                                     crossAxisAlignment:
-                                    CrossAxisAlignment.start,
+                                        CrossAxisAlignment.start,
                                     children: [
                                       Text(
                                         "Kunal Sharma",
@@ -384,7 +380,7 @@ class _DetailState extends State<Detail> {
                                     width: 50,
                                     decoration: BoxDecoration(
                                       color:
-                                      Colors.yellow[700].withOpacity(0.1),
+                                          Colors.yellow[700].withOpacity(0.1),
                                       shape: BoxShape.circle,
                                     ),
                                     child: Center(
@@ -405,18 +401,18 @@ class _DetailState extends State<Detail> {
                                     width: 50,
                                     decoration: BoxDecoration(
                                       color:
-                                      Colors.yellow[700].withOpacity(0.1),
+                                          Colors.yellow[700].withOpacity(0.1),
                                       shape: BoxShape.circle,
                                     ),
                                     child: Center(
                                       child: IconButton(
-                                        icon: Icon(
-                                        Icons.message),
-                                        color: Colors.yellow[700],
-                                        iconSize: 20,
-                                        onPressed: ()=> {
-                                          launch("whatsapp://send?phone=919999998627"),}
-                                      ),
+                                          icon: Icon(Icons.message),
+                                          color: Colors.yellow[700],
+                                          iconSize: 20,
+                                          onPressed: () => {
+                                                launch(
+                                                    "whatsapp://send?phone=919999998627"),
+                                              }),
                                     ),
                                   ),
                                 ],
@@ -472,7 +468,6 @@ class _DetailState extends State<Detail> {
                             ),
                           ),
                         ),
-
                         Padding(
                           padding: EdgeInsets.only(
                             right: 16,
@@ -488,7 +483,7 @@ class _DetailState extends State<Detail> {
                           ),
                         ),
                         Container(
-                          height: size.height*0.2,
+                          height: size.height * 0.2,
                           padding: EdgeInsets.only(
                             right: 16,
                             left: 16,
@@ -499,16 +494,17 @@ class _DetailState extends State<Detail> {
                             scrollDirection: Axis.horizontal,
                             shrinkWrap: true,
                             itemCount: property2.photos.length,
-                            itemBuilder: (context, index){
+                            itemBuilder: (context, index) {
                               return Container(
-                                width: size.width*0.5,
+                                width: size.width * 0.5,
                                 margin: EdgeInsets.only(right: 8),
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.all(
                                     Radius.circular(10),
                                   ),
                                   image: DecorationImage(
-                                    image: NetworkImage(property2.photos[index]),
+                                    image:
+                                        NetworkImage(property2.photos[index]),
                                     fit: BoxFit.cover,
                                   ),
                                 ),
@@ -521,7 +517,7 @@ class _DetailState extends State<Detail> {
                             top: 8.0,
                             right: 16,
                             left: 16,
-                            bottom:8,
+                            bottom: 8,
                           ),
                           child: Text(
                             "Features",
@@ -532,17 +528,23 @@ class _DetailState extends State<Detail> {
                           ),
                         ),
                         Padding(
-                          padding: const EdgeInsets.symmetric(horizontal:16.0),
+                          padding: const EdgeInsets.symmetric(horizontal: 16.0),
                           child: Wrap(
                             spacing: 12.0,
-                            children: property2.property_features.map((e) => Chip(
-                              label: Text(e, style: TextStyle(fontSize: 16, color: Colors.black87),),
-                              backgroundColor: Colors.yellow[700],
-                              deleteIcon: null,
-                            )).toList(),
+                            children: property2.property_features
+                                .map((e) => Chip(
+                                      label: Text(
+                                        e,
+                                        style: TextStyle(
+                                            fontSize: 16,
+                                            color: Colors.black87),
+                                      ),
+                                      backgroundColor: Colors.yellow[700],
+                                      deleteIcon: null,
+                                    ))
+                                .toList(),
                           ),
                         ),
-
                       ],
                     ),
                   );
@@ -609,6 +611,4 @@ class _DetailState extends State<Detail> {
       ),
     );
   }
-
-
 }

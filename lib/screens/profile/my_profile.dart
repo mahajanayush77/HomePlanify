@@ -12,7 +12,6 @@ import '../../utilities/http_exception.dart';
 
 // My profile class
 class MyProfile extends StatefulWidget {
-
   @override
   _MyProfileState createState() => _MyProfileState();
 }
@@ -26,7 +25,6 @@ class _MyProfileState extends State<MyProfile> {
   final TextEditingController emailCtl = TextEditingController();
   final TextEditingController mobileCtl = TextEditingController();
 
-
   @override
   void initState() {
     _fetchData(); // fetch user profile
@@ -39,7 +37,7 @@ class _MyProfileState extends State<MyProfile> {
     });
     try {
       ApiResponse response;
-      response =await ApiHelper().getRequest(
+      response = await ApiHelper().getRequest(
         endpoint: eUser,
       );
       print(response.errorMessage);
@@ -50,7 +48,6 @@ class _MyProfileState extends State<MyProfile> {
         lastnameCtl.text = profile['last_name'];
         emailCtl.text = profile['email'];
         mobileCtl.text = profile['mobile'];
-
       });
     } on HttpException catch (error) {
       Flushbar(
@@ -96,7 +93,6 @@ class _MyProfileState extends State<MyProfile> {
           message: 'Updated successfully!',
           duration: Duration(seconds: 3),
         )..show(context);
-
       } else {
         Flushbar(
           message: response.errorMessage ?? 'Unable to Update',
@@ -118,7 +114,6 @@ class _MyProfileState extends State<MyProfile> {
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       appBar: AppBar(
         backgroundColor: kPrimaryBackgroundColor,
@@ -215,7 +210,8 @@ class _MyProfileState extends State<MyProfile> {
                         borderRadius: BorderRadius.all(Radius.circular(15.0))),
                   ),
                   validator: (value) {
-                    if (value.length != 10) return 'Mobile Number should be exactly 10 digits.';
+                    if (value.length != 10)
+                      return 'Mobile Number should be exactly 10 digits.';
                     return null;
                   },
                 ),
@@ -243,7 +239,6 @@ class _MyProfileState extends State<MyProfile> {
                 SizedBox(
                   height: 18.0,
                 ),
-
                 SizedBox(
                   height: 10.0,
                 ),

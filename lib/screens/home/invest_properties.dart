@@ -11,7 +11,6 @@ class InvestProperties extends StatefulWidget {
 }
 
 class _InvestPropertiesState extends State<InvestProperties> {
-
   Future<ApiResponse> _properties;
   @override
   void initState() {
@@ -32,21 +31,24 @@ class _InvestPropertiesState extends State<InvestProperties> {
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          SizedBox(height: 20.0,),
+          SizedBox(
+            height: 20.0,
+          ),
           Expanded(
             child: Container(
               padding: EdgeInsets.symmetric(horizontal: 24),
               child: FutureBuilder(
                 future: _properties,
-                builder: (context, snapshot){
-                  if (snapshot.hasData){
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
                     return ListView.separated(
-                      separatorBuilder: (context, index) => SizedBox(height: 15),
+                      separatorBuilder: (context, index) =>
+                          SizedBox(height: 15),
                       shrinkWrap: true,
                       itemCount: snapshot.data.data.length,
                       itemBuilder: (context, index) {
                         final Map<String, dynamic> item =
-                        snapshot.data.data.toList()[index];
+                            snapshot.data.data.toList()[index];
                         print(item);
                         return InvestProp(
                           title: item['title'],
@@ -55,9 +57,10 @@ class _InvestPropertiesState extends State<InvestProperties> {
                         );
                       },
                     );
-                  } else if (snapshot.hasError){
+                  } else if (snapshot.hasError) {
                     return Text("${snapshot.error}");
-                  };
+                  }
+                  ;
                   return SplashScreen();
                 },
               ),
@@ -68,12 +71,6 @@ class _InvestPropertiesState extends State<InvestProperties> {
     );
   }
 }
-
-
-
-
-
-
 
 class InvestProp extends StatelessWidget {
   String title;

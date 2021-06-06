@@ -320,12 +320,10 @@ class _AddPropertyState extends State<AddProperty> {
     });
   }
 
-
   @override
   Widget build(BuildContext context) {
     final size = DeviceSize(context: context);
     var myFormat = DateFormat('yyyy-MM-dd');
-
 
     return Scaffold(
       appBar: AppBar(
@@ -407,7 +405,6 @@ class _AddPropertyState extends State<AddProperty> {
                       })
                       .values
                       .toList(),
-
                   onChanged: (String newValue) {
                     setState(() {
                       _typeValue = newValue;
@@ -477,7 +474,6 @@ class _AddPropertyState extends State<AddProperty> {
                           borderRadius: BorderRadius.circular(15.0))),
                   value: _statusValue,
                   isDense: true,
-
                   items: _status
                       .map((key, value) {
                         return MapEntry(
@@ -489,7 +485,6 @@ class _AddPropertyState extends State<AddProperty> {
                       })
                       .values
                       .toList(),
-
                   onChanged: (String newValue) {
                     setState(() {
                       _statusValue = newValue;

@@ -51,14 +51,12 @@ class _ContactUsState extends State<ContactUs> {
         Flushbar(
           message: 'Message Sent successfully!',
           duration: Duration(seconds: 3),
-        )
-          ..show(context);
+        )..show(context);
         nameCtl.clear();
         emailCtl.clear();
         mobileCtl.clear();
         messageCtl.clear();
-      }
-      else {
+      } else {
         Flushbar(
           message: response.errorMessage ?? 'Unable to send',
           duration: Duration(seconds: 3),
@@ -96,28 +94,26 @@ class _ContactUsState extends State<ContactUs> {
               children: [
                 Container(
                     child: Center(
-                      child: Text(
-                        "HomePlanify",
-                        style: TextStyle(
-                          color: kPrimaryBackgroundColor,
-                          fontSize: 30,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    )
-                ),
-                Container(
-                  child: Center(
-                    child: Text(
-                      "We're here to help you.",
-                      style: TextStyle(
-                        color: Colors.black54,
-                        fontSize: 25,
-                        fontWeight: FontWeight.bold,
-                      ),
+                  child: Text(
+                    "HomePlanify",
+                    style: TextStyle(
+                      color: kPrimaryBackgroundColor,
+                      fontSize: 30,
+                      fontWeight: FontWeight.bold,
                     ),
-                  )
-                ),
+                  ),
+                )),
+                Container(
+                    child: Center(
+                  child: Text(
+                    "We're here to help you.",
+                    style: TextStyle(
+                      color: Colors.black54,
+                      fontSize: 25,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                )),
                 SizedBox(
                   height: 20.0,
                 ),
@@ -206,7 +202,6 @@ class _ContactUsState extends State<ContactUs> {
                 SizedBox(
                   height: 18.0,
                 ),
-
                 (_isLoading)
                     ? SpinKitThreeBounce(
                         color: Theme.of(context).primaryColor,

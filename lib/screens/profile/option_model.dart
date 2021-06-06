@@ -28,11 +28,9 @@ final options = [
     title: 'Contact Us',
     gestureLink: '/contactUs',
   ),
-
   Option(
     icon: Icon(Icons.lock_rounded, size: 40.0),
     title: 'Change Passsword',
     gestureLink: '/change_password',
   ),
-
 ];

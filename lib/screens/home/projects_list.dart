@@ -326,6 +326,7 @@ class _HotelsListState extends State<HotelsList> {
       ),
     );
   }
+
 // header widget
   headerWidget() {
     return Container(
@@ -393,4 +394,3 @@ class _HotelsListState extends State<HotelsList> {
     );
   }
 }
-

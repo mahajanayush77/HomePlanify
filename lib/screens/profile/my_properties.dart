@@ -9,7 +9,6 @@ import '../../screens/home/property_detail.dart';
 import '../../screens/splash_screen.dart';
 import '../../utilities/api-response.dart';
 
-
 // List of all the properties added by a user
 class MyProperties extends StatefulWidget {
   @override
@@ -57,11 +56,10 @@ class _MyPropertiesState extends State<MyProperties> {
                           //proper.properties(property);
                           print(snapshot.data.data.length);
                           // print(property);
-                          return  ChangeNotifierProvider.value(
+                          return ChangeNotifierProvider.value(
                             value: property[index],
                             child: Prop(),
                           );
-
                         },
                       );
                     } else if (snapshot.hasError) {
@@ -85,11 +83,8 @@ class Prop extends StatelessWidget {
     return GestureDetector(
       onTap: () {
         // print(index);
-        Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) =>
-                    Detail(id: property.id)));
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => Detail(id: property.id)));
       },
       child: Card(
         margin: EdgeInsets.only(bottom: 24),
@@ -160,8 +155,7 @@ class Prop extends StatelessWidget {
                                 icon: Icon(Icons.edit),
                                 color: Colors.black,
                                 onPressed: () {
-                                  Navigator.of(context)
-                                      .pushReplacementNamed(
+                                  Navigator.of(context).pushReplacementNamed(
                                       AddProperty.routeName,
                                       arguments: property.id);
                                 },
@@ -169,7 +163,8 @@ class Prop extends StatelessWidget {
                               IconButton(
                                 icon: Icon(Icons.delete),
                                 color: Colors.red,
-                                onPressed: () => proper.deleteProperty(property.id),
+                                onPressed: () =>
+                                    proper.deleteProperty(property.id),
                               ),
                             ],
                           )

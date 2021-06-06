@@ -26,7 +26,7 @@ import './screens/onboarding/Login/login_screen.dart';
 import './screens/onboarding/Signup/signup_screen.dart';
 import './screens/onboarding/Welcome/welcome_screen.dart';
 import './screens/profile/menu_options_screen.dart';
-
+import './screens/home/list_view.dart';
 
 // main function of the material app
 void main() {
@@ -62,6 +62,7 @@ class MyApp extends StatelessWidget {
           '/welcome': (context) => WelcomeScreen(),
           '/login': (context) => LoginScreen(),
           '/signup': (context) => SignUpScreen(),
+          '/properties': (context) => Search(),
           '/invest_properties': (context) => InvestProperties(),
           '/featured_projects': (context) => FeaturedProjects(),
           '/news': (context) => news_page(),

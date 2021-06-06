@@ -14,7 +14,6 @@ class news_page extends StatefulWidget {
 }
 
 class _news_pageState extends State<news_page> {
-
   // endpoint for blog posts
   final String url = "https://www.homeplanify.com/api/blog-posts/";
   List data;
@@ -31,9 +30,7 @@ class _news_pageState extends State<news_page> {
   Future<void> getJsonData() async {
     // GET request
 
-    var response = await http.get(
-        blogUrl
-    );
+    var response = await http.get(blogUrl);
     setState(
       () {
         var convertDataToJson = json.decode(response.body);

@@ -1,73 +1,188 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import '../../models/property.dart';
-import '../../provider/bookmarks.dart' as prop;
-import '../../screens/home/property_detail.dart';
-import '../../screens/splash_screen.dart';
+import 'package:housing/models/property.dart';
+import 'package:housing/screens/home/property_detail.dart';
+import 'package:housing/screens/splash_screen.dart';
 
-// Widget to view all the bookmarked properties of a user
-class Bookmarks extends StatefulWidget {
+import './filter.dart';
+import 'package:provider/provider.dart';
+import 'package:housing/provider/properties.dart' as prop;
+import 'package:housing/provider/filter.dart' as filter;
+
+class Search extends StatefulWidget {
   @override
-  _BookmarksState createState() => _BookmarksState();
+  _SearchState createState() => _SearchState();
 }
 
-class _BookmarksState extends State<Bookmarks> {
+class _SearchState extends State<Search> {
+  String search = '';
+  String type = "R";
+  int bedrooms = 2;
+  int bathrooms = null;
+  int rooms = null;
+  String construction_status = null;
+  int price_start = null;
+  int price_end = null;
+  bool featured = false;
+  List features = null;
+  String orderby = null;
+  Map<String, String> query;
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  // void updateproperties()
+
   @override
   Widget build(BuildContext context) {
-    final proper = Provider.of<prop.Bookmarks>(
-        context); // provider to update bookmarked properties
+    search = ModalRoute.of(context).settings.arguments;
+    final proper = Provider.of<prop.Properties>(context);
+    final filterquery = Provider.of<filter.Filter>(context);
 
+    void filterProperties(String value) {
+      filterquery.updateSearch(value);
+      query = filterquery.toQuery();
+      print(query);
+      setState(() {});
+      // proper.fetchProperties(query);
+    }
+
+    filterProperties(search);
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Bookmarks'),
-      ),
       backgroundColor: Colors.white,
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          SizedBox(
-            height: 20.0,
+          Padding(
+            padding: EdgeInsets.only(top: 38, left: 24, right: 2, bottom: 6),
+            child: Row(
+              children: [
+                Expanded(
+                  child: TextFormField(
+                    initialValue: search,
+                    onEditingComplete: () {
+                      filterProperties(search);
+                    },
+                    onChanged: (value) {
+                      filterProperties(value);
+                    },
+                    style: TextStyle(
+                      fontSize: 20,
+                      height: 1,
+                      color: Colors.black,
+                      fontWeight: FontWeight.bold,
+                    ),
+                    decoration: InputDecoration(
+                      hintText: 'Search Name, City, Area',
+                      hintStyle: TextStyle(
+                        fontSize: 20,
+                        color: Colors.grey[400],
+                      ),
+                      enabledBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(color: Colors.grey[600]),
+                      ),
+                      focusedBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(color: Colors.grey[600]),
+                      ),
+                      border: UnderlineInputBorder(
+                        borderSide: BorderSide(color: Colors.grey[600]),
+                      ),
+                      suffixIcon: Padding(
+                        padding: EdgeInsets.only(left: 16),
+                        child: Icon(
+                          Icons.search,
+                          color: Colors.grey[600],
+                          size: 25,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                GestureDetector(
+                  onTap: () {
+                    _showBottomSheet();
+                  },
+                  child: Padding(
+                    padding: EdgeInsets.only(left: 16, right: 16),
+                    child: Text(
+                      "Filters",
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.grey[600],
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
           Expanded(
             child: Container(
-                padding: EdgeInsets.symmetric(horizontal: 24),
-                child: FutureBuilder(
-                  future: proper.fetchProducts(),
-                  builder: (context, snapshot) {
-                    if (snapshot.hasData) {
-                      return ListView.separated(
-                        separatorBuilder: (context, index) =>
-                            SizedBox(width: 15),
-                        shrinkWrap: true,
-                        itemCount: proper.myProp.length,
-                        itemBuilder: (context, index) {
-                          final property = proper.myProp;
-                          print(property);
-                          return ChangeNotifierProvider.value(
-                            value: property[index],
-                            child: Prop(),
-                          );
-                        },
-                      );
-                    } else if (snapshot.hasError) {
-                      return Text("error: ${snapshot.error}");
-                    }
-                    return SplashScreen();
-                  },
-                )),
-          )
+              padding: EdgeInsets.symmetric(horizontal: 24),
+              child: FutureBuilder(
+                future: proper
+                    .fetchAllProperties(query)
+                    .whenComplete(() => print('hello')),
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    return ListView.separated(
+                      separatorBuilder: (context, index) => SizedBox(width: 15),
+                      shrinkWrap: true,
+                      itemCount: proper.properties.length,
+                      itemBuilder: (context, index) {
+                        final property = proper.properties;
+                        return ChangeNotifierProvider.value(
+                          value: property[index],
+                          child: Prop(),
+                        );
+                      },
+                    );
+                  } else if (snapshot.hasError) {
+                    return Text("${snapshot.error}");
+                  }
+                  // By default, show a loading spinner.
+                  return SplashScreen();
+                },
+              ),
+            ),
+          ),
         ],
       ),
     );
   }
+
+  void _showBottomSheet() {
+    showModalBottomSheet(
+        context: context,
+        isScrollControlled: true,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(30),
+            topRight: Radius.circular(30),
+          ),
+        ),
+        builder: (BuildContext context) {
+          return Wrap(
+            children: [
+              Filter(),
+            ],
+          );
+        }).then((value) {
+      final filterquery = Provider.of<filter.Filter>(context, listen: false);
+
+      setState(() {
+        query = filterquery.toQuery();
+      });
+    });
+  }
 }
 
-// list view of bookmarked properties
 class Prop extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final proper = Provider.of<prop.Bookmarks>(context, listen: false);
+    final proper = Provider.of<prop.Properties>(context, listen: false);
     final property = Provider.of<Property>(context);
 
     return GestureDetector(
@@ -77,7 +192,7 @@ class Prop extends StatelessWidget {
             MaterialPageRoute(builder: (context) => Detail(id: property.id)));
       },
       child: Card(
-        margin: EdgeInsets.only(bottom: 24),
+        margin: EdgeInsets.only(bottom: 16),
         clipBehavior: Clip.antiAlias,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.all(
@@ -85,7 +200,7 @@ class Prop extends StatelessWidget {
           ),
         ),
         child: Container(
-          height: 210,
+          height: 200,
           decoration: BoxDecoration(
             image: DecorationImage(
               image: NetworkImage(
@@ -130,24 +245,6 @@ class Prop extends StatelessWidget {
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                  ),
-                ),
-                Expanded(
-                  flex: 2,
-                  child: Column(
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          IconButton(
-                            icon: Icon(Icons.delete),
-                            color: Colors.red,
-                            onPressed: () =>
-                                proper.removefrombookmarks(property.id),
-                          ),
-                        ],
-                      )
-                    ],
                   ),
                 ),
                 Expanded(

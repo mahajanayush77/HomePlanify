@@ -5,7 +5,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 import '../../widgets/rounded_container.dart';
 
-
 class ArticleOnePage extends StatefulWidget {
   final int index;
 
@@ -22,7 +21,6 @@ class _ArticleOnePageState extends State<ArticleOnePage> {
   List data;
   var blogUrl;
 
-
   @override
   void initState() {
     super.initState();
@@ -31,9 +29,7 @@ class _ArticleOnePageState extends State<ArticleOnePage> {
   }
 
   Future<void> getJsonData() async {
-    var response = await http.get(
-        blogUrl
-    );
+    var response = await http.get(blogUrl);
     setState(
       () {
         var convertDataToJson = json.decode(response.body);
