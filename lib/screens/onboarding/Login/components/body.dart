@@ -12,6 +12,7 @@ import '../../../../widgets/textFieldContainer.dart';
 import '../../../../widgets/roundedButton.dart';
 import '../../../../widgets/rounded_input_field.dart';
 import '../../../../utilities/auth_helper.dart' as authHelper;
+import '../../forgot_password.dart';
 
 class Body extends StatefulWidget {
   @override
@@ -22,6 +23,7 @@ class _BodyState extends State<Body> {
   final _formKey = GlobalKey<FormState>();
   bool _isLoading = false;
   bool _isPasswordHidden = true;
+  bool _forgotpass = false;
   var _email;
   var _password;
 
@@ -63,7 +65,13 @@ class _BodyState extends State<Body> {
     Size size = MediaQuery.of(context).size;
     return Background(
       child: SingleChildScrollView(
-        child: Form(
+        child: _forgotpass
+        ? ForgotPassword(() {
+          setState(() {
+            _forgotpass = !_forgotpass;
+          });
+        })
+        : Form(
           key: _formKey,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -128,6 +136,17 @@ class _BodyState extends State<Body> {
                         _signIn();
                       },
                     ),
+              SizedBox(height: size.height * 0.03),
+              TextButton(
+                  onPressed: () {
+                    setState(() {
+                      _forgotpass = !_forgotpass;
+                    });
+                  },
+                  child: Text(
+                    'Forgot Password?',
+                    style: TextStyle(color: kPrimaryColor
+                    ),)),
               SizedBox(height: size.height * 0.03),
               AlreadyHaveAnAccountCheck(
                 press: () {
